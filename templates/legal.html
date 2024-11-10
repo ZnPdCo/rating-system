@@ -23,10 +23,10 @@
         <div class="header item">{{title}}</div>
         <a class="item" href="/">Problems</a>
         <a class="item" href="/legal/">Legal</a>
-        <a class="item" href="/admin/" style="display: none;">Admin</a>
+        {% if is_admin == True %}<a class="item" href="/admin/">Admin</a>{% endif %}
         <div class="right menu">
-            <a class="item" href="/login/">Login</a>
-            <a class="item" href="/logout/">Logout</a>
+            {% if logged_in == False %}<a class="item" href="/login/">Login</a>{% endif %}
+            {% if logged_in == True %}<a class="item" href="/logout/">Logout</a>{% endif %}
         </div>
     </div>
     <div class="ui container">
