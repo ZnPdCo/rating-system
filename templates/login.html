@@ -26,38 +26,48 @@
         <a class="item" href="/admin/" style="display: none;">Admin</a>
         <div class="right menu">
             <a class="item" href="/login/">Login</a>
-            <a class="item" style="display: none;">Logout</a>
+            <a class="item" href="/logout/">Logout</a>
         </div>
     </div>
     <div class="ui container">
+        <div class="ui attached error message" style="display: none;" id="error1">
+            Password or username is incorrect. Please try again.
+        </div>
+        <div class="ui attached error message" style="display: none;" id="error2">
+            Please set your username to the one in XXOJ and add "Rating-System-verify" at the beginning of the Description (no prefix is required be added). We will verify this to ensure that it is your unique account. 
+        </div>
         <div class="ui attached message">
             <div class="header">
                 Welcome to {{title}}
             </div>
             <p>Fill out the form to login.</p>
         </div>
-        <form class="ui form attached fluid segment">
+        <form class="ui form attached fluid segment" method="post">
             <div class="field">
                 <label>Username</label>
-                <input placeholder="Username" type="text">
+                <input placeholder="Username" type="text" id="username" name="username">
             </div>
             <div class="field">
                 <label>Password</label>
-                <input placeholder="Password" type="password">
+                <input placeholder="Password" type="password" id="password" name="password">
             </div>
-            <div class="inline field">
-                <div class="ui checkbox">
-                    <input type="checkbox" id="terms">
-                    <label for="terms">I agree to the terms.</label>
-                </div>
-            </div>
-            <div class="ui blue submit button">Submit</div>
+            <p>Pressing the button indicates your agreement to all terms.</p>
+            <button type="submit" class="ui blue submit button">Submit</button>
         </form>
         <div class="ui bottom attached warning message">
-            If this is your first time registering an account, please set your username as your own in XXOJ and add "Rating-System-verify" at the beginning of the Description (no prefix is required or should be added). We will verify this to ensure that it is your unique account.<br>
+            If this is your first time registering an account, please set your username to the one in XXOJ and add "Rating-System-verify" at the beginning of the Description (no prefix is required be added). We will verify this to ensure that it is your unique account.<br>
             If you are logging in, you do not need to perform the above operations.
         </div>
     </div>
+    <script>
+        $(document).ready(function () {
+            var urlParams = new URLSearchParams(window.location.search);
+            if(urlParams.get('error') == 1)
+                $('#error1').show();
+            else if(urlParams.get('error') == 2)
+                $('#error2').show();
+        });
+    </script>
 </body>
 
 </html>
