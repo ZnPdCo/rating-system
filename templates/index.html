@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+    <title>{{ title }}</title>
+
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='semantic/semantic.min.css') }}">
+    <script type="text/javascript" src="{{ url_for('static', filename='jquery/jquery.min.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='semantic/semantic.min.js') }}"></script>
+
+    <script>
+        $(document).ready(function () {
+            $(`.menu a[href="${location.pathname}"]`).addClass('active');
+        });
+    </script>
+</head>
+
+<body>
+    <div class="ui menu">
+        <div class="header item">{{title}}</div>
+        <a class="item" href="/">Problems</a>
+        <a class="item" href="/legal/">Legal</a>
+        <a class="item" href="/admin/" style="display: none;">Admin</a>
+        <div class="right menu">
+            <a class="item" href="/login/">Login</a>
+            <a class="item" style="display: none;">Logout</a>
+        </div>
+    </div>
+    <div class="ui container">
+        <div class="ui toggle checkbox" style="margin-top: 20px;">
+            <input type="checkbox" id="use-median">
+            <label>Use Median</label>
+        </div>
+        <div class="column" style="margin-top: 20px;">
+            <table class="ui left aligned table" id="problems-table">
+                <thead>
+                    <th>Contest</th>
+                    <th>Problems</th>
+                    <th>Difficulty</th>
+                    <th>Quality</th>
+                    <th>Vote</th>
+                    <th>Show Votes</th>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>a</td>
+                        <td>a</td>
+                        <td>a</td>
+                        <td>a</td>
+                        <td>a</td>
+                        <td>a</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="ui modal" id="vote">
+            <div class="header">
+                Vote
+            </div>
+            <div class="content">
+                <div class="ui labeled input" style="margin-right: 10px;">
+                    <div class="ui label">
+                        Difficulty
+                    </div>
+                    <input type="number" placeholder="(800-3500)" data-tribute="true" id="difficulty">
+                </div>
+                <div class="ui labeled input">
+                    <div class="ui label">
+                        Quality
+                    </div>
+                    <input type="number" placeholder="(0-5)" data-tribute="true" id="quality">
+                </div>
+            </div>
+            <div class="actions">
+                <div class="ui black deny button">
+                    Cancel
+                </div>
+                <div class="ui positive button">
+                    Save
+                </div>
+            </div>
+        </div>
+        <div class="ui modal" id="show-votes">
+            <div class="header">
+                Show Votes
+            </div>
+            <div class="content">
+                <table class="ui left aligned table" id="vote-table">
+                    <thead>
+                        <th>Difficulty</th>
+                        <th>Quality</th>
+                        <th>Comments</th>
+                        <th>Report</th>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>a</td>
+                            <td>a</td>
+                            <td>a</td>
+                            <td>a</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="actions">
+                <div class="ui positive button">
+                    OK
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
