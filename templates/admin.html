@@ -63,17 +63,18 @@
             </div>
             <div class="field">
                 <label>Extra Info(JSON)</label>
-                <input placeholder="Extra Info" type="text" name="info" value="{&quot;links&quot;: &quot;https://codeforces.com/contest/2024/problem/A&quot;}">
+                <input placeholder="Extra Info" type="text" name="info"
+                    value="{&quot;links&quot;: &quot;https://codeforces.com/contest/2024/problem/A&quot;}">
             </div>
             <button type="submit" class="ui blue submit button">Submit</button>
         </form>
         <div class="ui bottom attached warning message">
             Extra Info Must have a links key with the problem link. For example:
-<pre>
+            <pre>
 {"links": "https://codeforces.com/contest/2024/problem/A"}
 </pre>
         </div>
-        
+
         <div class="ui attached message" style="margin-top: 20px;">
             <div class="header">
                 Update Problem
@@ -94,13 +95,14 @@
             </div>
             <div class="field">
                 <label>Extra Info(JSON)</label>
-                <input placeholder="Extra Info" type="text" name="info" value="{&quot;links&quot;: &quot;https://codeforces.com/contest/2024/problem/A&quot;}">
+                <input placeholder="Extra Info" type="text" name="info"
+                    value="{&quot;links&quot;: &quot;https://codeforces.com/contest/2024/problem/A&quot;}">
             </div>
             <button type="submit" class="ui blue submit button">Submit</button>
         </form>
         <div class="ui bottom attached warning message">
             Extra Info Must have a links key with the problem link. For example:
-<pre>
+            <pre>
 {"links": "https://codeforces.com/contest/2024/problem/A"}
 </pre>
         </div>
@@ -120,6 +122,54 @@
         <div class="ui bottom attached error message">
             Be careful when deleting problems, it will delete all the ratings to that problem.
         </div>
+
+        <div class="ui attached message" style="margin-top: 20px;">
+            <div class="header">
+                Rating Report
+            </div>
+        </div>
+        <table class="ui left aligned table" id="report-table">
+            <thead>
+                <th>Difficulty</th>
+                <th>Quality</th>
+                <th>Comments</th>
+                <th>Delete</th>
+                <th>Keep</th>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+
+        <script>
+            $(document).ready(function () {
+                $.ajax({
+                    url: '/admin/get_reports/',
+                    type: 'POST',
+                    success: function(data) {
+                        var table = $('#report-table tbody');
+                        for (var i = 0; i < data.length; i++) {
+                            var row = $('<tr>');
+                            row.append($('<td>').text(data[i]['difficulty']));
+                            row.append($('<td>').text(data[i]['quality']));
+                            row.append($('<td>').text(data[i]['comment']));
+                            (function(id, row) {
+                                row.append($('<td>').append($('<a>').text('Delete').click(function() {
+                                    $.post('/admin/update_report/', {id: id, delete: 1}, function() {
+                                        row.remove();
+                                    });
+                                })));
+                                row.append($('<td>').append($('<a>').text('Keep').click(function() {
+                                    $.post('/admin/update_report/', {id: id, delete: 0}, function() {
+                                        row.remove();
+                                    });
+                                })));
+                            })(data[i]['id'], row)
+                            table.append(row);
+                        }
+                    }
+                });
+            });
+        </script>
     </div>
 </body>
 

@@ -36,6 +36,9 @@
         <div class="ui attached error message" style="display: none;" id="error2">
             Please set your username to the one in XXOJ and add "Rating-System-verify" at the beginning of the Description (no prefix is required be added). We will verify this to ensure that it is your unique account. 
         </div>
+        <div class="ui attached error message" style="display: none;" id="error3">
+            username len in [1, 100], password len in [1, 100]
+        </div>
         <div class="ui attached message">
             <div class="header">
                 Welcome to {{title}}
@@ -66,6 +69,8 @@
                 $('#error1').show();
             else if(urlParams.get('error') == 2)
                 $('#error2').show();
+            else if(urlParams.get('error') == 3)
+                $('#error3').show();
         });
     </script>
 </body>
