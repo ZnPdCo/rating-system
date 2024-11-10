@@ -90,7 +90,7 @@
             row.append($('<td>').html(data[i]['name']));
             row.append(difficulty2Str(data[i]['difficulty'], data[i]['cnt1']));
             row.append(quality2Str(data[i]['quality'], data[i]['cnt2']));
-            (function(pid) {
+            (function (pid) {
                 row.append($('<td>').html("<a>Vote</a>").click(function () {
                     window.pid = pid;
                     Vote();
@@ -122,6 +122,7 @@
     function showVotes() {
         let table = $('#vote-table tbody');
         table.empty();
+
         $.ajax({
             url: '/backend/get_votes/',
             type: 'POST',
@@ -129,30 +130,33 @@
                 pid: window.pid
             },
             success: function (data) {
-                for (let i = 0; i < data.length; i++) {
+                data.forEach(function (vote) {
                     let row = $('<tr>');
-                    row.append(difficulty2Str(data[i]['difficulty'], null));
-                    row.append(quality2Str(data[i]['quality'], null));
-                    row.append($('<td>').text(data[i]['comment']));
-                    (function(id) {
-                        row.append($('<td>').html("<a>Report</a>").click(function () {
-                            $.ajax({
-                                url: '/backend/report/',
-                                type: 'POST',
-                                data: {
-                                    id: id
-                                },
-                                success: function (data) {
-                                    alert("Report!");
-                                }
-                            });
-                        }));
-                    })(data[i]['id'])
+                    row.append(difficulty2Str(vote['difficulty'], null));
+                    row.append(quality2Str(vote['quality'], null));
+                    row.append($('<td>').text(vote['comment']));
+                    addReportLink(row, vote['id']);
                     table.append(row);
-                }
+                });
             }
         });
     }
+
+    function addReportLink(row, id) {
+        row.append($('<td>').html("<a>Report</a>").click(function () {
+            $.ajax({
+                url: '/backend/report/',
+                type: 'POST',
+                data: {
+                    id: id
+                },
+                success: function () {
+                    alert("Report!");
+                }
+            });
+        }));
+    }
+
     $(document).ready(function () {
         $.ajax({
             url: '/backend/get_problems',
@@ -163,72 +167,47 @@
             }
         });
 
+        function sortData(sortBy) {
+            try {
+                data.sort(function (a, b) {
+                    if (a[sortBy] == null && b[sortBy] == null) {
+                        return 0;
+                    }
+                    if (a[sortBy] == null) {
+                        return 1;
+                    }
+                    if (b[sortBy] == null) {
+                        return -1;
+                    }
+                    return a[sortBy] > b[sortBy] ? -1 : 1;
+                });
+                showTable();
+            } catch (error) {
+                console.error("Sorting error: ", error);
+            }
+        }
+
         $('#contest-header').click(function () {
-            $('#contest-header').text('Contest ▾')
-            $('#difficulty-header').text('Difficulty ▴')
-            $('#quality-header').text('Quality ▴')
-            data.sort(function (a, b) {
-                if (a['contest'] > b['contest']) {
-                    return -1;
-                } else if (a['contest'] < b['contest']) {
-                    return 1;
-                } else {
-                    return 0;
-                }
-            });
-            showTable();
+            $('#contest-header').text('Contest ▾');
+            $('#difficulty-header').text('Difficulty ▴');
+            $('#quality-header').text('Quality ▴');
+            sortData('contest');
         });
 
         $('#difficulty-header').click(function () {
-            $('#contest-header').text('Contest ▴')
-            $('#difficulty-header').text('Difficulty ▾')
-            $('#quality-header').text('Quality ▴')
-            data.sort(function (a, b) {
-                if (a['difficulty'] == null && b['difficulty'] == null) {
-                    return 0;
-                }
-                if (a['difficulty'] == null) {
-                    return 1;
-                }
-                if (b['difficulty'] == null) {
-                    return -1
-                }
-                if (a['difficulty'] > b['difficulty']) {
-                    return -1;
-                } else if (a['difficulty'] < b['difficulty']) {
-                    return 1;
-                } else {
-                    return 0;
-                }
-            });
-            showTable();
+            $('#contest-header').text('Contest ▴');
+            $('#difficulty-header').text('Difficulty ▾');
+            $('#quality-header').text('Quality ▴');
+            sortData('difficulty');
         });
 
         $('#quality-header').click(function () {
-            $('#contest-header').text('Contest ▴')
-            $('#difficulty-header').text('Difficulty ▴')
-            $('#quality-header').text('Quality ▾')
-            data.sort(function (a, b) {
-                if (a['quality'] == null && b['quality'] == null) {
-                    return 0;
-                }
-                if (a['quality'] == null) {
-                    return 1;
-                }
-                if (b['quality'] == null) {
-                    return -1
-                }
-                if (a['quality'] > b['quality']) {
-                    return -1;
-                } else if (a['quality'] < b['quality']) {
-                    return 1;
-                } else {
-                    return 0;
-                }
-            });
-            showTable();
+            $('#contest-header').text('Contest ▴');
+            $('#difficulty-header').text('Difficulty ▴');
+            $('#quality-header').text('Quality ▾');
+            sortData('quality');
         });
-
+        
         $('#use-median').click(function () {
             for (let i = 0; i < data.length; i++) {
                 [data[i]['difficulty'], data[i]['difficulty2']] = [data[i]['difficulty2'], data[i]['difficulty']];
