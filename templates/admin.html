@@ -1,176 +1,148 @@
-<!DOCTYPE html>
-<html>
+{% extends "base.html" %}
 
-<head>
-    <meta charset="utf-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
-    <title>{{ title }}</title>
+{% block title %}Admin{% endblock %}
 
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='semantic/semantic.min.css') }}">
-    <script type="text/javascript" src="{{ url_for('static', filename='jquery/jquery.min.js') }}"></script>
-    <script type="text/javascript" src="{{ url_for('static', filename='semantic/semantic.min.js') }}"></script>
+{% block content %}
+<div class="ui container">
+    <div class="ui attached message" style="margin-top: 20px;">
+        <div class="header">
+            Permission settings
+        </div>
+    </div>
+    <form class="ui form attached fluid segment" method="post" action="/admin/edit_permissions/">
+        <div class="field">
+            <label>Username</label>
+            <input placeholder="Username" type="text" name="username">
+        </div>
+        <div class="field">
+            <label>Admin(1 for admin, 0 for normal user)</label>
+            <input placeholder="Admin" type="number" name="admin" value="1">
+        </div>
+        <button type="submit" class="ui blue submit button">Submit</button>
+    </form>
+
+    <div class="ui attached message" style="margin-top: 20px;">
+        <div class="header">
+            Add Problem
+        </div>
+    </div>
+    <form class="ui form attached fluid segment" method="post" action="/admin/add_problem/">
+        <div class="field">
+            <label>Contest</label>
+            <input placeholder="Contest" type="text" name="contest">
+        </div>
+        <div class="field">
+            <label>Name</label>
+            <input placeholder="Name" type="text" name="name">
+        </div>
+        <div class="field">
+            <label>Extra Info(JSON)</label>
+            <input placeholder="Extra Info" type="text" name="info"
+                value="{&quot;links&quot;: &quot;https://codeforces.com/contest/2024/problem/A&quot;}">
+        </div>
+        <button type="submit" class="ui blue submit button">Submit</button>
+    </form>
+    <div class="ui bottom attached warning message">
+        Extra Info Must have a links key with the problem link. For example:
+        <pre>
+{"links": "https://codeforces.com/contest/2024/problem/A"}
+</pre>
+    </div>
+
+    <div class="ui attached message" style="margin-top: 20px;">
+        <div class="header">
+            Update Problem
+        </div>
+    </div>
+    <form class="ui form attached fluid segment" method="post" action="/admin/update_problem/">
+        <div class="field">
+            <label>Pid</label>
+            <input placeholder="Pid" type="number" name="pid">
+        </div>
+        <div class="field">
+            <label>Contest</label>
+            <input placeholder="Contest" type="text" name="contest">
+        </div>
+        <div class="field">
+            <label>Name</label>
+            <input placeholder="Name" type="text" name="name">
+        </div>
+        <div class="field">
+            <label>Extra Info(JSON)</label>
+            <input placeholder="Extra Info" type="text" name="info"
+                value="{&quot;links&quot;: &quot;https://codeforces.com/contest/2024/problem/A&quot;}">
+        </div>
+        <button type="submit" class="ui blue submit button">Submit</button>
+    </form>
+    <div class="ui bottom attached warning message">
+        Extra Info Must have a links key with the problem link. For example:
+        <pre>
+{"links": "https://codeforces.com/contest/2024/problem/A"}
+</pre>
+    </div>
+
+    <div class="ui attached message" style="margin-top: 20px;">
+        <div class="header">
+            Delete Problem
+        </div>
+    </div>
+    <form class="ui form attached fluid segment" method="post" action="/admin/delete_problem/">
+        <div class="field">
+            <label>Pid</label>
+            <input placeholder="Pid" type="number" name="pid">
+        </div>
+        <button type="submit" class="ui blue submit button">Submit</button>
+    </form>
+    <div class="ui bottom attached error message">
+        Be careful when deleting problems, it will delete all the ratings to that problem.
+    </div>
+
+    <div class="ui attached message" style="margin-top: 20px;">
+        <div class="header">
+            Rating Report
+        </div>
+    </div>
+    <table class="ui left aligned table" id="report-table">
+        <thead>
+            <th>Difficulty</th>
+            <th>Quality</th>
+            <th>Comments</th>
+            <th>Delete</th>
+            <th>Keep</th>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
 
     <script>
         $(document).ready(function () {
-            $(`.menu a[href="${location.pathname}"]`).addClass('active');
+            $.ajax({
+                url: '/admin/get_reports/',
+                type: 'POST',
+                success: function(data) {
+                    var table = $('#report-table tbody');
+                    for (var i = 0; i < data.length; i++) {
+                        var row = $('<tr>');
+                        row.append($('<td>').text(data[i]['difficulty']));
+                        row.append($('<td>').text(data[i]['quality']));
+                        row.append($('<td>').text(data[i]['comment']));
+                        (function(id, row) {
+                            row.append($('<td>').append($('<a>').text('Delete').click(function() {
+                                $.post('/admin/update_report/', {id: id, delete: 1}, function() {
+                                    row.remove();
+                                });
+                            })));
+                            row.append($('<td>').append($('<a>').text('Keep').click(function() {
+                                $.post('/admin/update_report/', {id: id, delete: 0}, function() {
+                                    row.remove();
+                                });
+                            })));
+                        })(data[i]['id'], row)
+                        table.append(row);
+                    }
+                }
+            });
         });
     </script>
-</head>
-
-<body>
-    <div class="ui menu">
-        <div class="header item">{{title}}</div>
-        <a class="item" href="/">Problems</a>
-        <a class="item" href="/legal/">Legal</a>
-        {% if is_admin == True %}<a class="item" href="/admin/">Admin</a>{% endif %}
-        <div class="right menu">
-            {% if logged_in == False %}<a class="item" href="/login/">Login</a>{% endif %}
-            {% if logged_in == True %}<a class="item" href="/logout/">Logout</a>{% endif %}
-        </div>
-    </div>
-    <div class="ui container">
-        <div class="ui attached message" style="margin-top: 20px;">
-            <div class="header">
-                Permission settings
-            </div>
-        </div>
-        <form class="ui form attached fluid segment" method="post" action="/admin/edit_permissions/">
-            <div class="field">
-                <label>Username</label>
-                <input placeholder="Username" type="text" name="username">
-            </div>
-            <div class="field">
-                <label>Admin(1 for admin, 0 for normal user)</label>
-                <input placeholder="Admin" type="number" name="admin" value="1">
-            </div>
-            <button type="submit" class="ui blue submit button">Submit</button>
-        </form>
-
-        <div class="ui attached message" style="margin-top: 20px;">
-            <div class="header">
-                Add Problem
-            </div>
-        </div>
-        <form class="ui form attached fluid segment" method="post" action="/admin/add_problem/">
-            <div class="field">
-                <label>Contest</label>
-                <input placeholder="Contest" type="text" name="contest">
-            </div>
-            <div class="field">
-                <label>Name</label>
-                <input placeholder="Name" type="text" name="name">
-            </div>
-            <div class="field">
-                <label>Extra Info(JSON)</label>
-                <input placeholder="Extra Info" type="text" name="info"
-                    value="{&quot;links&quot;: &quot;https://codeforces.com/contest/2024/problem/A&quot;}">
-            </div>
-            <button type="submit" class="ui blue submit button">Submit</button>
-        </form>
-        <div class="ui bottom attached warning message">
-            Extra Info Must have a links key with the problem link. For example:
-            <pre>
-{"links": "https://codeforces.com/contest/2024/problem/A"}
-</pre>
-        </div>
-
-        <div class="ui attached message" style="margin-top: 20px;">
-            <div class="header">
-                Update Problem
-            </div>
-        </div>
-        <form class="ui form attached fluid segment" method="post" action="/admin/update_problem/">
-            <div class="field">
-                <label>Pid</label>
-                <input placeholder="Pid" type="number" name="pid">
-            </div>
-            <div class="field">
-                <label>Contest</label>
-                <input placeholder="Contest" type="text" name="contest">
-            </div>
-            <div class="field">
-                <label>Name</label>
-                <input placeholder="Name" type="text" name="name">
-            </div>
-            <div class="field">
-                <label>Extra Info(JSON)</label>
-                <input placeholder="Extra Info" type="text" name="info"
-                    value="{&quot;links&quot;: &quot;https://codeforces.com/contest/2024/problem/A&quot;}">
-            </div>
-            <button type="submit" class="ui blue submit button">Submit</button>
-        </form>
-        <div class="ui bottom attached warning message">
-            Extra Info Must have a links key with the problem link. For example:
-            <pre>
-{"links": "https://codeforces.com/contest/2024/problem/A"}
-</pre>
-        </div>
-
-        <div class="ui attached message" style="margin-top: 20px;">
-            <div class="header">
-                Delete Problem
-            </div>
-        </div>
-        <form class="ui form attached fluid segment" method="post" action="/admin/delete_problem/">
-            <div class="field">
-                <label>Pid</label>
-                <input placeholder="Pid" type="number" name="pid">
-            </div>
-            <button type="submit" class="ui blue submit button">Submit</button>
-        </form>
-        <div class="ui bottom attached error message">
-            Be careful when deleting problems, it will delete all the ratings to that problem.
-        </div>
-
-        <div class="ui attached message" style="margin-top: 20px;">
-            <div class="header">
-                Rating Report
-            </div>
-        </div>
-        <table class="ui left aligned table" id="report-table">
-            <thead>
-                <th>Difficulty</th>
-                <th>Quality</th>
-                <th>Comments</th>
-                <th>Delete</th>
-                <th>Keep</th>
-            </thead>
-            <tbody>
-            </tbody>
-        </table>
-
-        <script>
-            $(document).ready(function () {
-                $.ajax({
-                    url: '/admin/get_reports/',
-                    type: 'POST',
-                    success: function(data) {
-                        var table = $('#report-table tbody');
-                        for (var i = 0; i < data.length; i++) {
-                            var row = $('<tr>');
-                            row.append($('<td>').text(data[i]['difficulty']));
-                            row.append($('<td>').text(data[i]['quality']));
-                            row.append($('<td>').text(data[i]['comment']));
-                            (function(id, row) {
-                                row.append($('<td>').append($('<a>').text('Delete').click(function() {
-                                    $.post('/admin/update_report/', {id: id, delete: 1}, function() {
-                                        row.remove();
-                                    });
-                                })));
-                                row.append($('<td>').append($('<a>').text('Keep').click(function() {
-                                    $.post('/admin/update_report/', {id: id, delete: 0}, function() {
-                                        row.remove();
-                                    });
-                                })));
-                            })(data[i]['id'], row)
-                            table.append(row);
-                        }
-                    }
-                });
-            });
-        </script>
-    </div>
-</body>
-
-</html>
+</div>
+{% endblock %}

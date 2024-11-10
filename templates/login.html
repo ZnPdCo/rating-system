@@ -1,78 +1,50 @@
-<!DOCTYPE html>
-<html>
+{% extends "base.html" %}
 
-<head>
-    <meta charset="utf-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
-    <title>{{ title }}</title>
+{% block title %}Login{% endblock %}
 
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='semantic/semantic.min.css') }}">
-    <script type="text/javascript" src="{{ url_for('static', filename='jquery/jquery.min.js') }}"></script>
-    <script type="text/javascript" src="{{ url_for('static', filename='semantic/semantic.min.js') }}"></script>
-
-    <script>
-        $(document).ready(function () {
-            $(`.menu a[href="${location.pathname}"]`).addClass('active');
-        });
-    </script>
-</head>
-
-<body>
-    <div class="ui menu">
-        <div class="header item">{{title}}</div>
-        <a class="item" href="/">Problems</a>
-        <a class="item" href="/legal/">Legal</a>
-        {% if is_admin == True %}<a class="item" href="/admin/">Admin</a>{% endif %}
-        <div class="right menu">
-            {% if logged_in == False %}<a class="item" href="/login/">Login</a>{% endif %}
-            {% if logged_in == True %}<a class="item" href="/logout/">Logout</a>{% endif %}
-        </div>
+{% block content %}
+<div class="ui container">
+    <div class="ui attached error message" style="display: none;" id="error1">
+        Password or username is incorrect. Please try again.
     </div>
-    <div class="ui container">
-        <div class="ui attached error message" style="display: none;" id="error1">
-            Password or username is incorrect. Please try again.
-        </div>
-        <div class="ui attached error message" style="display: none;" id="error2">
-            Please set your username to the one in XXOJ and add "Rating-System-verify" at the beginning of the Description (no prefix is required be added). We will verify this to ensure that it is your unique account. 
-        </div>
-        <div class="ui attached error message" style="display: none;" id="error3">
-            username len in [1, 100], password len in [1, 100]
-        </div>
-        <div class="ui attached message">
-            <div class="header">
-                Welcome to {{title}}
-            </div>
-            <p>Fill out the form to login.</p>
-        </div>
-        <form class="ui form attached fluid segment" method="post">
-            <div class="field">
-                <label>Username</label>
-                <input placeholder="Username" type="text" name="username">
-            </div>
-            <div class="field">
-                <label>Password</label>
-                <input placeholder="Password" type="password" name="password">
-            </div>
-            <p>Pressing the button indicates your agreement to all terms.</p>
-            <button type="submit" class="ui blue submit button">Submit</button>
-        </form>
-        <div class="ui bottom attached warning message">
-            If this is your first time registering an account, please set your username to the one in XXOJ and add "Rating-System-verify" at the beginning of the Description (no prefix is required be added). We will verify this to ensure that it is your unique account.<br>
-            If you are logging in, you do not need to perform the above operations.
-        </div>
+    <div class="ui attached error message" style="display: none;" id="error2">
+        Please set your username to the one in XXOJ and add "Rating-System-verify" at the beginning of the Description (no prefix is required be added). We will verify this to ensure that it is your unique account. 
     </div>
-    <script>
-        $(document).ready(function () {
-            var urlParams = new URLSearchParams(window.location.search);
-            if(urlParams.get('error') == 1)
-                $('#error1').show();
-            else if(urlParams.get('error') == 2)
-                $('#error2').show();
-            else if(urlParams.get('error') == 3)
-                $('#error3').show();
-        });
-    </script>
-</body>
-
-</html>
+    <div class="ui attached error message" style="display: none;" id="error3">
+        username len in [1, 100], password len in [1, 100]
+    </div>
+    <div class="ui attached message">
+        <div class="header">
+            Welcome to {{title}}
+        </div>
+        <p>Fill out the form to login.</p>
+    </div>
+    <form class="ui form attached fluid segment" method="post">
+        <div class="field">
+            <label>Username</label>
+            <input placeholder="Username" type="text" name="username">
+        </div>
+        <div class="field">
+            <label>Password</label>
+            <input placeholder="Password" type="password" name="password">
+        </div>
+        <p>Pressing the button indicates your agreement to all terms.</p>
+        <button type="submit" class="ui blue submit button">Submit</button>
+    </form>
+    <div class="ui bottom attached warning message">
+        If this is your first time registering an account, please set your username to the one in XXOJ and add "Rating-System-verify" at the beginning of the Description (no prefix is required be added). We will verify this to ensure that it is your unique account.<br>
+        If you are logging in, you do not need to perform the above operations.
+    </div>
+</div>
+<script>
+    $(document).ready(function () {
+        var urlParams = new URLSearchParams(window.location.search);
+        if(urlParams.get('error') == 1)
+            $('#error1').show();
+        else if(urlParams.get('error') == 2)
+            $('#error2').show();
+        else if(urlParams.get('error') == 3)
+            $('#error3').show();
+    });
+</script>
+{% endblock %}
