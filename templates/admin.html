@@ -121,28 +121,29 @@
                 type: 'POST',
                 success: function(data) {
                     var table = $('#report-table tbody');
-                    for (var i = 0; i < data.length; i++) {
+                    data.forEach(function(report) {
                         var row = $('<tr>');
-                        row.append($('<td>').text(data[i]['difficulty']));
-                        row.append($('<td>').text(data[i]['quality']));
-                        row.append($('<td>').text(data[i]['comment']));
-                        (function(id, row) {
-                            row.append($('<td>').append($('<a>').text('Delete').click(function() {
-                                $.post('/admin/update_report/', {id: id, delete: 1}, function() {
-                                    row.remove();
-                                });
-                            })));
-                            row.append($('<td>').append($('<a>').text('Keep').click(function() {
-                                $.post('/admin/update_report/', {id: id, delete: 0}, function() {
-                                    row.remove();
-                                });
-                            })));
-                        })(data[i]['id'], row)
+                        row.append($('<td>').text(report['difficulty']));
+                        row.append($('<td>').text(report['quality']));
+                        row.append($('<td>').text(report['comment']));
+                        addUpdateLinks(row, report['id']);
                         table.append(row);
-                    }
+                    });
                 }
             });
         });
+        function addUpdateLinks(row, id) {
+            row.append($('<td>').append($('<a>').text('Delete').click(function() {
+                $.post('/admin/update_report/', {id: id, delete: 1}, function() {
+                    row.remove();
+                });
+            })));
+            row.append($('<td>').append($('<a>').text('Keep').click(function() {
+                $.post('/admin/update_report/', {id: id, delete: 0}, function() {
+                    row.remove();
+                });
+            })));
+        }
     </script>
 </div>
 {% endblock %}
