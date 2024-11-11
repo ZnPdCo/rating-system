@@ -8,19 +8,25 @@ You can add questions in the system to rate your algorithm competition questions
 
 ![](screenshots.png)
 
-## Installation
+## Development
 
 Please install Python 3.10 or higher and run the following command to install the required packages:
 
 ```
+npm install
 pip install -r requirements.txt
 ```
-
-## Development
 
 Run:
 
 ```
 flask run
 ```
+
+Format:
+
+```
+npm run format
+```
+
 

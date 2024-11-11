@@ -10,14 +10,20 @@ from utils import check_login, check_admin, get_username, random_string
 
 auth_bp = Blueprint('auth', __name__)
 
+
 @auth_bp.route('/login/', methods=['GET', 'POST'])
 def login():
     username = request.form.get("username")
     password = request.form.get("password")
     if username is None and password is None:
-        return render_template('login.html', title=current_app.config['TITLE'], logged_in=check_login(request.cookies.get('id')), is_admin=check_admin(request.cookies.get('id')))
+        return render_template('login.html',
+                               title=current_app.config['TITLE'],
+                               logged_in=check_login(
+                                   request.cookies.get('id')),
+                               is_admin=check_admin(request.cookies.get('id')))
     else:
-        if len(username) == 0 or len(username) > 100 or len(password) == 0 or len(password) > 100:
+        if len(username) == 0 or len(username) > 100 or len(
+                password) == 0 or len(password) > 100:
             return "<script>location.search='?error=3';</script>"
 
         # check user exist
@@ -29,14 +35,18 @@ def login():
             if False:
                 return "<script>location.search='?error=2';</script>"
             # register user
-            cursor.execute("INSERT INTO users (id, username, password) VALUES (?,?,?)", (random_string(128), username, hashlib.sha256(password.encode('utf-8')).hexdigest()))
+            cursor.execute(
+                "INSERT INTO users (id, username, password) VALUES (?,?,?)",
+                (random_string(128), username,
+                 hashlib.sha256(password.encode('utf-8')).hexdigest()))
             conn.commit()
         conn.close()
 
         # check password
         conn = connect_db()
         cursor = conn.cursor()
-        cursor.execute("SELECT id, password FROM users WHERE username=?", (username, ))
+        cursor.execute("SELECT id, password FROM users WHERE username=?",
+                       (username, ))
         user = cursor.fetchone()
         if hashlib.sha256(password.encode('utf-8')).hexdigest() != user[1]:
             return "<script>location.search='?error=1';</script>"
@@ -53,9 +63,9 @@ def login():
         conn.close()
 
         resp = make_response("<script>location.href='/';</script>")
-        resp.set_cookie('id', user[0], httponly=False, max_age=3600*24*30)
+        resp.set_cookie('id', user[0], httponly=False, max_age=3600 * 24 * 30)
         return resp
-    
+
 
 @auth_bp.route('/logout/', methods=['GET'])
 def logout():

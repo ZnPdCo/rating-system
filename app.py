@@ -19,4 +19,3 @@ app.register_blueprint(main_bp, url_prefix='/')
 app.register_blueprint(auth_bp, url_prefix='/')
 app.register_blueprint(admin_bp, url_prefix='/admin/')
 app.register_blueprint(backend_bp, url_prefix='/backend/')
-

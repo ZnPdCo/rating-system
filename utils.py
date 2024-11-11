@@ -3,6 +3,7 @@ from database import connect_db
 import string
 import random
 
+
 def check_login(id):
     conn = connect_db()
     cursor = conn.cursor()
@@ -13,6 +14,7 @@ def check_login(id):
         return False
     else:
         return True
+
 
 def check_admin(id):
     conn = connect_db()
@@ -26,6 +28,7 @@ def check_admin(id):
         return False
     else:
         return True
+
 
 def get_username(id):
     conn = connect_db()

@@ -1,5 +1,6 @@
 import sqlite3 as sl
 
+
 def connect_db():
     try:
         conn = sl.connect('rating.db', check_same_thread=False)
