@@ -5,114 +5,11 @@ import random
 import string
 import json
 import numpy as np
+from database import connect_db
+from utils import check_login, check_admin, get_username, random_string
 
 app = Flask(__name__)
 title = 'Rating System'
-
-def connect_db():
-    try:
-        conn = sl.connect('rating.db', check_same_thread=False)
-        cursor = conn.cursor()
-        cursor.execute(""" 
-CREATE TABLE IF NOT EXISTS problems (
-	pid INTEGER PRIMARY KEY AUTOINCREMENT, 
-    contest VARCHAR(2048), 
-    name VARCHAR(2048), 
-    difficulty DOUBLE DEFAULT null,
-    quality DOUBLE DEFAULT null,
-    difficulty2 DOUBLE DEFAULT null,
-    quality2 DOUBLE DEFAULT null,
-    cnt1 INTEGER DEFAULT 0,
-    cnt2 INTEGER DEFAULT 0,
-    info json
-); 
-                    """)
-        cursor.execute(""" 
-CREATE TABLE IF NOT EXISTS users (
-    id VARCHAR(2048) PRIMARY KEY,
-    username VARCHAR(2048),
-    password VARCHAR(2048),
-    admin INTEGER DEFAULT 0
-); 
-                    """)
-        cursor.execute(""" 
-CREATE TABLE IF NOT EXISTS difficulty (
-    id VARCHAR(2048) PRIMARY KEY,
-	username VARCHAR(2048), 
-    pid INTEGER, 
-    val DOUBLE
-    ); 
-                    """)
-        cursor.execute(""" 
-CREATE TABLE IF NOT EXISTS quality (
-    id VARCHAR(2048) PRIMARY KEY,
-	username VARCHAR(2048), 
-    pid INTEGER, 
-    val DOUBLE
-    ); 
-                    """)
-        cursor.execute(""" 
-CREATE TABLE IF NOT EXISTS comment (
-    id VARCHAR(2048) PRIMARY KEY,
-	username VARCHAR(2048), 
-    pid INTEGER, 
-    val VARCHAR(2048)
-    ); 
-                    """)
-        cursor.execute(""" 
-CREATE TABLE IF NOT EXISTS report (
-    id VARCHAR(2048),
-    pid INTEGER, 
-    difficulty DOUBLE,
-    quality DOUBLE,
-    comment VARCHAR(2048),
-    username VARCHAR(2048)
-    ); 
-                    """)
-        conn.commit()
-    except sl.Error as e:
-        conn = None
-    return conn
-
-def check_login(id):
-    conn = connect_db()
-    cursor = conn.cursor()
-    cursor.execute("SELECT * FROM users WHERE id=?", (id, ))
-    user = cursor.fetchone()
-    conn.close()
-    if user is None:
-        return False
-    else:
-        return True
-
-def check_admin(id):
-    conn = connect_db()
-    cursor = conn.cursor()
-    cursor.execute("SELECT admin FROM users WHERE id=?", (id, ))
-    admin = cursor.fetchone()
-    conn.close()
-    if admin is None:
-        return False
-    elif admin[0] == 0:
-        return False
-    else:
-        return True
-
-def get_username(id):
-    conn = connect_db()
-    cursor = conn.cursor()
-    cursor.execute("SELECT username FROM users WHERE id=?", (id, ))
-    username = cursor.fetchone()
-    conn.close()
-    if username is None:
-        return None
-    else:
-        return username[0]
-
-
-def random_string(length):
-    letters = string.ascii_lowercase
-    return ''.join(random.choice(letters) for i in range(length))
 
 @app.route('/', methods=['GET'])
 def index():
