@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, make_response
+from flask import Flask, render_template, request, make_response, current_app
 import sqlite3 as sl
 import hashlib
 import random
@@ -7,20 +7,23 @@ import json
 import numpy as np
 from database import connect_db
 from utils import check_login, check_admin, get_username, random_string
+from view.routes import view
 
 app = Flask(__name__)
-title = 'Rating System'
+app.config['TITLE'] = 'Rating System'
+
+app.register_blueprint(view, url_prefix='/')
 
 @app.route('/', methods=['GET'])
 def index():
-    return render_template('index.html', title=title, logged_in=check_login(request.cookies.get('id')), is_admin=check_admin(request.cookies.get('id')))
+    return render_template('index.html', title=current_app.config['TITLE'], logged_in=check_login(request.cookies.get('id')), is_admin=check_admin(request.cookies.get('id')))
 
 @app.route('/login/', methods=['GET', 'POST'])
 def login():
     username = request.form.get("username")
     password = request.form.get("password")
     if username is None and password is None:
-        return render_template('login.html', title=title, logged_in=check_login(request.cookies.get('id')), is_admin=check_admin(request.cookies.get('id')))
+        return render_template('login.html', title=current_app.config['TITLE'], logged_in=check_login(request.cookies.get('id')), is_admin=check_admin(request.cookies.get('id')))
     else:
         if len(username) == 0 or len(username) > 100 or len(password) == 0 or len(password) > 100:
             return "<script>location.search='?error=3';</script>"
@@ -61,15 +64,11 @@ def login():
         resp.set_cookie('id', user[0], httponly=False, max_age=3600*24*30)
         return resp
 
-@app.route('/legal/', methods=['GET'])
-def legal():
-    return render_template('legal.html', title=title, logged_in=check_login(request.cookies.get('id')), is_admin=check_admin(request.cookies.get('id')))
-
 @app.route('/admin/', methods=['GET'])
 def admin():
     if not check_admin(request.cookies.get('id')):
         return "<script>location.href='/';</script>"
-    return render_template('admin.html', title=title, logged_in=check_login(request.cookies.get('id')), is_admin=check_admin(request.cookies.get('id')))
+    return render_template('admin.html', title=current_app.config['TITLE'], logged_in=check_login(request.cookies.get('id')), is_admin=check_admin(request.cookies.get('id')))
 
 @app.route('/admin/edit_permissions/', methods=['POST'])
 def edit_permissions():
