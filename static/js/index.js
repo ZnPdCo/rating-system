@@ -5,7 +5,12 @@ function showTable() {
         let row = $('<tr>');
         row.append($('<td>').text(data[i]['pid']));
         row.append($('<td>').text(data[i]['contest']));
-        row.append($('<td>').html(data[i]['name']));
+        (function (data) {
+            row.append($('<td>').append($('<a>').text(data['name'])).click(function () {
+                window.details = data;
+                Details();
+            }));
+        })(data[i]);
         row.append(difficulty2Str(data[i]['difficulty'], data[i]['cnt1']));
         row.append(quality2Str(data[i]['quality'], data[i]['cnt2']));
         (function (pid) {
@@ -56,6 +61,18 @@ function showVotes() {
                 addReportLink(row, vote['id']);
                 table.append(row);
             });
+        }
+    });
+}
+function Details() {
+    $('#details').modal('show');
+    $('#details ul').empty();
+    $('#details ul').append($('<li>').text(`Contest: ${window.details['contest']}`));
+    $('#details ul').append($('<li>').text(`Name: ${window.details['name']}`));
+    $('#details ul').append($('<li>').append($('<a>').text(`Links: ${window.details['info']['links']}`).attr('href', window.details['info']['links'])));
+    Object.entries(window.details['info']).forEach(function ([key, value]) {
+        if (key!= 'links') {
+            $('#details ul').append($('<li>').text(`${key}: ${value}`));
         }
     });
 }

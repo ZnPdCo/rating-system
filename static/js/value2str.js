@@ -17,7 +17,7 @@ function difficulty2Str(difficulty, cnt) {
     } else {
         res += 'color: gray;';
     }
-    res += `font-weight: 500;" data-toggle="popover" data-content="Number of votes: ${cnt}" data-original-title="" title=""> ${difficulty2Circle(difficulty)}${(difficulty == null ? 'N/A' : Math.round(difficulty))}</td>`;
+    res += `font-weight: 500;" data-toggle="popover" ` + (cnt == null ? '' : `data-tooltip="Number of votes: ${cnt}"`) + ` data-original-title="" title=""> ${difficulty2Circle(difficulty)}${(difficulty == null ? 'N/A' : Math.round(difficulty))}</td>`;
     return res;
 }
 
@@ -82,6 +82,6 @@ function quality2Str(quality, cnt) {
             res += 'color: rgb(0, 128, 0);';
         }
     }
-    res += `font-weight: 500;" data-toggle="popover" data-content="Number of votes: ${cnt}" data-original-title="" title="">${showQuality}</td>`;
+    res += `font-weight: 500;" data-toggle="popover" ` + (cnt == null ? '' : `data-tooltip="Number of votes: ${cnt}"`) + ` data-original-title="" title="">${showQuality}</td>`;
     return res;
 }

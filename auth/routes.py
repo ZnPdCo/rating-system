@@ -8,9 +8,9 @@ import numpy as np
 from database import connect_db
 from utils import check_login, check_admin, get_username, random_string
 
-auth = Blueprint('auth', __name__)
+auth_bp = Blueprint('auth', __name__)
 
-@auth.route('/login/', methods=['GET', 'POST'])
+@auth_bp.route('/login/', methods=['GET', 'POST'])
 def login():
     username = request.form.get("username")
     password = request.form.get("password")
@@ -57,7 +57,7 @@ def login():
         return resp
     
 
-@auth.route('/logout/', methods=['GET'])
+@auth_bp.route('/logout/', methods=['GET'])
 def logout():
     resp = make_response("<script>location.href='/';</script>")
     resp.set_cookie('id', '', expires=0)
