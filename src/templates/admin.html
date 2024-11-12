@@ -1,5 +1,5 @@
-{% extends "base.html" %} {% block title %}{{text.admin}}{% endblock %} {% block content
-%}
+{% extends "base.html" %} {% block title %}{{text.admin}}{% endblock %} {% block
+content %}
 <div class="ui container">
   <div class="ui attached message" style="margin-top: 20px">
     <div class="header">{{text.permission_settings}}</div>
@@ -15,7 +15,12 @@
     </div>
     <div class="field">
       <label>{{text.admin}}(1 for admin, 0 for normal user)</label>
-      <input placeholder="{{text.admin}}" type="number" name="admin" value="1" />
+      <input
+        placeholder="{{text.admin}}"
+        type="number"
+        name="admin"
+        value="1"
+      />
     </div>
     <button type="submit" class="ui blue submit button">{{text.submit}}</button>
   </form>

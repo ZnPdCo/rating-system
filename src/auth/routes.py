@@ -5,7 +5,7 @@ Author: ZnPdCo
 
 import hashlib
 from urllib import parse
-from flask import render_template, request, make_response, Blueprint, redirect
+from flask import render_template, request, Blueprint, redirect
 from auth.verify import verify_account
 from database import connect_db
 from utils import random_string
@@ -113,7 +113,7 @@ def verify():
     user = cursor.fetchone()
     conn.close()
     if user is None:
-        message = 'The verification code is expired or invalid, please try again.'
+        message = "The verification code is expired or invalid, please try again."
         return redirect(f"/login/?error={parse.quote(message)}")
     username = user[0]
     password = user[1]
@@ -124,7 +124,7 @@ def verify():
             code=code,
         )
     if not verify_account(username, code):
-        message = 'Your description is not start with the code, please try again.'
+        message = "Your description is not start with the code, please try again."
         return redirect(f"/verify?id={idx}&error={parse.quote(message)}")
     conn = connect_db()
     cursor = conn.cursor()
@@ -139,5 +139,5 @@ def verify():
     )
     conn.commit()
     conn.close()
-    message = 'Your account has been created successfully, please login.'
+    message = "Your account has been created successfully, please login."
     return redirect(f"/login/?success={parse.quote(message)}")
