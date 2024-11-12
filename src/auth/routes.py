@@ -4,10 +4,10 @@ Author: ZnPdCo
 """
 
 import hashlib
-from flask import render_template, request, make_response, Blueprint, current_app
-from verify import verify_account
+from flask import render_template, request, make_response, Blueprint
+from auth.verify import verify_account
 from database import connect_db
-from utils import check_login, check_admin, random_string
+from utils import random_string
 
 auth_bp = Blueprint("auth", __name__)
 
@@ -22,9 +22,6 @@ def login():
     if username is None and password is None:
         return render_template(
             "login.html",
-            title=current_app.config["TITLE"],
-            logged_in=check_login(request.cookies.get("id")),
-            is_admin=check_admin(request.cookies.get("id")),
         )
     if (
         len(username) == 0

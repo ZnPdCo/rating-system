@@ -4,9 +4,9 @@ Author: ZnPdCo
 """
 
 import json
-from flask import render_template, request, Blueprint, current_app
+from flask import render_template, request, Blueprint
 from database import connect_db
-from utils import check_login, check_admin, update_rating
+from utils import check_admin, update_rating
 
 admin_bp = Blueprint("admin", __name__)
 
@@ -20,9 +20,6 @@ def admin():
         return "<script>location.href='/';</script>"
     return render_template(
         "admin.html",
-        title=current_app.config["TITLE"],
-        logged_in=check_login(request.cookies.get("id")),
-        is_admin=check_admin(request.cookies.get("id")),
     )
 
 
