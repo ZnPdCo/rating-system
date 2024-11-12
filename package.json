@@ -3,11 +3,15 @@
   "version": "0.0.1",
   "description": "A concise, easy-to-configure, and powerful algorithm competition problems rating system. Developed with Python and Flask.",
   "scripts": {
-    "format": "npx prettier --write . && python -m black ."
+    "format": "npx prettier --write . && python -m black .",
+    "lint": "pylint ."
   },
   "author": "ZnPdCo",
   "license": "MIT",
   "devDependencies": {
+    "@eslint/js": "^9.14.0",
+    "eslint": "^9.14.0",
+    "globals": "^15.12.0",
     "prettier": "^3.3.3"
   }
 }
