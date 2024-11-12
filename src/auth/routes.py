@@ -5,6 +5,7 @@ Author: ZnPdCo
 
 import hashlib
 from flask import render_template, request, make_response, Blueprint, current_app
+from verify import verify_account
 from database import connect_db
 from utils import check_login, check_admin, random_string
 
@@ -39,7 +40,7 @@ def login():
     cursor.execute("SELECT * FROM users WHERE username=?", (username,))
     user = cursor.fetchone()
     if user is None:
-        if False:
+        if not verify_account(username):
             return "<script>location.search='?error=2';</script>"
         # register user
         cursor.execute(
