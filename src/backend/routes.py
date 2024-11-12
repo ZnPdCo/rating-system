@@ -19,7 +19,9 @@ def get_problems():
     conn = connect_db()
     cursor = conn.cursor()
     cursor.execute(
-        "SELECT pid, contest, name, difficulty, quality, difficulty2, quality2, cnt1, cnt2, info FROM problems"
+        "SELECT pid, contest, name, difficulty, \
+                quality, difficulty2, quality2, \
+                cnt1, cnt2, info FROM problems"
     )
     problems = cursor.fetchall()
     conn.close()
@@ -59,7 +61,7 @@ def vote():
 
     rating_id = random_string(128)
 
-    if difficulty == -1 or (800 <= difficulty and difficulty <= 3500):
+    if difficulty == -1 or 800 <= difficulty <= 3500:
         conn = connect_db()
         cursor = conn.cursor()
         res = cursor.execute(
@@ -79,7 +81,7 @@ def vote():
         conn.commit()
         conn.close()
 
-    if quality == -1 or (1 <= quality and quality <= 5):
+    if quality == -1 or 1 <= quality <= 5:
         conn = connect_db()
         cursor = conn.cursor()
         res = cursor.execute(
@@ -186,45 +188,45 @@ def get_votes():
     comment = cursor.fetchall()
 
     rating = {}
-    for i in range(len(difficulty)):
-        if rating.get(difficulty[i][0]) is None:
-            rating[difficulty[i][0]] = {
+    for item in difficulty:
+        if rating.get(item[0]) is None:
+            rating[item[0]] = {
                 "difficulty": None,
                 "quality": None,
                 "comment": None,
                 "id": None,
             }
-        rating[difficulty[i][0]]["difficulty"] = difficulty[i][1]
-        rating[difficulty[i][0]]["id"] = difficulty[i][2]
-    for i in range(len(quality)):
-        if rating.get(quality[i][0]) is None:
-            rating[difficulty[i][0]] = {
+        rating[item[0]]["difficulty"] = item[1]
+        rating[item[0]]["id"] = item[2]
+    for item in quality:
+        if rating.get(item[0]) is None:
+            rating[item[0]] = {
                 "difficulty": None,
                 "quality": None,
                 "comment": None,
                 "id": None,
             }
-        rating[quality[i][0]]["quality"] = quality[i][1]
-        rating[quality[i][0]]["id"] = quality[i][2]
-    for i in range(len(comment)):
-        if rating.get(comment[i][0]) is None:
-            rating[difficulty[i][0]] = {
+        rating[item[0]]["quality"] = item[1]
+        rating[item[0]]["id"] = item[2]
+    for item in comment:
+        if rating.get(item[0]) is None:
+            rating[item[0]] = {
                 "difficulty": None,
                 "quality": None,
                 "comment": None,
                 "id": None,
             }
-        rating[comment[i][0]]["comment"] = comment[i][1]
-        rating[comment[i][0]]["id"] = comment[i][2]
+        rating[item[0]]["comment"] = item[1]
+        rating[item[0]]["id"] = item[2]
 
     res = []
-    for i in rating:
+    for item in rating.values():
         res.append(
             {
-                "difficulty": rating[i]["difficulty"],
-                "quality": rating[i]["quality"],
-                "comment": rating[i]["comment"],
-                "id": rating[i]["id"],
+                "difficulty": item["difficulty"],
+                "quality": item["quality"],
+                "comment": item["comment"],
+                "id": item["id"],
             }
         )
 
