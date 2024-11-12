@@ -4,6 +4,10 @@ A concise, easy-to-configure, and powerful algorithm competition problems rating
 
 You can add problems to the system, rate your algorithm competition problems, or use other people's evaluations to filter problems.
 
+## Help
+
+Improve our translation. In `src/i18n`.
+
 ## Screenshots
 
 ![](screenshots.png)
@@ -20,6 +24,8 @@ pip install -r requirements.txt
 ## Deployment
 
 **Note:** If you wish to deploy this system, please write the `verify_account(username, code)` function within `src/auth/verify.py` yourself to implement user verification for your Online Judge. You need to make this function crawl description of `username` (or other relevant information) from the OJ and check if the description starts with the `code`. If it does, return `True`; otherwise, return `False`.
+
+Config file: `src/config.py`
 
 Start the development server by running the following command in the terminal:
 
