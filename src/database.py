@@ -84,6 +84,17 @@ CREATE TABLE IF NOT EXISTS report (
     ); 
                     """
         )
+        cursor.execute(
+            """ 
+CREATE TABLE IF NOT EXISTS verify (
+    id VARCHAR(2048),
+    username VARCHAR(2048),
+    password VARCHAR(2048),
+    code VARCHAR(2048),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    ); 
+                    """
+        )
         conn.commit()
     except sl.Error:
         conn = None

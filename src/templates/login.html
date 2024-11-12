@@ -4,11 +4,6 @@
   <div class="ui attached error message" style="display: none" id="error1">
     Password or username is incorrect. Please try again.
   </div>
-  <div class="ui attached error message" style="display: none" id="error2">
-    Please set your username to the one in XXOJ and add "Rating-System-verify"
-    at the beginning of the Description (no prefix is required be added). We
-    will verify this to ensure that it is your unique account.
-  </div>
   <div class="ui attached error message" style="display: none" id="error3">
     username len in [1, 100], password len in [1, 100]
   </div>
@@ -29,18 +24,13 @@
     <button type="submit" class="ui blue submit button">Submit</button>
   </form>
   <div class="ui bottom attached warning message">
-    If this is your first time registering an account, please set your username
-    to the one in XXOJ and add "Rating-System-verify" at the beginning of the
-    Description (no prefix is required be added). We will verify this to ensure
-    that it is your unique account.<br />
-    If you are logging in, you do not need to perform the above operations.
+    If you haven't registered an account yet, we will automatically create one for you.
   </div>
 </div>
 <script>
   $(document).ready(function () {
     var urlParams = new URLSearchParams(window.location.search);
     if (urlParams.get('error') == 1) $('#error1').show();
-    else if (urlParams.get('error') == 2) $('#error2').show();
     else if (urlParams.get('error') == 3) $('#error3').show();
   });
 </script>
