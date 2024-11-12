@@ -2,5 +2,4 @@ numpy
 flask
 black
 pylint
-urllib
 pysqlite3
