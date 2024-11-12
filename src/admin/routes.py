@@ -4,7 +4,7 @@ Author: ZnPdCo
 """
 
 import json
-from flask import render_template, request, Blueprint
+from flask import render_template, request, Blueprint, redirect
 from database import connect_db
 from utils import check_admin, update_rating
 
@@ -17,7 +17,7 @@ def admin():
     Admin page
     """
     if not check_admin(request.cookies.get("id")):
-        return "<script>location.href='/';</script>"
+        return redirect("/")
     return render_template(
         "admin.html",
     )
@@ -29,7 +29,7 @@ def edit_permissions():
     Edit user permissions
     """
     if not check_admin(request.cookies.get("id")):
-        return "<script>location.href='/';</script>"
+        return redirect("/")
     conn = connect_db()
     cursor = conn.cursor()
     cursor.execute(
@@ -38,7 +38,7 @@ def edit_permissions():
     )
     conn.commit()
     conn.close()
-    return "<script>location.href='/admin/';</script>"
+    return redirect("/admin/")
 
 
 @admin_bp.route("/add_problem/", methods=["POST"])
@@ -47,7 +47,7 @@ def add_problem():
     Add a problem
     """
     if not check_admin(request.cookies.get("id")):
-        return "<script>location.href='/';</script>"
+        return redirect("/")
     conn = connect_db()
     cursor = conn.cursor()
     cursor.execute(
@@ -60,7 +60,7 @@ def add_problem():
     )
     conn.commit()
     conn.close()
-    return "<script>location.href='/admin/';</script>"
+    return redirect("/admin/")
 
 
 @admin_bp.route("/update_problem/", methods=["POST"])
@@ -69,7 +69,7 @@ def update_problem():
     Update a problem
     """
     if not check_admin(request.cookies.get("id")):
-        return "<script>location.href='/';</script>"
+        return redirect("/")
     conn = connect_db()
     cursor = conn.cursor()
     cursor.execute(
@@ -83,7 +83,7 @@ def update_problem():
     )
     conn.commit()
     conn.close()
-    return "<script>location.href='/admin/';</script>"
+    return redirect("/admin/")
 
 
 @admin_bp.route("/delete_problem/", methods=["POST"])
@@ -92,13 +92,13 @@ def delete_problem():
     Delete a problem
     """
     if not check_admin(request.cookies.get("id")):
-        return "<script>location.href='/';</script>"
+        return redirect("/")
     conn = connect_db()
     cursor = conn.cursor()
     cursor.execute("DELETE FROM problems WHERE pid=?", (request.form.get("pid"),))
     conn.commit()
     conn.close()
-    return "<script>location.href='/admin/';</script>"
+    return redirect("/admin/")
 
 
 @admin_bp.route("/get_reports/", methods=["POST"])
@@ -107,7 +107,7 @@ def get_reports():
     Get all reports
     """
     if not check_admin(request.cookies.get("id")):
-        return "<script>location.href='/';</script>"
+        return redirect("/")
     conn = connect_db()
     cursor = conn.cursor()
     cursor.execute("SELECT id, pid, difficulty, quality, comment, username FROM report")
@@ -134,7 +134,7 @@ def update_report():
     Update a report
     """
     if not check_admin(request.cookies.get("id")):
-        return "<script>location.href='/';</script>"
+        return redirect("/")
     conn = connect_db()
     cursor = conn.cursor()
     cursor.execute("SELECT pid FROM report WHERE id=?", (request.form.get("id"),))

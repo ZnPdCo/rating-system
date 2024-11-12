@@ -1,8 +1,8 @@
-{% extends "base.html" %} {% block title %}Admin{% endblock %} {% block content
+{% extends "base.html" %} {% block title %}{{text.admin}}{% endblock %} {% block content
 %}
 <div class="ui container">
   <div class="ui attached message" style="margin-top: 20px">
-    <div class="header">Permission settings</div>
+    <div class="header">{{text.permission_settings}}</div>
   </div>
   <form
     class="ui form attached fluid segment"
@@ -10,18 +10,18 @@
     action="/admin/edit_permissions/"
   >
     <div class="field">
-      <label>Username</label>
-      <input placeholder="Username" type="text" name="username" />
+      <label>{{text.username}}</label>
+      <input placeholder="{{text.username}}" type="text" name="username" />
     </div>
     <div class="field">
-      <label>Admin(1 for admin, 0 for normal user)</label>
-      <input placeholder="Admin" type="number" name="admin" value="1" />
+      <label>{{text.admin}}(1 for admin, 0 for normal user)</label>
+      <input placeholder="{{text.admin}}" type="number" name="admin" value="1" />
     </div>
-    <button type="submit" class="ui blue submit button">Submit</button>
+    <button type="submit" class="ui blue submit button">{{text.submit}}</button>
   </form>
 
   <div class="ui attached message" style="margin-top: 20px">
-    <div class="header">Add Problem</div>
+    <div class="header">{{text.add_problem}}</div>
   </div>
   <form
     class="ui form attached fluid segment"
@@ -29,26 +29,26 @@
     action="/admin/add_problem/"
   >
     <div class="field">
-      <label>Contest</label>
-      <input placeholder="Contest" type="text" name="contest" />
+      <label>{{text.contest}}</label>
+      <input placeholder="{{text.contest}}" type="text" name="contest" />
     </div>
     <div class="field">
-      <label>Name</label>
-      <input placeholder="Name" type="text" name="name" />
+      <label>{{text.name}}</label>
+      <input placeholder="{{text.name}}" type="text" name="name" />
     </div>
     <div class="field">
-      <label>Extra Info(JSON)</label>
+      <label>{{text.extra_info}}(JSON)</label>
       <input
-        placeholder="Extra Info"
+        placeholder="{{text.extra_info}}"
         type="text"
         name="info"
         value='{"links": "https://codeforces.com/contest/2024/problem/A"}'
       />
     </div>
-    <button type="submit" class="ui blue submit button">Submit</button>
+    <button type="submit" class="ui blue submit button">{{text.submit}}</button>
   </form>
   <div class="ui bottom attached warning message">
-    Extra Info Must have a links key with the problem link. For example:
+    {{text.extra_info_must_have_a_links_key_with_the_problem_link_for_example}}
     <pre>
 {"links": "https://codeforces.com/contest/2024/problem/A"}
 </pre
@@ -56,7 +56,7 @@
   </div>
 
   <div class="ui attached message" style="margin-top: 20px">
-    <div class="header">Update Problem</div>
+    <div class="header">{{text.update_problem}}</div>
   </div>
   <form
     class="ui form attached fluid segment"
@@ -64,30 +64,30 @@
     action="/admin/update_problem/"
   >
     <div class="field">
-      <label>Pid</label>
-      <input placeholder="Pid" type="number" name="pid" />
+      <label>{{text.pid}}</label>
+      <input placeholder="{{text.pid}}" type="number" name="pid" />
     </div>
     <div class="field">
-      <label>Contest</label>
-      <input placeholder="Contest" type="text" name="contest" />
+      <label>{{text.contest}}</label>
+      <input placeholder="{{text.contest}}" type="text" name="contest" />
     </div>
     <div class="field">
-      <label>Name</label>
-      <input placeholder="Name" type="text" name="name" />
+      <label>{{text.name}}</label>
+      <input placeholder="{{text.name}}" type="text" name="name" />
     </div>
     <div class="field">
-      <label>Extra Info(JSON)</label>
+      <label>{{text.extra_info}}(JSON)</label>
       <input
-        placeholder="Extra Info"
+        placeholder="{{text.extra_info}}"
         type="text"
         name="info"
         value='{"links": "https://codeforces.com/contest/2024/problem/A"}'
       />
     </div>
-    <button type="submit" class="ui blue submit button">Submit</button>
+    <button type="submit" class="ui blue submit button">{{text.submit}}</button>
   </form>
   <div class="ui bottom attached warning message">
-    Extra Info Must have a links key with the problem link. For example:
+    {{text.extra_info_must_have_a_links_key_with_the_problem_link_for_example}}
     <pre>
 {"links": "https://codeforces.com/contest/2024/problem/A"}
 </pre
@@ -95,7 +95,7 @@
   </div>
 
   <div class="ui attached message" style="margin-top: 20px">
-    <div class="header">Delete Problem</div>
+    <div class="header">{{text.delete_problem}}</div>
   </div>
   <form
     class="ui form attached fluid segment"
@@ -103,26 +103,25 @@
     action="/admin/delete_problem/"
   >
     <div class="field">
-      <label>Pid</label>
-      <input placeholder="Pid" type="number" name="pid" />
+      <label>{{text.pid}}</label>
+      <input placeholder="{{text.pid}}" type="number" name="pid" />
     </div>
-    <button type="submit" class="ui blue submit button">Submit</button>
+    <button type="submit" class="ui blue submit button">{{text.submit}}</button>
   </form>
   <div class="ui bottom attached error message">
-    Be careful when deleting problems, it will delete all the ratings to that
-    problem.
+    {{text.be_careful_when_deleting_problems_it_will_delete_all_the_ratings_to_that_problem}}
   </div>
 
   <div class="ui attached message" style="margin-top: 20px">
-    <div class="header">Rating Report</div>
+    <div class="header">{{text.rating_reports}}</div>
   </div>
   <table class="ui left aligned table" id="report-table">
     <thead>
-      <th>Difficulty</th>
-      <th>Quality</th>
-      <th>Comments</th>
-      <th>Delete</th>
-      <th>Keep</th>
+      <th>{{text.difficulty}}</th>
+      <th>{{text.quality}}</th>
+      <th>{{text.comment}}</th>
+      <th>{{text.delete}}</th>
+      <th>{{text.keep}}</th>
     </thead>
     <tbody></tbody>
   </table>
@@ -149,7 +148,7 @@
       row.append(
         $('<td>').append(
           $('<a>')
-            .text('Delete')
+            .text('{{text.delete}}')
             .click(function () {
               $.post(
                 '/admin/update_report/',
@@ -164,7 +163,7 @@
       row.append(
         $('<td>').append(
           $('<a>')
-            .text('Keep')
+            .text('{{text.keep}}')
             .click(function () {
               $.post(
                 '/admin/update_report/',

@@ -4,7 +4,8 @@ Author: ZnPdCo
 """
 
 import hashlib
-from flask import render_template, request, make_response, Blueprint
+from urllib import parse
+from flask import render_template, request, make_response, Blueprint, redirect
 from auth.verify import verify_account
 from database import connect_db
 from utils import random_string
@@ -29,7 +30,8 @@ def login():
         or len(password) == 0
         or len(password) > 100
     ):
-        return "<script>location.search='?error=3';</script>"
+        message = "username len in [1, 100], password len in [1, 100]"
+        return redirect(f"/login/?error={parse.quote(message)}")
 
     # check user exist
     conn = connect_db()
@@ -57,7 +59,7 @@ def login():
         )
         conn.commit()
         conn.close()
-        return "<script>location.href='/verify?id=" + idx + "';</script>"
+        return redirect(f"/verify?id={idx}")
 
     # check password
     conn = connect_db()
@@ -65,7 +67,8 @@ def login():
     cursor.execute("SELECT id, password FROM users WHERE username=?", (username,))
     user = cursor.fetchone()
     if hashlib.sha256(password.encode("utf-8")).hexdigest() != user[1]:
-        return "<script>location.search='?error=1';</script>"
+        message = "Password or username is incorrect. Please try again."
+        return redirect(f"/login/?error={parse.quote(message)}")
     conn.close()
 
     # if the first username, it is admin
@@ -78,7 +81,7 @@ def login():
         conn.commit()
     conn.close()
 
-    resp = make_response("<script>location.href='/';</script>")
+    resp = redirect("/")
     resp.set_cookie("id", user[0], httponly=False, max_age=3600 * 24 * 30)
     return resp
 
@@ -88,7 +91,7 @@ def logout():
     """
     Logout page
     """
-    resp = make_response("<script>location.href='/';</script>")
+    resp = redirect("/")
     resp.set_cookie("id", "", expires=0)
     return resp
 
@@ -100,7 +103,7 @@ def verify():
     """
     idx = request.args.get("id")
     if idx is None:
-        return "<script>location.href='/';</script>"
+        return redirect("/login/")
     conn = connect_db()
     cursor = conn.cursor()
     cursor.execute(
@@ -110,7 +113,8 @@ def verify():
     user = cursor.fetchone()
     conn.close()
     if user is None:
-        return "<script>location.href='/';</script>"
+        message = 'The verification code is expired or invalid, please try again.'
+        return redirect(f"/login/?error={parse.quote(message)}")
     username = user[0]
     password = user[1]
     code = user[2]
@@ -120,7 +124,8 @@ def verify():
             code=code,
         )
     if not verify_account(username, code):
-        return "<script>location.search='?error=1&id=" + idx + "';</script>"
+        message = 'Your description is not start with the code, please try again.'
+        return redirect(f"/verify?id={idx}&error={parse.quote(message)}")
     conn = connect_db()
     cursor = conn.cursor()
     cursor.execute("DELETE FROM verify WHERE id=?", (idx,))
@@ -134,4 +139,5 @@ def verify():
     )
     conn.commit()
     conn.close()
-    return "<script>location.href='/login/';</script>"
+    message = 'Your account has been created successfully, please login.'
+    return redirect(f"/login/?success={parse.quote(message)}")

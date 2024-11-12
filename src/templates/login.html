@@ -1,38 +1,43 @@
-{% extends "base.html" %} {% block title %}Login{% endblock %} {% block content
+{% extends "base.html" %} {% block title %}{{text.login}}{% endblock %} {% block content
 %}
 <div class="ui container">
-  <div class="ui attached error message" style="display: none" id="error1">
-    Password or username is incorrect. Please try again.
-  </div>
-  <div class="ui attached error message" style="display: none" id="error3">
-    username len in [1, 100], password len in [1, 100]
+  <div class="ui attached message" style="display: none" id="message">
+    
   </div>
   <div class="ui attached message">
-    <div class="header">Welcome to {{title}}</div>
-    <p>Fill out the form to login.</p>
+    <div class="header">{{text.welcome_to}} {{title}}</div>
+    <p>{{text.fill_out_the_form_to_login}}</p>
   </div>
   <form class="ui form attached fluid segment" method="post">
     <div class="field">
-      <label>Username</label>
+      <label>{{text.username}}</label>
       <input placeholder="Username" type="text" name="username" />
     </div>
     <div class="field">
-      <label>Password</label>
+      <label>{{text.password}}</label>
       <input placeholder="Password" type="password" name="password" />
     </div>
-    <p>Pressing the button indicates your agreement to all terms.</p>
-    <button type="submit" class="ui blue submit button">Submit</button>
+    <p>{{text.pressing_the_button_indicates_your_agreement_to_all_terms}}</p>
+    <button type="submit" class="ui blue submit button">{{text.submit}}</button>
   </form>
   <div class="ui bottom attached warning message">
-    If you haven't registered an account yet, we will automatically create one
-    for you.
+    <b>{{text.please_set_your_username_to_the_one_in}} XXOJ{{text.we_will_verify_your_identity}}</b>
+    <br>
+    {{text.if_you_have_not_registered_an_account_yet_we_will_automatically_create_one_for_you}}
   </div>
 </div>
 <script>
   $(document).ready(function () {
     var urlParams = new URLSearchParams(window.location.search);
-    if (urlParams.get('error') == 1) $('#error1').show();
-    else if (urlParams.get('error') == 3) $('#error3').show();
+    if(urlParams.has('error')){
+      $('#message').show();
+      $('#message').text(urlParams.get('error'));
+      $('#message').addClass('error');
+    } else if(urlParams.has('success')){
+      $('#message').show();
+      $('#message').text(urlParams.get('success'));
+      $('#message').addClass('success');
+    }
   });
 </script>
 {% endblock %}

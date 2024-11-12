@@ -1,5 +1,6 @@
 numpy
-pysqlite3
 flask
 black
 pylint
+urllib
+pysqlite3
