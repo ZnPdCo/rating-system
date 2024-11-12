@@ -34,6 +34,13 @@ cd src
 flask run
 ```
 
+If you want to deploy the system, you can use guncorn to run the Flask application:
+
+```
+pip install gunicorn
+gunicorn src/app:app
+```
+
 ## Development
 
 We use Prettier and Black to format the code. Run the following command to format the code:
