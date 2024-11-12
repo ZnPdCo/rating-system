@@ -1,4 +1,4 @@
-sqlite3
+pysqlite3
 flask
 black
 pylint
