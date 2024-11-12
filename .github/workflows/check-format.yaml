@@ -1,8 +1,6 @@
 name: Check Format
 
-on:
-  pull_request:
-  push:
+on: [push, pull_request]
 jobs:
   check-format:
     runs-on: ubuntu-latest
