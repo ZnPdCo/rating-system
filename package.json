@@ -1,9 +1,9 @@
 {
   "name": "rating-system",
   "version": "0.0.1",
-  "description": "A concise, easy to configure, and powerful algorithm competition question scoring system. Development with Python and Flask.",
+  "description": "A concise, easy to configure, and powerful algorithm competition problems rating system. Develop with Python and Flask.",
   "scripts": {
-    "format": "npx prettier --write . && yapf -i -r ."
+    "format": "npx prettier --write . && python -m black ."
   },
   "author": "ZnPdCo",
   "license": "MIT",

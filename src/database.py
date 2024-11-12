@@ -3,9 +3,10 @@ import sqlite3 as sl
 
 def connect_db():
     try:
-        conn = sl.connect('rating.db', check_same_thread=False)
+        conn = sl.connect("rating.db", check_same_thread=False)
         cursor = conn.cursor()
-        cursor.execute(""" 
+        cursor.execute(
+            """ 
 CREATE TABLE IF NOT EXISTS problems (
 	pid INTEGER PRIMARY KEY AUTOINCREMENT, 
     contest VARCHAR(2048), 
@@ -18,40 +19,50 @@ CREATE TABLE IF NOT EXISTS problems (
     cnt2 INTEGER DEFAULT 0,
     info json
 ); 
-                    """)
-        cursor.execute(""" 
+                    """
+        )
+        cursor.execute(
+            """ 
 CREATE TABLE IF NOT EXISTS users (
     id VARCHAR(2048) PRIMARY KEY,
     username VARCHAR(2048),
     password VARCHAR(2048),
     admin INTEGER DEFAULT 0
 ); 
-                    """)
-        cursor.execute(""" 
+                    """
+        )
+        cursor.execute(
+            """ 
 CREATE TABLE IF NOT EXISTS difficulty (
     id VARCHAR(2048) PRIMARY KEY,
 	username VARCHAR(2048), 
     pid INTEGER, 
     val DOUBLE
     ); 
-                    """)
-        cursor.execute(""" 
+                    """
+        )
+        cursor.execute(
+            """ 
 CREATE TABLE IF NOT EXISTS quality (
     id VARCHAR(2048) PRIMARY KEY,
 	username VARCHAR(2048), 
     pid INTEGER, 
     val DOUBLE
     ); 
-                    """)
-        cursor.execute(""" 
+                    """
+        )
+        cursor.execute(
+            """ 
 CREATE TABLE IF NOT EXISTS comment (
     id VARCHAR(2048) PRIMARY KEY,
 	username VARCHAR(2048), 
     pid INTEGER, 
     val VARCHAR(2048)
     ); 
-                    """)
-        cursor.execute(""" 
+                    """
+        )
+        cursor.execute(
+            """ 
 CREATE TABLE IF NOT EXISTS report (
     id VARCHAR(2048),
     pid INTEGER, 
@@ -60,7 +71,8 @@ CREATE TABLE IF NOT EXISTS report (
     comment VARCHAR(2048),
     username VARCHAR(2048)
     ); 
-                    """)
+                    """
+        )
         conn.commit()
     except sl.Error as e:
         conn = None

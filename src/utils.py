@@ -7,7 +7,7 @@ import random
 def check_login(id):
     conn = connect_db()
     cursor = conn.cursor()
-    cursor.execute("SELECT * FROM users WHERE id=?", (id, ))
+    cursor.execute("SELECT * FROM users WHERE id=?", (id,))
     user = cursor.fetchone()
     conn.close()
     if user is None:
@@ -19,7 +19,7 @@ def check_login(id):
 def check_admin(id):
     conn = connect_db()
     cursor = conn.cursor()
-    cursor.execute("SELECT admin FROM users WHERE id=?", (id, ))
+    cursor.execute("SELECT admin FROM users WHERE id=?", (id,))
     admin = cursor.fetchone()
     conn.close()
     if admin is None:
@@ -33,7 +33,7 @@ def check_admin(id):
 def get_username(id):
     conn = connect_db()
     cursor = conn.cursor()
-    cursor.execute("SELECT username FROM users WHERE id=?", (id, ))
+    cursor.execute("SELECT username FROM users WHERE id=?", (id,))
     username = cursor.fetchone()
     conn.close()
     if username is None:
@@ -44,4 +44,4 @@ def get_username(id):
 
 def random_string(length):
     letters = string.ascii_lowercase
-    return ''.join(random.choice(letters) for i in range(length))
+    return "".join(random.choice(letters) for i in range(length))
