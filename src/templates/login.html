@@ -9,19 +9,19 @@ content %}
   <form class="ui form attached fluid segment" method="post">
     <div class="field">
       <label>{{text.username}}</label>
-      <input placeholder="Username" type="text" name="username" />
+      <input placeholder="{{text.username}}" type="text" name="username" />
     </div>
     <div class="field">
       <label>{{text.password}}</label>
-      <input placeholder="Password" type="password" name="password" />
+      <input placeholder="{{text.password}}" type="password" name="password" />
     </div>
     <p>{{text.pressing_the_button_indicates_your_agreement_to_all_terms}}</p>
     <button type="submit" class="ui blue submit button">{{text.submit}}</button>
   </form>
   <div class="ui bottom attached warning message">
     <b
-      >{{text.please_set_your_username_to_the_one_in}}
-      {{oj_name}}{{text.we_will_verify_your_identity}}</b
+      >{{text.please_set_your_username_to_the_one_in}} {{oj_name}}
+      {{text.we_will_verify_your_identity}}</b
     >
     <br />
     {{text.if_you_have_not_registered_an_account_yet_we_will_automatically_create_one_for_you}}

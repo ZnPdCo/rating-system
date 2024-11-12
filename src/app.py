@@ -21,6 +21,7 @@ app.register_blueprint(backend_bp, url_prefix="/backend/")
 with open("config.json", "r", encoding="utf-8") as f:
     config = json.load(f)
 
+
 @app.context_processor
 def inject_globals():
     """
@@ -33,5 +34,5 @@ def inject_globals():
         "logged_in": check_login(request.cookies.get("id")),
         "is_admin": check_admin(request.cookies.get("id")),
         "text": text,
-        "oj_name": config["oj_name"]
+        "oj_name": config["oj_name"],
     }
