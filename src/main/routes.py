@@ -1,4 +1,9 @@
-from flask import Flask, render_template, request, make_response, Blueprint, current_app
+"""
+Filename: main/routes.py
+Author: ZnPdCo
+"""
+
+from flask import render_template, request, Blueprint, current_app
 from utils import check_login, check_admin
 
 main_bp = Blueprint("main", __name__)
@@ -6,6 +11,9 @@ main_bp = Blueprint("main", __name__)
 
 @main_bp.route("/", methods=["GET"])
 def index():
+    """
+    The problems page of the website.
+    """
     return render_template(
         "index.html",
         title=current_app.config["TITLE"],
@@ -16,6 +24,9 @@ def index():
 
 @main_bp.route("/legal/", methods=["GET"])
 def legal():
+    """
+    The legal page of the website.
+    """
     return render_template(
         "legal.html",
         title=current_app.config["TITLE"],

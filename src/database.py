@@ -1,7 +1,18 @@
+"""
+Filename: database.py
+Author: ZnPdCo
+"""
+
 import sqlite3 as sl
 
 
 def connect_db():
+    """
+    Connect to the database and create tables if they don't exist.
+
+    Returns:
+        conn: Connection object to the database.
+    """
     try:
         conn = sl.connect("rating.db", check_same_thread=False)
         cursor = conn.cursor()
@@ -74,6 +85,6 @@ CREATE TABLE IF NOT EXISTS report (
                     """
         )
         conn.commit()
-    except sl.Error as e:
+    except sl.Error:
         conn = None
     return conn

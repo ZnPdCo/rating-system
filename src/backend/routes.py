@@ -1,18 +1,21 @@
-from flask import Flask, render_template, request, make_response, Blueprint, current_app
-import sqlite3 as sl
-import hashlib
-import random
-import string
+"""
+Filename: backend/routes.py
+Author: ZnPdCo
+"""
+
 import json
-import numpy as np
+from flask import request, Blueprint
 from database import connect_db
-from utils import check_login, check_admin, get_username, random_string
+from utils import check_login, get_username, random_string, update_rating
 
 backend_bp = Blueprint("backend", __name__)
 
 
 @backend_bp.route("/get_problems/", methods=["GET"])
 def get_problems():
+    """
+    Get all problems from the database.
+    """
     conn = connect_db()
     cursor = conn.cursor()
     cursor.execute(
@@ -39,58 +42,14 @@ def get_problems():
     return json.dumps(res), 200, {"Content-Type": "application/json"}
 
 
-def update_rating(pid):
-    conn = connect_db()
-    cursor = conn.cursor()
-    cursor.execute("SELECT val FROM difficulty WHERE pid=?", (pid,))
-    res = cursor.fetchall()
-    difficulty = [item[0] for item in res]
-    cursor.execute("SELECT val FROM quality WHERE pid=?", (pid,))
-    res = cursor.fetchall()
-    quality = [item[0] for item in res]
-
-    difficulty1 = sum(difficulty) / len(difficulty) if len(difficulty) > 0 else None
-    quality1 = sum(quality) / len(quality) if len(quality) > 0 else None
-    difficulty2 = np.median(np.array(difficulty)) if len(difficulty) > 0 else None
-    quality2 = np.median(np.array(quality)) if len(quality) > 0 else None
-
-    if difficulty1 is None:
-        cursor.execute("UPDATE problems SET difficulty=null WHERE pid=?", (pid,))
-    else:
-        cursor.execute(
-            "UPDATE problems SET difficulty=? WHERE pid=?", (difficulty1, pid)
-        )
-
-    if difficulty2 is None:
-        cursor.execute("UPDATE problems SET difficulty2=null WHERE pid=?", (pid,))
-    else:
-        cursor.execute(
-            "UPDATE problems SET difficulty2=? WHERE pid=?", (difficulty2, pid)
-        )
-
-    if quality1 is None:
-        cursor.execute("UPDATE problems SET quality=null WHERE pid=?", (pid,))
-    else:
-        cursor.execute("UPDATE problems SET quality=? WHERE pid=?", (quality1, pid))
-
-    if quality2 is None:
-        cursor.execute("UPDATE problems SET quality2=null WHERE pid=?", (pid,))
-    else:
-        cursor.execute("UPDATE problems SET quality2=? WHERE pid=?", (quality2, pid))
-
-    cursor.execute(
-        "UPDATE problems SET cnt1=?, cnt2=? WHERE pid=?",
-        (len(difficulty), len(quality), pid),
-    )
-    conn.commit()
-    conn.close()
-
-
 @backend_bp.route("/vote/", methods=["POST"])
 def vote():
+    """
+    Vote for a problem.
+    """
     if not check_login(request.cookies.get("id")):
         return ""
-    if request.form.get("pid") == None:
+    if request.form.get("pid") is None:
         return ""
 
     difficulty = int(request.form.get("difficulty"))
@@ -98,7 +57,7 @@ def vote():
     comment = request.form.get("comment")
     pid = int(request.form.get("pid"))
 
-    ratingId = random_string(128)
+    rating_id = random_string(128)
 
     if difficulty == -1 or (800 <= difficulty and difficulty <= 3500):
         conn = connect_db()
@@ -115,7 +74,7 @@ def vote():
         if difficulty != -1:
             cursor.execute(
                 "INSERT INTO difficulty (username, pid, val, id) VALUES (?,?,?,?)",
-                (get_username(request.cookies.get("id")), pid, difficulty, ratingId),
+                (get_username(request.cookies.get("id")), pid, difficulty, rating_id),
             )
         conn.commit()
         conn.close()
@@ -135,7 +94,7 @@ def vote():
         if quality != -1:
             cursor.execute(
                 "INSERT INTO quality (username, pid, val, id) VALUES (?,?,?,?)",
-                (get_username(request.cookies.get("id")), pid, quality, ratingId),
+                (get_username(request.cookies.get("id")), pid, quality, rating_id),
             )
         conn.commit()
         conn.close()
@@ -155,7 +114,7 @@ def vote():
         if len(comment) != "":
             cursor.execute(
                 "INSERT INTO comment (username, pid, val, id) VALUES (?,?,?,?)",
-                (get_username(request.cookies.get("id")), pid, comment, ratingId),
+                (get_username(request.cookies.get("id")), pid, comment, rating_id),
             )
         conn.commit()
         conn.close()
@@ -167,9 +126,12 @@ def vote():
 
 @backend_bp.route("/get_vote/", methods=["POST"])
 def get_vote():
+    """
+    Get my vote for a problem.
+    """
     if not check_login(request.cookies.get("id")):
         return ""
-    if request.form.get("pid") == None:
+    if request.form.get("pid") is None:
         return ""
     pid = int(request.form.get("pid"))
     conn = connect_db()
@@ -208,7 +170,10 @@ def get_vote():
 
 @backend_bp.route("/get_votes/", methods=["POST"])
 def get_votes():
-    if request.form.get("pid") == None:
+    """
+    Get all votes for a problem.
+    """
+    if request.form.get("pid") is None:
         return ""
     pid = int(request.form.get("pid"))
     conn = connect_db()
@@ -268,9 +233,12 @@ def get_votes():
 
 @backend_bp.route("/report/", methods=["POST"])
 def report():
+    """
+    Report a rating.
+    """
     if not check_login(request.cookies.get("id")):
         return ""
-    if request.form.get("id") == None:
+    if request.form.get("id") is None:
         return ""
     username = None
     difficulty = None

@@ -1,18 +1,21 @@
-from flask import Flask, render_template, request, make_response, Blueprint, current_app
-import sqlite3 as sl
-import hashlib
-import random
-import string
+"""
+Filename: admin/routes.py
+Author: ZnPdCo
+"""
+
 import json
-import numpy as np
+from flask import render_template, request, Blueprint, current_app
 from database import connect_db
-from utils import check_login, check_admin, get_username, random_string
+from utils import check_login, check_admin, update_rating
 
 admin_bp = Blueprint("admin", __name__)
 
 
 @admin_bp.route("/", methods=["GET"])
 def admin():
+    """
+    Admin page
+    """
     if not check_admin(request.cookies.get("id")):
         return "<script>location.href='/';</script>"
     return render_template(
@@ -25,6 +28,9 @@ def admin():
 
 @admin_bp.route("/edit_permissions/", methods=["POST"])
 def edit_permissions():
+    """
+    Edit user permissions
+    """
     if not check_admin(request.cookies.get("id")):
         return "<script>location.href='/';</script>"
     conn = connect_db()
@@ -40,6 +46,9 @@ def edit_permissions():
 
 @admin_bp.route("/add_problem/", methods=["POST"])
 def add_problem():
+    """
+    Add a problem
+    """
     if not check_admin(request.cookies.get("id")):
         return "<script>location.href='/';</script>"
     conn = connect_db()
@@ -59,6 +68,9 @@ def add_problem():
 
 @admin_bp.route("/update_problem/", methods=["POST"])
 def update_problem():
+    """
+    Update a problem
+    """
     if not check_admin(request.cookies.get("id")):
         return "<script>location.href='/';</script>"
     conn = connect_db()
@@ -79,6 +91,9 @@ def update_problem():
 
 @admin_bp.route("/delete_problem/", methods=["POST"])
 def delete_problem():
+    """
+    Delete a problem
+    """
     if not check_admin(request.cookies.get("id")):
         return "<script>location.href='/';</script>"
     conn = connect_db()
@@ -91,6 +106,9 @@ def delete_problem():
 
 @admin_bp.route("/get_reports/", methods=["POST"])
 def get_reports():
+    """
+    Get all reports
+    """
     if not check_admin(request.cookies.get("id")):
         return "<script>location.href='/';</script>"
     conn = connect_db()
@@ -115,6 +133,9 @@ def get_reports():
 
 @admin_bp.route("/update_report/", methods=["POST"])
 def update_report():
+    """
+    Update a report
+    """
     if not check_admin(request.cookies.get("id")):
         return "<script>location.href='/';</script>"
     conn = connect_db()
