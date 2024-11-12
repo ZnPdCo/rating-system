@@ -5,8 +5,8 @@ Author: ZnPdCo
 
 import json
 from flask import request, Blueprint
-from database import connect_db
-from utils import check_login, get_username, random_string, update_rating
+from app.database import connect_db
+from app.utils import check_login, get_username, random_string, update_rating
 
 backend_bp = Blueprint("backend", __name__)
 

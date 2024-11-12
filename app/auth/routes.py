@@ -6,9 +6,9 @@ Author: ZnPdCo
 import hashlib
 from urllib import parse
 from flask import render_template, request, Blueprint, redirect
-from auth.verify import verify_account
-from database import connect_db
-from utils import random_string
+from app.auth.verify import verify_account
+from app.database import connect_db
+from app.utils import random_string
 
 auth_bp = Blueprint("auth", __name__)
 

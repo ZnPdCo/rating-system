@@ -6,7 +6,7 @@ Author: ZnPdCo
 import string
 import random
 import numpy as np
-from database import connect_db
+from app.database import connect_db
 
 
 def check_login(uid):

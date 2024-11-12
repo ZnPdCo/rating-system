@@ -5,8 +5,8 @@ Author: ZnPdCo
 
 import json
 from flask import render_template, request, Blueprint, redirect
-from database import connect_db
-from utils import check_admin, update_rating
+from app.database import connect_db
+from app.utils import check_admin, update_rating
 
 admin_bp = Blueprint("admin", __name__)
 

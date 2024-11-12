@@ -5,11 +5,11 @@ Author: ZnPdCo
 
 import json
 from flask import Flask, request
-from main.routes import main_bp
-from auth.routes import auth_bp
-from admin.routes import admin_bp
-from backend.routes import backend_bp
-from utils import check_login, check_admin
+from app.main.routes import main_bp
+from app.auth.routes import auth_bp
+from app.admin.routes import admin_bp
+from app.backend.routes import backend_bp
+from app.utils import check_login, check_admin
 
 app = Flask(__name__)
 
