@@ -35,7 +35,7 @@ flask run
 # flask run -h 0.0.0.0 -p 80
 ```
 
-If you want to deploy the system, you can use guncorn to run the Flask application:
+If you want to deploy the system, you can use gunicorn to run the Flask application:
 
 ```
 pip install gunicorn
