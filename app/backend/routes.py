@@ -10,6 +10,9 @@ from app.utils import check_login, get_username, random_string, update_rating
 
 backend_bp = Blueprint("backend", __name__)
 
+with open("config.json", "r", encoding="utf-8") as f:
+    config = json.load(f)
+
 
 @backend_bp.route("/get_problems/", methods=["GET"])
 def get_problems():
@@ -289,4 +292,44 @@ def report():
     conn.commit()
     conn.close()
 
+    return ""
+
+
+@backend_bp.route("/get_status/", methods=["POST"])
+def get_status():
+    """
+    Get the status of a user.
+    """
+    if not check_login(request.cookies.get("id")):
+        return "{}", 200, {"Content-Type": "application/json"}
+    username = get_username(request.cookies.get("id"))
+    conn = connect_db()
+    cursor = conn.cursor()
+    cursor.execute("SELECT status FROM users WHERE username=?", (username,))
+    res = cursor.fetchone()
+    if res is None:
+        return ""
+    status = res[0]
+    conn.close()
+    return status, 200, {"Content-Type": "application/json"}
+
+
+@backend_bp.route("/update_status/", methods=["POST"])
+def update_status():
+    """
+    Update the status of a user.
+    """
+    if not config["auto_status"]:
+        return ""
+    if not check_login(request.cookies.get("id")):
+        return ""
+    if request.values.get("status") is None:
+        return ""
+    username = get_username(request.cookies.get("id"))
+    status = request.values.get("status")
+    conn = connect_db()
+    cursor = conn.cursor()
+    cursor.execute("UPDATE users SET status=? WHERE username=?", (status, username))
+    conn.commit()
+    conn.close()
     return ""

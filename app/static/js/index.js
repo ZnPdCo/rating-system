@@ -1,28 +1,27 @@
 function showTable() {
   let table = $('#problems-table tbody');
   table.empty();
-  for (let i = 0; i < data.length; i++) {
+  for (let i = 0; i < window.data.length; i++) {
     let row = $('<tr>');
-    row.append($('<td>').text(data[i]['pid']));
-    row.append($('<td>').text(data[i]['contest']));
     (function (data) {
+      row.append($('<td>').text(data['pid']));
+      row.append($('<td>').text(data['contest']));
       row.append(
-        $('<td>')
-          .append($('<a>').text(data['name']))
-          .click(function () {
-            window.details = data;
-            Details();
-          })
+        name2Str(data['pid'], data['name'], function () {
+          window.details = data;
+          Details();
+        }).click(function (e) {
+          if ($(e.target).prop('tagName') == 'TD' && window.auto_status)
+            changeStatus(data['pid']);
+        })
       );
-    })(data[i]);
-    row.append(difficulty2Str(data[i]['difficulty'], data[i]['cnt1']));
-    row.append(quality2Str(data[i]['quality'], data[i]['cnt2']));
-    (function (pid) {
+      row.append(difficulty2Str(data['difficulty'], data['cnt1']));
+      row.append(quality2Str(data['quality'], data['cnt2']));
       row.append(
         $('<td>')
           .html('<a>Vote</a>')
           .click(function () {
-            window.pid = pid;
+            window.pid = data['pid'];
             Vote();
           })
       );
@@ -30,14 +29,29 @@ function showTable() {
         $('<td>')
           .html('<a>Show Votes</a>')
           .click(function () {
-            window.pid = pid;
+            window.pid = data['pid'];
             $('#show-votes').modal('show');
             showVotes();
           })
       );
-    })(data[i]['pid']);
+    })(data[i]);
     table.append(row);
   }
+}
+function changeStatus(pid) {
+  status_list = JSON.parse(localStorage.getItem('status'));
+  if (!status_list.hasOwnProperty(pid)) status_list[pid] = 0;
+  else if (status_list[pid] == 0) status_list[pid] = 1;
+  else if (status_list[pid] == 1) delete status_list[pid];
+  localStorage.setItem('status', JSON.stringify(status_list));
+  showTable();
+  $.ajax({
+    url: '/backend/update_status/',
+    type: 'POST',
+    data: {
+      status: JSON.stringify(status_list),
+    },
+  });
 }
 function Vote() {
   $.ajax({
@@ -118,7 +132,7 @@ function addReportLink(row, id) {
 
 function sortData(sortBy) {
   try {
-    data.sort(function (a, b) {
+    window.data.sort(function (a, b) {
       if (a[sortBy] == null && b[sortBy] == null) {
         return 0;
       }

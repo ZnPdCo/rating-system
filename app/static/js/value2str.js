@@ -1,3 +1,18 @@
+function name2Str(pid, name, func) {
+  status_list = JSON.parse(localStorage.getItem('status'));
+  content = $('<a>').text(name).click(func);
+  if (!status_list.hasOwnProperty(pid)) return $('<td>').append(content);
+  if (status_list[pid] == 0)
+    return $('<td>')
+      .css({ 'background-color': 'rgb(255, 238, 186)' })
+      .append(content);
+  if (status_list[pid] == 1)
+    return $('<td>')
+      .css({ 'background-color': 'rgb(195, 230, 203)' })
+      .append(content);
+  return $('<td>').append(content);
+}
+
 function difficulty2Str(difficulty, cnt) {
   var res = '<td style="';
   if (difficulty >= 2400) {

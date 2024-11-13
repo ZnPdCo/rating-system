@@ -34,7 +34,7 @@ block content %}
         <div class="ui label">{{text.difficulty}}(800-3500)</div>
         <input
           type="number"
-          placeholder="Difficulty"
+          placeholder="{{text.difficulty}}"
           data-tribute="true"
           id="difficulty"
         />
@@ -43,7 +43,7 @@ block content %}
         <div class="ui label">{{text.quality}}(1-5)</div>
         <input
           type="number"
-          placeholder="Quality"
+          placeholder="{{text.quality}}"
           data-tribute="true"
           id="quality"
         />
@@ -52,7 +52,7 @@ block content %}
         <div class="ui label">{{text.comment}}</div>
         <input
           type="text"
-          placeholder="Comment"
+          placeholder="{{text.comment}}"
           data-tribute="true"
           id="comment"
         />
@@ -91,13 +91,26 @@ block content %}
   </div>
 </div>
 <script>
+  window.auto_status = '{{auto_status}}' == 'True';
   $(document).ready(function () {
+    if (localStorage.getItem('status') == null) {
+      localStorage.setItem('status', JSON.stringify('{}'));
+    }
+    window.data = [];
     $.ajax({
       url: '/backend/get_problems',
       type: 'GET',
       success: function (data) {
         window.data = data;
         sortData('contest');
+        showTable();
+      },
+    });
+    $.ajax({
+      url: '/backend/get_status/',
+      type: 'POST',
+      success: function (data) {
+        localStorage.setItem('status', JSON.stringify(data));
         showTable();
       },
     });

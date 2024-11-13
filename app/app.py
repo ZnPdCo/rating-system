@@ -35,4 +35,5 @@ def inject_globals():
         "is_admin": check_admin(request.cookies.get("id")),
         "text": text,
         "oj_name": config["oj_name"],
+        "auto_status": config["auto_status"],
     }

@@ -38,7 +38,8 @@ CREATE TABLE IF NOT EXISTS users (
     id VARCHAR(2048) PRIMARY KEY,
     username VARCHAR(2048),
     password VARCHAR(2048),
-    admin INTEGER DEFAULT 0
+    admin INTEGER DEFAULT 0,
+    status json DEFAULT "{}"
 ); 
                     """
         )
