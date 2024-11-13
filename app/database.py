@@ -28,7 +28,8 @@ CREATE TABLE IF NOT EXISTS problems (
     quality2 DOUBLE DEFAULT null,
     cnt1 INTEGER DEFAULT 0,
     cnt2 INTEGER DEFAULT 0,
-    info json
+    info json,
+    OJpid VARCHAR(2048) DEFAULT ""
 ); 
                     """
         )

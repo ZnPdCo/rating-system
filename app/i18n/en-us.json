@@ -42,5 +42,6 @@
   "be_careful_when_deleting_problems_it_will_delete_all_the_ratings_to_that_problem": "Be careful when deleting problems, it will delete all the ratings to that problem.",
   "rating_reports": "Rating Reports",
   "delete": "Delete",
-  "keep": "Keep"
+  "keep": "Keep",
+  "extra_info_should_have_a_pid_key_refer_to_the_pid_on_oj_if_you_want_auto_update_status_for_example": "Extra Info should have a pid key refer to the pid on oj if you want auto update status. For example:"
 }

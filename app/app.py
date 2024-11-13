@@ -10,6 +10,7 @@ from app.auth.routes import auth_bp
 from app.admin.routes import admin_bp
 from app.backend.routes import backend_bp
 from app.utils import check_login, check_admin
+from app.config import config
 
 app = Flask(__name__)
 
@@ -17,10 +18,6 @@ app.register_blueprint(main_bp, url_prefix="/")
 app.register_blueprint(auth_bp, url_prefix="/")
 app.register_blueprint(admin_bp, url_prefix="/admin/")
 app.register_blueprint(backend_bp, url_prefix="/backend/")
-
-with open("config.json", "r", encoding="utf-8") as f:
-    config = json.load(f)
-
 
 @app.context_processor
 def inject_globals():

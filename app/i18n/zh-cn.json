@@ -42,5 +42,6 @@
   "be_careful_when_deleting_problems_it_will_delete_all_the_ratings_to_that_problem": "删除问题时请小心，这会删除所有对此问题的评价。",
   "rating_reports": "评分报告",
   "delete": "删除",
-  "keep": "保留"
+  "keep": "保留",
+  "extra_info_should_have_a_pid_key_refer_to_the_pid_on_oj_if_you_want_auto_update_status_for_example": "如果你想自动更新状态，额外信息应该有一个pid键（oj上的pid）。例如："
 }

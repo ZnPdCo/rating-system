@@ -51,8 +51,9 @@ def add_problem():
     conn = connect_db()
     cursor = conn.cursor()
     cursor.execute(
-        "INSERT INTO problems (contest, name, info) VALUES (?,?,?)",
+        "INSERT INTO problems (OJpid, contest, name, info) VALUES (?,?,?,?)",
         (
+            json.loads(request.form.get("info"))["pid"] if "pid" in json.loads(request.form.get("info")) else "",
             request.form.get("contest"),
             request.form.get("name"),
             request.form.get("info"),
@@ -73,8 +74,9 @@ def update_problem():
     conn = connect_db()
     cursor = conn.cursor()
     cursor.execute(
-        "UPDATE problems SET contest=?, name=?, info=? WHERE pid=?",
+        "UPDATE problems SET OJpid=?, contest=?, name=?, info=? WHERE pid=?",
         (
+            json.loads(request.form.get("info"))["pid"] if "pid" in json.loads(request.form.get("info")) else "",
             request.form.get("contest"),
             request.form.get("name"),
             request.form.get("info"),

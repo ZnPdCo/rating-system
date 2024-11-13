@@ -7,11 +7,10 @@ import json
 from flask import request, Blueprint
 from app.database import connect_db
 from app.utils import check_login, get_username, random_string, update_rating
+from app.custom.auto_status import auto_status
+from app.config import config
 
 backend_bp = Blueprint("backend", __name__)
-
-with open("config.json", "r", encoding="utf-8") as f:
-    config = json.load(f)
 
 
 @backend_bp.route("/get_problems/", methods=["GET"])
@@ -294,6 +293,26 @@ def report():
 
     return ""
 
+def auto_update_status(username):
+    """
+    Auto update the status of user. (convert from OJ pid to System pid)
+    """
+    oj_status = auto_status(username)
+    conn = connect_db()
+    cursor = conn.cursor()
+    cursor.execute("SELECT status FROM users WHERE username=?", (username,))
+    system_status = json.loads(cursor.fetchone()[0])
+    for oj_pid, status in oj_status.items():
+        cursor.execute("SELECT pid FROM problems WHERE ojpid=?", (oj_pid,))
+        system_pid = str(cursor.fetchone()[0])
+        if system_pid in system_status:
+            system_status[system_pid] = max(system_status[system_pid], status)
+        else:
+            system_status[system_pid] = status
+    cursor.execute("UPDATE users SET status=? WHERE username=?", (json.dumps(system_status), username))
+    conn.commit()
+    conn.close()
+
 
 @backend_bp.route("/get_status/", methods=["POST"])
 def get_status():
@@ -302,7 +321,12 @@ def get_status():
     """
     if not check_login(request.cookies.get("id")):
         return "{}", 200, {"Content-Type": "application/json"}
+    
     username = get_username(request.cookies.get("id"))
+
+    if config["auto_status"]:
+        auto_update_status(username)
+
     conn = connect_db()
     cursor = conn.cursor()
     cursor.execute("SELECT status FROM users WHERE username=?", (username,))
@@ -319,7 +343,7 @@ def update_status():
     """
     Update the status of a user.
     """
-    if not config["auto_status"]:
+    if config["auto_status"]:
         return ""
     if not check_login(request.cookies.get("id")):
         return ""

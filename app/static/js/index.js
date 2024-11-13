@@ -11,7 +11,7 @@ function showTable() {
           window.details = data;
           Details();
         }).click(function (e) {
-          if ($(e.target).prop('tagName') == 'TD' && window.auto_status)
+          if ($(e.target).prop('tagName') == 'TD' && !window.auto_status)
             changeStatus(data['pid']);
         })
       );

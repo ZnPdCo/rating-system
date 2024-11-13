@@ -6,7 +6,7 @@ Author: ZnPdCo
 import hashlib
 from urllib import parse
 from flask import render_template, request, Blueprint, redirect
-from app.auth.verify import verify_account
+from app.custom.verify import verify_account
 from app.database import connect_db
 from app.utils import random_string
 
