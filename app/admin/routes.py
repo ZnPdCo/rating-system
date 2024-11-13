@@ -53,7 +53,11 @@ def add_problem():
     cursor.execute(
         "INSERT INTO problems (OJpid, contest, name, info) VALUES (?,?,?,?)",
         (
-            json.loads(request.form.get("info"))["pid"] if "pid" in json.loads(request.form.get("info")) else "",
+            (
+                json.loads(request.form.get("info"))["pid"]
+                if "pid" in json.loads(request.form.get("info"))
+                else ""
+            ),
             request.form.get("contest"),
             request.form.get("name"),
             request.form.get("info"),
@@ -76,7 +80,11 @@ def update_problem():
     cursor.execute(
         "UPDATE problems SET OJpid=?, contest=?, name=?, info=? WHERE pid=?",
         (
-            json.loads(request.form.get("info"))["pid"] if "pid" in json.loads(request.form.get("info")) else "",
+            (
+                json.loads(request.form.get("info"))["pid"]
+                if "pid" in json.loads(request.form.get("info"))
+                else ""
+            ),
             request.form.get("contest"),
             request.form.get("name"),
             request.form.get("info"),

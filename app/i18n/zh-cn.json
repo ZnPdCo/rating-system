@@ -43,5 +43,8 @@
   "rating_reports": "评分报告",
   "delete": "删除",
   "keep": "保留",
-  "extra_info_should_have_a_pid_key_refer_to_the_pid_on_oj_if_you_want_auto_update_status_for_example": "如果你想自动更新状态，额外信息应该有一个pid键（oj上的pid）。例如："
+  "extra_info_should_have_a_pid_key_refer_to_the_pid_on_oj_if_you_want_auto_update_status_for_example": "如果你想自动更新状态，额外信息应该有一个pid键（oj上的pid）。例如：",
+  "update_password": "更新密码",
+  "old_password": "旧密码",
+  "new_password": "新密码"
 }

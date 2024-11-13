@@ -40,9 +40,12 @@
       <div class="right menu">
         {% if logged_in == False %}<a class="item" href="/login/"
           >{{text.login}}</a
-        >{% endif %} {% if logged_in == True %}<a class="item" href="/logout/"
-          >{{text.logout}}</a
-        >{% endif %}
+        >
+        {% endif %} {% if logged_in == True %}<a
+          class="item"
+          href="/update_password/"
+          >{{text.update_password}}</a
+        ><a class="item" href="/logout/">{{text.logout}}</a>{% endif %}
       </div>
     </div>
     {% block content %} {% endblock %}

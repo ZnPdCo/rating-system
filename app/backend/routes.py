@@ -293,6 +293,7 @@ def report():
 
     return ""
 
+
 def auto_update_status(username):
     """
     Auto update the status of user. (convert from OJ pid to System pid)
@@ -309,7 +310,10 @@ def auto_update_status(username):
             system_status[system_pid] = max(system_status[system_pid], status)
         else:
             system_status[system_pid] = status
-    cursor.execute("UPDATE users SET status=? WHERE username=?", (json.dumps(system_status), username))
+    cursor.execute(
+        "UPDATE users SET status=? WHERE username=?",
+        (json.dumps(system_status), username),
+    )
     conn.commit()
     conn.close()
 
@@ -321,7 +325,7 @@ def get_status():
     """
     if not check_login(request.cookies.get("id")):
         return "{}", 200, {"Content-Type": "application/json"}
-    
+
     username = get_username(request.cookies.get("id"))
 
     if config["auto_status"]:

@@ -141,3 +141,51 @@ def verify():
     conn.close()
     message = "Your account has been created successfully, please login."
     return redirect(f"/login/?success={parse.quote(message)}")
+
+
+@auth_bp.route("/update_password/", methods=["GET", "POST"])
+def update_password():
+    """
+    Update password page
+    """
+    if request.method == "GET":
+        return render_template(
+            "update_password.html",
+        )
+    idx = request.cookies.get("id")
+    if idx is None:
+        return redirect("/login/")
+    old_password = request.form.get("old_password")
+    new_password = request.form.get("new_password")
+    if (
+        len(old_password) == 0
+        or len(old_password) > 100
+        or len(new_password) == 0
+        or len(new_password) > 100
+    ):
+        message = "old_password len in [1, 100], new_password len in [1, 100]"
+        return redirect(f"/update_password/?error={parse.quote(message)}")
+    conn = connect_db()
+    cursor = conn.cursor()
+    cursor.execute("SELECT password FROM users WHERE id=?", (idx,))
+    user = cursor.fetchone()
+    conn.close()
+    if user is None:
+        return redirect("/login/")
+    if hashlib.sha256(old_password.encode("utf-8")).hexdigest() != user[0]:
+        message = "Old password is incorrect. Please try again."
+        return redirect(f"/update_password/?error={parse.quote(message)}")
+    conn = connect_db()
+    cursor = conn.cursor()
+    cursor.execute(
+        "UPDATE users SET id=?, password=? WHERE id=?",
+        (
+            random_string(128),
+            hashlib.sha256(new_password.encode("utf-8")).hexdigest(),
+            idx,
+        ),
+    )
+    conn.commit()
+    conn.close()
+    message = "Your password has been updated successfully, please login."
+    return redirect(f"/login/?success={parse.quote(message)}")
