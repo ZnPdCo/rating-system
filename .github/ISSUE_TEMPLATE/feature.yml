@@ -1,12 +1,12 @@
-name: 添加新功能
-description: 申请添加某个新功能
+name: Add new features
+description: Apply to add a new feature
 title: "[Feature] "
 labels: ["enhancement", "help wanted"]
 
 body:
   - type: markdown
     attributes:
-      value: 欢迎为 Rating System 提出新的 Issue！烦请填写以下表单：
+      value: Welcome to raise new issues for the Rating System! Please fill out the following form
   - type: textarea
     id: page
     attributes:

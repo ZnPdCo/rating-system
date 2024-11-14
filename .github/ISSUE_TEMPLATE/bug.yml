@@ -1,29 +1,28 @@
-name: 存在 Bug
-description: 指出出现的问题
+name: There is a bug
+description: Identify the issues that have arisen
 title: "[Bug] "
 labels: ["bug", "help wanted"]
 
 body:
   - type: markdown
     attributes:
-      value: 欢迎为 Rating System 提出新的 Issue！烦请填写以下表单：
+      value: Welcome to raise new issues for the Rating System! Please fill out the following form
   - type: checkboxes
     id: confirm
     attributes:
-      label: 请选择：
+      label: Please choose
       options:
-        - label: 我正在着手修复这个问题
+        - label: I am working on fixing this bug
           required: false
   - type: input
     id: page
     attributes:
-      label: 我正在访问这个页面
-      description: 建议带上链接以更好定位问题
+      label: I am currently accessing this feature
     validations:
       required: true
   - type: textarea
     id: problem
     attributes:
-      label: 我发现页面有这样的问题
+      label: I found that there is such a bug
     validations:
       required: true
