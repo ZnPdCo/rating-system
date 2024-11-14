@@ -115,7 +115,7 @@ def vote():
                 "DELETE FROM comment WHERE username=? AND pid=?",
                 (get_username(request.cookies.get("id")), pid),
             )
-        if len(comment) != "":
+        if comment != "":
             cursor.execute(
                 "INSERT INTO comment (username, pid, val, id) VALUES (?,?,?,?)",
                 (get_username(request.cookies.get("id")), pid, comment, rating_id),
