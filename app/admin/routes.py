@@ -8,7 +8,7 @@ import hashlib
 from flask import render_template, request, Blueprint, redirect
 from app.database import connect_db
 from app.utils import check_admin, update_rating
-from app.custom.auto_problem import auto_problems
+from app.custom.auto_problems import auto_problems
 from app.api import add_problem
 
 admin_bp = Blueprint("admin", __name__)

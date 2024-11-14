@@ -46,6 +46,8 @@ pip install -r requirements.txt
 
 If you want to use the auto-update feature for the problems that a user has passed or attempted, please implement the function `auto_status(username)` in the file `app/custom/auto_status.py`. This function should be able to fetch the problems that the `username` has passed/attempted.
 
+If you want to use the auto-update feature for the problems, please implement the function `auto_problem(params)` in the file `app/custom/auto_problems.py`. This function should be able to fetch the problems through the params.
+
 This function needs to return a dictionary, similar to:
 
 ```
