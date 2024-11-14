@@ -1,30 +1,32 @@
-{% extends "base.html" %} {% block title %}{{text.verify}}{% endblock %} {%
-block content %}
-<div class="ui container">
-  <div class="ui attached message" style="display: none" id="message"></div>
-  <div class="ui attached message">
-    <div class="header">
-      {{text.verify_your_account}} {{text.code}}: <b>"{{ code }}"</b>.
+{% extends "base.html" %} {% block title %}{{ text.verify }}{% endblock %}
+{% block content %}
+  <div class="ui container">
+    <div class="ui attached message" style="display: none" id="message"></div>
+    <div class="ui attached message">
+      <div class="header">
+        {{ text.verify_your_account }} {{ text.code }}: <b>"{{ code }}"</b>.
+      </div>
+      <p>
+        {{ text.please_add }} "{{ code }}"
+        {{ text.at_the_beginning_of_the_description_of_your_account_in }}
+        {{ oj_name }}
+        {{ text.no_prefix_is_required_be_added_we_will_verify_this_to_ensure_that_it_is_your_unique_account }}
+      </p>
     </div>
-    <p>
-      {{text.please_add}} "{{ code }}"
-      {{text.at_the_beginning_of_the_description_of_your_account_in}}
-      {{oj_name}}
-      {{text.no_prefix_is_required_be_added_we_will_verify_this_to_ensure_that_it_is_your_unique_account}}
-    </p>
+    <form class="ui form attached fluid segment" method="post">
+      <button type="submit" class="ui blue submit button">
+        {{ text.submit }}
+      </button>
+    </form>
   </div>
-  <form class="ui form attached fluid segment" method="post">
-    <button type="submit" class="ui blue submit button">{{text.submit}}</button>
-  </form>
-</div>
-<script>
-  $(document).ready(function () {
-    var urlParams = new URLSearchParams(window.location.search);
-    if (urlParams.has('error')) {
-      $('#message').show();
-      $('#message').text(urlParams.get('error'));
-      $('#message').addClass('error');
-    }
-  });
-</script>
+  <script>
+    $(document).ready(function () {
+      var urlParams = new URLSearchParams(window.location.search);
+      if (urlParams.has('error')) {
+        $('#message').show();
+        $('#message').text(urlParams.get('error'));
+        $('#message').addClass('error');
+      }
+    });
+  </script>
 {% endblock %}

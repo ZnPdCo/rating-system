@@ -1,284 +1,305 @@
-{% extends "base.html" %} {% block title %}{{text.admin}}{% endblock %} {% block
-content %}
-<div class="ui container">
-  <div class="ui attached message" style="margin-top: 20px">
-    <div class="header">{{text.permission_settings}}</div>
-  </div>
-  <form
-    class="ui form attached fluid segment"
-    method="post"
-    action="/admin/edit_permissions/"
-  >
-    <div class="field">
-      <label>{{text.username}}</label>
-      <input placeholder="{{text.username}}" type="text" name="username" />
+{% extends "base.html" %} {% block title %}{{ text.admin }}{% endblock %}
+{%
+  block
+  content
+%}
+  <div class="ui container">
+    <div class="ui attached message" style="margin-top: 20px">
+      <div class="header">{{ text.permission_settings }}</div>
     </div>
-    <div class="field">
-      <label>{{text.admin}}(1 for admin, 0 for normal user)</label>
-      <input
-        placeholder="{{text.admin}}"
-        type="number"
-        name="admin"
-        value="1"
-      />
+    <form
+      class="ui form attached fluid segment"
+      method="post"
+      action="/admin/edit_permissions/"
+    >
+      <div class="field">
+        <label>{{ text.username }}</label>
+        <input placeholder="{{ text.username }}" type="text" name="username" />
+      </div>
+      <div class="field">
+        <label>{{ text.admin }}(1 for admin, 0 for normal user)</label>
+        <input
+          placeholder="{{ text.admin }}"
+          type="number"
+          name="admin"
+          value="1"
+        />
+      </div>
+      <button type="submit" class="ui blue submit button">
+        {{ text.submit }}
+      </button>
+    </form>
+    <table class="ui left aligned table" id="user-table">
+      <thead>
+        <th>{{ text.username }}</th>
+        <th>{{ text.admin }}</th>
+      </thead>
+      <tbody></tbody>
+    </table>
+    <div class="ui attached message" style="margin-top: 20px">
+      <div class="header">{{ text.update_password }}</div>
     </div>
-    <button type="submit" class="ui blue submit button">{{text.submit}}</button>
-  </form>
-  <table class="ui left aligned table" id="user-table">
-    <thead>
-      <th>{{text.username}}</th>
-      <th>{{text.admin}}</th>
-    </thead>
-    <tbody></tbody>
-  </table>
-  <div class="ui attached message" style="margin-top: 20px">
-    <div class="header">{{text.update_password}}</div>
-  </div>
-  <form
-    class="ui form attached fluid segment"
-    method="post"
-    action="/admin/update_user_password/"
-  >
-    <div class="field">
-      <label>{{text.username}}</label>
-      <input placeholder="{{text.username}}" type="text" name="username" />
-    </div>
-    <div class="field">
-      <label>{{text.password}}</label>
-      <input placeholder="{{text.password}}" type="password" name="password" />
-    </div>
-    <button type="submit" class="ui blue submit button">{{text.submit}}</button>
-  </form>
+    <form
+      class="ui form attached fluid segment"
+      method="post"
+      action="/admin/update_user_password/"
+    >
+      <div class="field">
+        <label>{{ text.username }}</label>
+        <input placeholder="{{ text.username }}" type="text" name="username" />
+      </div>
+      <div class="field">
+        <label>{{ text.password }}</label>
+        <input
+          placeholder="{{ text.password }}"
+          type="password"
+          name="password"
+        />
+      </div>
+      <button type="submit" class="ui blue submit button">
+        {{ text.submit }}
+      </button>
+    </form>
 
-  <div class="ui attached message" style="margin-top: 20px">
-    <div class="header">{{text.add_problem}}</div>
-  </div>
-  <form
-    class="ui form attached fluid segment"
-    method="post"
-    action="/admin/add_problem/"
-  >
-    <div class="field">
-      <label>{{text.contest}}</label>
-      <input placeholder="{{text.contest}}" type="text" name="contest" />
+    <div class="ui attached message" style="margin-top: 20px">
+      <div class="header">{{ text.add_problem }}</div>
     </div>
-    <div class="field">
-      <label>{{text.name}}</label>
-      <input placeholder="{{text.name}}" type="text" name="name" />
-    </div>
-    <div class="field">
-      <label>{{text.extra_info}}(JSON)</label>
-      <input
-        placeholder="{{text.extra_info}}"
-        type="text"
-        name="info"
-        value='{"links": "https://codeforces.com/contest/2024/problem/A", "pid": "2024A"}'
-      />
-    </div>
-    <button type="submit" class="ui blue submit button">{{text.submit}}</button>
-  </form>
-  <div class="ui bottom attached warning message">
-    {{text.extra_info_must_have_a_links_key_with_the_problem_link_for_example}}
-    <pre>
+    <form
+      class="ui form attached fluid segment"
+      method="post"
+      action="/admin/add_problem/"
+    >
+      <div class="field">
+        <label>{{ text.contest }}</label>
+        <input placeholder="{{ text.contest }}" type="text" name="contest" />
+      </div>
+      <div class="field">
+        <label>{{ text.name }}</label>
+        <input placeholder="{{ text.name }}" type="text" name="name" />
+      </div>
+      <div class="field">
+        <label>{{ text.extra_info }}(JSON)</label>
+        <input
+          placeholder="{{ text.extra_info }}"
+          type="text"
+          name="info"
+          value='{"links": "https://codeforces.com/contest/2024/problem/A", "pid": "2024A"}'
+        />
+      </div>
+      <button type="submit" class="ui blue submit button">
+        {{ text.submit }}
+      </button>
+    </form>
+    <div class="ui bottom attached warning message">
+      {{ text.extra_info_must_have_a_links_key_with_the_problem_link_for_example }}
+      <pre>
 {"links": "https://codeforces.com/contest/2024/problem/A"}
 </pre
-    >
-    <br />
-    {{text.extra_info_should_have_a_pid_key_refer_to_the_pid_on_oj_if_you_want_auto_update_status_for_example}}
-    <pre>
+      >
+      <br />
+      {{ text.extra_info_should_have_a_pid_key_refer_to_the_pid_on_oj_if_you_want_auto_update_status_for_example }}
+      <pre>
 {"links": "https://codeforces.com/contest/2024/problem/A", "pid": "2024A"}
 </pre
-    >
-  </div>
+      >
+    </div>
 
-  <div class="ui attached message" style="margin-top: 20px">
-    <div class="header">{{text.update_problem}}</div>
-  </div>
-  <form
-    class="ui form attached fluid segment"
-    method="post"
-    action="/admin/update_problem/"
-  >
-    <div class="field">
-      <label>{{text.pid}}</label>
-      <input placeholder="{{text.pid}}" type="number" name="pid" />
+    <div class="ui attached message" style="margin-top: 20px">
+      <div class="header">{{ text.update_problem }}</div>
     </div>
-    <div class="field">
-      <label>{{text.contest}}</label>
-      <input placeholder="{{text.contest}}" type="text" name="contest" />
-    </div>
-    <div class="field">
-      <label>{{text.name}}</label>
-      <input placeholder="{{text.name}}" type="text" name="name" />
-    </div>
-    <div class="field">
-      <label>{{text.extra_info}}(JSON)</label>
-      <input
-        placeholder="{{text.extra_info}}"
-        type="text"
-        name="info"
-        value='{"links": "https://codeforces.com/contest/2024/problem/A", "pid": "2024A"}'
-      />
-    </div>
-    <button type="submit" class="ui blue submit button">{{text.submit}}</button>
-  </form>
-  <div class="ui bottom attached warning message">
-    {{text.extra_info_must_have_a_links_key_with_the_problem_link_for_example}}
-    <pre>
+    <form
+      class="ui form attached fluid segment"
+      method="post"
+      action="/admin/update_problem/"
+    >
+      <div class="field">
+        <label>{{ text.pid }}</label>
+        <input placeholder="{{ text.pid }}" type="number" name="pid" />
+      </div>
+      <div class="field">
+        <label>{{ text.contest }}</label>
+        <input placeholder="{{ text.contest }}" type="text" name="contest" />
+      </div>
+      <div class="field">
+        <label>{{ text.name }}</label>
+        <input placeholder="{{ text.name }}" type="text" name="name" />
+      </div>
+      <div class="field">
+        <label>{{ text.extra_info }}(JSON)</label>
+        <input
+          placeholder="{{ text.extra_info }}"
+          type="text"
+          name="info"
+          value='{"links": "https://codeforces.com/contest/2024/problem/A", "pid": "2024A"}'
+        />
+      </div>
+      <button type="submit" class="ui blue submit button">
+        {{ text.submit }}
+      </button>
+    </form>
+    <div class="ui bottom attached warning message">
+      {{ text.extra_info_must_have_a_links_key_with_the_problem_link_for_example }}
+      <pre>
 {"links": "https://codeforces.com/contest/2024/problem/A"}
 </pre
-    >
-    <br />
-    {{text.extra_info_should_have_a_pid_key_refer_to_the_pid_on_oj_if_you_want_auto_update_status_for_example}}
-    <pre>
+      >
+      <br />
+      {{ text.extra_info_should_have_a_pid_key_refer_to_the_pid_on_oj_if_you_want_auto_update_status_for_example }}
+      <pre>
 {"links": "https://codeforces.com/contest/2024/problem/A", "pid": "2024A"}
 </pre
+      >
+    </div>
+
+    <div class="ui attached message" style="margin-top: 20px">
+      <div class="header">{{ text.delete_problem }}</div>
+    </div>
+    <form
+      class="ui form attached fluid segment"
+      method="post"
+      action="/admin/delete_problem/"
     >
-  </div>
-
-  <div class="ui attached message" style="margin-top: 20px">
-    <div class="header">{{text.delete_problem}}</div>
-  </div>
-  <form
-    class="ui form attached fluid segment"
-    method="post"
-    action="/admin/delete_problem/"
-  >
-    <div class="field">
-      <label>{{text.pid}}</label>
-      <input placeholder="{{text.pid}}" type="number" name="pid" />
+      <div class="field">
+        <label>{{ text.pid }}</label>
+        <input placeholder="{{ text.pid }}" type="number" name="pid" />
+      </div>
+      <button type="submit" class="ui blue submit button">
+        {{ text.submit }}
+      </button>
+    </form>
+    <div class="ui bottom attached error message">
+      {{ text.be_careful_when_deleting_problems_it_will_delete_all_the_ratings_to_that_problem }}
     </div>
-    <button type="submit" class="ui blue submit button">{{text.submit}}</button>
-  </form>
-  <div class="ui bottom attached error message">
-    {{text.be_careful_when_deleting_problems_it_will_delete_all_the_ratings_to_that_problem}}
-  </div>
 
-  <div class="ui attached message" style="margin-top: 20px">
-    <div class="header">{{text.rating_reports}}</div>
-  </div>
-  <table class="ui left aligned table" id="report-table">
-    <thead>
-      <th>{{text.difficulty}}</th>
-      <th>{{text.quality}}</th>
-      <th>{{text.comment}}</th>
-      <th>{{text.delete}}</th>
-      <th>{{text.keep}}</th>
-    </thead>
-    <tbody></tbody>
-  </table>
-
-  <div class="ui attached message" style="margin-top: 20px">
-    <div class="header">{{text.auto_update_problem}}</div>
-  </div>
-  <form
-    class="ui form attached fluid segment"
-    method="post"
-    action="/admin/auto_update_problems/"
-  >
-    <div class="field">
-      <label>{{text.params}}</label>
-      <input
-        placeholder="{{text.params}}"
-        type="text"
-        name="params"
-        value="{}"
-      />
+    <div class="ui attached message" style="margin-top: 20px">
+      <div class="header">{{ text.rating_reports }}</div>
     </div>
-    <button type="submit" class="ui blue submit button">{{text.submit}}</button>
-  </form>
+    <table class="ui left aligned table" id="report-table">
+      <thead>
+        <th>{{ text.difficulty }}</th>
+        <th>{{ text.quality }}</th>
+        <th>{{ text.comment }}</th>
+        <th>{{ text.delete }}</th>
+        <th>{{ text.keep }}</th>
+      </thead>
+      <tbody></tbody>
+    </table>
 
-  <script>
-    $(document).ready(function () {
-      window.data = [];
-      $.ajax({
-        url: '/backend/get_problems',
-        type: 'GET',
-        success: function (data) {
-          window.data = data;
-        },
+    <div class="ui attached message" style="margin-top: 20px">
+      <div class="header">{{ text.auto_update_problem }}</div>
+    </div>
+    <form
+      class="ui form attached fluid segment"
+      method="post"
+      action="/admin/auto_update_problems/"
+    >
+      <div class="field">
+        <label>{{ text.params }}</label>
+        <input
+          placeholder="{{ text.params }}"
+          type="text"
+          name="params"
+          value="{}"
+        />
+      </div>
+      <button type="submit" class="ui blue submit button">
+        {{ text.submit }}
+      </button>
+    </form>
+
+    <script>
+      $(document).ready(function () {
+        window.data = [];
+        $.ajax({
+          url: '/backend/get_problems',
+          type: 'GET',
+          success: function (data) {
+            window.data = data;
+          },
+        });
+        $('form[action="/admin/update_problem/"] input[name="pid"]').focusout(
+          function () {
+            window.data.forEach(function (problem) {
+              if (
+                problem['pid'].toString() ==
+                $(
+                  'form[action="/admin/update_problem/"] input[name="pid"]'
+                ).val()
+              ) {
+                $(
+                  'form[action="/admin/update_problem/"] input[name="contest"]'
+                ).val(problem['contest']);
+                $(
+                  'form[action="/admin/update_problem/"] input[name="name"]'
+                ).val(problem['name']);
+                $(
+                  'form[action="/admin/update_problem/"] input[name="info"]'
+                ).val(JSON.stringify(problem['info']));
+              }
+            });
+          }
+        );
+        $.ajax({
+          url: '/admin/get_users/',
+          type: 'POST',
+          success: function (data) {
+            var table = $('#user-table tbody');
+            data.forEach(function (user) {
+              var row = $('<tr>');
+              row.append($('<td>').text(user['username']));
+              row.append($('<td>').text(user['admin']));
+              table.append(row);
+            });
+          },
+        });
       });
-      $('form[action="/admin/update_problem/"] input[name="pid"]').focusout(
-        function () {
-          window.data.forEach(function (problem) {
-            if (
-              problem['pid'].toString() ==
-              $('form[action="/admin/update_problem/"] input[name="pid"]').val()
-            ) {
-              $(
-                'form[action="/admin/update_problem/"] input[name="contest"]'
-              ).val(problem['contest']);
-              $('form[action="/admin/update_problem/"] input[name="name"]').val(
-                problem['name']
-              );
-              $('form[action="/admin/update_problem/"] input[name="info"]').val(
-                JSON.stringify(problem['info'])
-              );
-            }
-          });
-        }
-      );
       $.ajax({
-        url: '/admin/get_users/',
+        url: '/admin/get_reports/',
         type: 'POST',
         success: function (data) {
-          var table = $('#user-table tbody');
-          data.forEach(function (user) {
+          var table = $('#report-table tbody');
+          data.forEach(function (report) {
             var row = $('<tr>');
-            row.append($('<td>').text(user['username']));
-            row.append($('<td>').text(user['admin']));
+            row.append($('<td>').text(report['difficulty']));
+            row.append($('<td>').text(report['quality']));
+            row.append($('<td>').text(report['comment']));
+            addUpdateLinks(row, report['id']);
             table.append(row);
           });
         },
       });
-    });
-    $.ajax({
-      url: '/admin/get_reports/',
-      type: 'POST',
-      success: function (data) {
-        var table = $('#report-table tbody');
-        data.forEach(function (report) {
-          var row = $('<tr>');
-          row.append($('<td>').text(report['difficulty']));
-          row.append($('<td>').text(report['quality']));
-          row.append($('<td>').text(report['comment']));
-          addUpdateLinks(row, report['id']);
-          table.append(row);
-        });
-      },
-    });
-    function addUpdateLinks(row, id) {
-      row.append(
-        $('<td>').append(
-          $('<a>')
-            .text('{{text.delete}}')
-            .click(function () {
-              $.post(
-                '/admin/update_report/',
-                { id: id, delete: 1 },
-                function () {
-                  row.remove();
-                }
-              );
-            })
-        )
-      );
-      row.append(
-        $('<td>').append(
-          $('<a>')
-            .text('{{text.keep}}')
-            .click(function () {
-              $.post(
-                '/admin/update_report/',
-                { id: id, delete: 0 },
-                function () {
-                  row.remove();
-                }
-              );
-            })
-        )
-      );
-    }
-  </script>
-</div>
+      function addUpdateLinks(row, id) {
+        row.append(
+          $('<td>').append(
+            $('<a>')
+              .text('{{text.delete}}')
+              .click(function () {
+                $.post(
+                  '/admin/update_report/',
+                  { id: id, delete: 1 },
+                  function () {
+                    row.remove();
+                  }
+                );
+              })
+          )
+        );
+        row.append(
+          $('<td>').append(
+            $('<a>')
+              .text('{{text.keep}}')
+              .click(function () {
+                $.post(
+                  '/admin/update_report/',
+                  { id: id, delete: 0 },
+                  function () {
+                    row.remove();
+                  }
+                );
+              })
+          )
+        );
+      }
+    </script>
+  </div>
 {% endblock %}

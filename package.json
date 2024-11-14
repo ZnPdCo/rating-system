@@ -14,6 +14,7 @@
     "eslint-config-jquery": "^3.0.2",
     "eslint-plugin-html": "^8.1.2",
     "globals": "^15.12.0",
-    "prettier": "^3.3.3"
+    "prettier": "^3.3.3",
+    "prettier-plugin-jinja-template": "^2.0.0"
   }
 }

@@ -32,28 +32,28 @@
 
   <body>
     <div class="ui menu">
-      <div class="header item">{{title}}</div>
-      <a class="item" href="/">{{text.problems}}</a>
-      <a class="item" href="/legal/">{{text.legal}}</a>
-      {% if is_admin == True %}<a class="item" href="/admin/">{{text.admin}}</a
-      >{% endif %}
+      <div class="header item">{{ title }}</div>
+      <a class="item" href="/">{{ text.problems }}</a>
+      <a class="item" href="/legal/">{{ text.legal }}</a>
+      {% if is_admin == True %}
+        <a class="item" href="/admin/">{{ text.admin }}</a>
+      {% endif %}
       <div class="right menu">
-        {% if logged_in == False %}<a class="item" href="/login/"
-          >{{text.login}}</a
-        >
-        {% endif %} {% if logged_in == True %}<a
-          class="item"
-          href="/update_password/"
-          >{{text.update_password}}</a
-        ><a class="item" href="/logout/">{{text.logout}}</a>{% endif %}
+        {% if logged_in == False %}
+          <a class="item" href="/login/">{{ text.login }}</a>
+        {% endif %}
+        {% if logged_in == True %}
+          <a class="item" href="/update_password/">{{ text.update_password }}</a
+          ><a class="item" href="/logout/">{{ text.logout }}</a>
+        {% endif %}
       </div>
     </div>
-    {% block content %} {% endblock %}
+    {% block content %}{% endblock %}
     <div class="ui vertical footer segment">
       <div class="ui center aligned container">
         <div class="ui horizontal small divided link list">
           <p class="item">
-            {{text.powered_by}}
+            {{ text.powered_by }}
             <a href="https://github.com/ZnPdCo/rating-system">Rating System</a>
           </p>
         </div>
