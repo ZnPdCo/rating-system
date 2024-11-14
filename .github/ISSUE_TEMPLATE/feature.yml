@@ -10,18 +10,18 @@ body:
   - type: textarea
     id: page
     attributes:
-      label: 我遇到的问题是
+      label: The problem I encountered is
     validations:
       required: true
   - type: textarea
     id: problem
     attributes:
-      label: 我希望能有这样的解决方案
+      label: I hope to have such a solution
     validations:
       required: true
   - type: textarea
     id: alternate
     attributes:
-      label: 我觉得这些备选方案也可以接受
+      label: I think these alternative options are also acceptable
     validations:
       required: false
