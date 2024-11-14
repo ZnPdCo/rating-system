@@ -8,6 +8,8 @@ import hashlib
 from flask import render_template, request, Blueprint, redirect
 from app.database import connect_db
 from app.utils import check_admin, update_rating
+from app.custom.auto_problem import auto_problems
+from app.api import add_problem
 
 admin_bp = Blueprint("admin", __name__)
 
@@ -86,34 +88,22 @@ def update_user_password():
 
 
 @admin_bp.route("/add_problem/", methods=["POST"])
-def add_problem():
+def add_problem_route():
     """
     Add a problem
     """
     if not check_admin(request.cookies.get("id")):
         return redirect("/")
-    conn = connect_db()
-    cursor = conn.cursor()
-    cursor.execute(
-        "INSERT INTO problems (OJpid, contest, name, info) VALUES (?,?,?,?)",
-        (
-            (
-                json.loads(request.form.get("info"))["pid"]
-                if "pid" in json.loads(request.form.get("info"))
-                else ""
-            ),
-            request.form.get("contest"),
-            request.form.get("name"),
-            request.form.get("info"),
-        ),
+    add_problem(
+        request.form.get("contest"),
+        request.form.get("name"),
+        json.loads(request.form.get("info")),
     )
-    conn.commit()
-    conn.close()
     return redirect("/admin/")
 
 
 @admin_bp.route("/update_problem/", methods=["POST"])
-def update_problem():
+def update_problem_route():
     """
     Update a problem
     """
@@ -141,7 +131,7 @@ def update_problem():
 
 
 @admin_bp.route("/delete_problem/", methods=["POST"])
-def delete_problem():
+def delete_problem_route():
     """
     Delete a problem
     """
@@ -204,3 +194,14 @@ def update_report():
         pid = pid[0]
         update_rating(pid)
     return ""
+
+
+@admin_bp.route("/auto_update_problems/", methods=["POST"])
+def auto_update_problems():
+    """
+    Auto update problems
+    """
+    if not check_admin(request.cookies.get("id")):
+        return redirect("/")
+    auto_problems(json.loads(request.form.get("params")))
+    return redirect("/admin/")

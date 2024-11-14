@@ -46,5 +46,6 @@
   "extra_info_should_have_a_pid_key_refer_to_the_pid_on_oj_if_you_want_auto_update_status_for_example": "Extra Info should have a pid key refer to the pid on oj if you want auto update status. For example:",
   "update_password": "Update Password",
   "old_password": "Old Password",
-  "new_password": "New Password"
+  "new_password": "New Password",
+  "auto_update_problem": "Auto Update Problem"
 }
