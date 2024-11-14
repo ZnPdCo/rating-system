@@ -305,7 +305,10 @@ def auto_update_status(username):
     system_status = json.loads(cursor.fetchone()[0])
     for oj_pid, status in oj_status.items():
         cursor.execute("SELECT pid FROM problems WHERE ojpid=?", (oj_pid,))
-        system_pid = str(cursor.fetchone()[0])
+        system_pid = cursor.fetchone()
+        if system_pid is None:
+            continue
+        system_pid = str(system_pid[0])
         if system_pid in system_status:
             system_status[system_pid] = max(system_status[system_pid], status)
         else:
