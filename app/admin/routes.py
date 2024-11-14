@@ -4,6 +4,7 @@ Author: ZnPdCo
 """
 
 import json
+import hashlib
 from flask import render_template, request, Blueprint, redirect
 from app.database import connect_db
 from app.utils import check_admin, update_rating
@@ -35,6 +36,49 @@ def edit_permissions():
     cursor.execute(
         "UPDATE users SET admin=? WHERE username=?",
         (request.form.get("admin"), request.form.get("username")),
+    )
+    cursor.execute("SELECT username FROM users WHERE admin=1")
+    admins = cursor.fetchall()
+    if len(admins) == 0:
+        conn.rollback()
+    conn.commit()
+    conn.close()
+    return redirect("/admin/")
+
+
+@admin_bp.route("/get_users/", methods=["POST"])
+def get_users():
+    """
+    Get all users
+    """
+    if not check_admin(request.cookies.get("id")):
+        return redirect("/")
+    conn = connect_db()
+    cursor = conn.cursor()
+    cursor.execute("SELECT username, admin FROM users")
+    users = cursor.fetchall()
+    conn.close()
+    res = []
+    for user in users:
+        res.append({"username": user[0], "admin": user[1]})
+    return json.dumps(res), 200, {"Content-Type": "application/json"}
+
+
+@admin_bp.route("/update_user_password/", methods=["POST"])
+def update_user_password():
+    """
+    update user password
+    """
+    if not check_admin(request.cookies.get("id")):
+        return redirect("/")
+    conn = connect_db()
+    cursor = conn.cursor()
+    cursor.execute(
+        "UPDATE users SET password=? WHERE username=?",
+        (
+            hashlib.sha256(request.form.get("password").encode("utf-8")).hexdigest(),
+            request.form.get("username"),
+        ),
     )
     conn.commit()
     conn.close()

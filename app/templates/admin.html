@@ -24,6 +24,31 @@ content %}
     </div>
     <button type="submit" class="ui blue submit button">{{text.submit}}</button>
   </form>
+  <table class="ui left aligned table" id="user-table">
+    <thead>
+      <th>{{text.username}}</th>
+      <th>{{text.admin}}</th>
+    </thead>
+    <tbody></tbody>
+  </table>
+  <div class="ui attached message" style="margin-top: 20px">
+    <div class="header">{{text.update_password}}</div>
+  </div>
+  <form
+    class="ui form attached fluid segment"
+    method="post"
+    action="/admin/update_user_password/"
+  >
+    <div class="field">
+      <label>{{text.username}}</label>
+      <input placeholder="{{text.username}}" type="text" name="username" />
+    </div>
+    <div class="field">
+      <label>{{text.password}}</label>
+      <input placeholder="{{text.password}}" type="password" name="password" />
+    </div>
+    <button type="submit" class="ui blue submit button">{{text.submit}}</button>
+  </form>
 
   <div class="ui attached message" style="margin-top: 20px">
     <div class="header">{{text.add_problem}}</div>
@@ -47,7 +72,7 @@ content %}
         placeholder="{{text.extra_info}}"
         type="text"
         name="info"
-        value='{"links": "https://codeforces.com/contest/2024/problem/A"}'
+        value='{"links": "https://codeforces.com/contest/2024/problem/A", "pid": "2024A"}'
       />
     </div>
     <button type="submit" class="ui blue submit button">{{text.submit}}</button>
@@ -92,7 +117,7 @@ content %}
         placeholder="{{text.extra_info}}"
         type="text"
         name="info"
-        value='{"links": "https://codeforces.com/contest/2024/problem/A"}'
+        value='{"links": "https://codeforces.com/contest/2024/problem/A", "pid": "2024A"}'
       />
     </div>
     <button type="submit" class="ui blue submit button">{{text.submit}}</button>
@@ -145,21 +170,62 @@ content %}
 
   <script>
     $(document).ready(function () {
+      window.data = [];
       $.ajax({
-        url: '/admin/get_reports/',
+        url: '/backend/get_problems',
+        type: 'GET',
+        success: function (data) {
+          window.data = data;
+        },
+      });
+      $('form[action="/admin/update_problem/"] input[name="pid"]').focusout(
+        function () {
+          window.data.forEach(function (problem) {
+            if (
+              problem['pid'].toString() ==
+              $('form[action="/admin/update_problem/"] input[name="pid"]').val()
+            ) {
+              $(
+                'form[action="/admin/update_problem/"] input[name="contest"]'
+              ).val(problem['contest']);
+              $('form[action="/admin/update_problem/"] input[name="name"]').val(
+                problem['name']
+              );
+              $('form[action="/admin/update_problem/"] input[name="info"]').val(
+                JSON.stringify(problem['info'])
+              );
+            }
+          });
+        }
+      );
+      $.ajax({
+        url: '/admin/get_users/',
         type: 'POST',
         success: function (data) {
-          var table = $('#report-table tbody');
-          data.forEach(function (report) {
+          var table = $('#user-table tbody');
+          data.forEach(function (user) {
             var row = $('<tr>');
-            row.append($('<td>').text(report['difficulty']));
-            row.append($('<td>').text(report['quality']));
-            row.append($('<td>').text(report['comment']));
-            addUpdateLinks(row, report['id']);
+            row.append($('<td>').text(user['username']));
+            row.append($('<td>').text(user['admin']));
             table.append(row);
           });
         },
       });
+    });
+    $.ajax({
+      url: '/admin/get_reports/',
+      type: 'POST',
+      success: function (data) {
+        var table = $('#report-table tbody');
+        data.forEach(function (report) {
+          var row = $('<tr>');
+          row.append($('<td>').text(report['difficulty']));
+          row.append($('<td>').text(report['quality']));
+          row.append($('<td>').text(report['comment']));
+          addUpdateLinks(row, report['id']);
+          table.append(row);
+        });
+      },
     });
     function addUpdateLinks(row, id) {
       row.append(
