@@ -15,7 +15,7 @@
   <a href="https://github.com/ZnPdCo/rating-system">
     <img alt="license: GPL 3.0" src="https://img.shields.io/badge/license-MIT-blue.svg?style=flat-square"></a>
   <a href="https://github.com/ZnPdCo/rating-system">
-    <!--<img alt="Repobeats analytics image" src="https://repobeats.axiom.co/api/embed/f359c8cab4e13606e60f24d52b64c1aa085decf6.svg">--></a>
+    <img alt="Repobeats analytics image" src="https://repobeats.axiom.co/api/embed/e7de16e82ac8740e8c05cef2d2aaf491b7e2ea64.svg"></a>
 </p>
 <br />
 
