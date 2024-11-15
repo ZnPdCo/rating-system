@@ -1,5 +1,5 @@
 """
-Filename: admin/api.py
+Filename: problem/api.py
 Author: ZnPdCo
 """
 
@@ -9,7 +9,7 @@ from app.database import connect_db
 
 def add_problem(contest, name, info):
     """
-    Add a problem with params
+    Add a problem
     """
     conn = connect_db()
     cursor = conn.cursor()
@@ -34,5 +34,36 @@ def add_problem(contest, name, info):
             json.dumps(info),
         ),
     )
+    conn.commit()
+    conn.close()
+
+
+def update_problem(pid, contest, name, info):
+    """
+    Update a problem
+    """
+    conn = connect_db()
+    cursor = conn.cursor()
+    cursor.execute(
+        "UPDATE problems SET OJpid=?, contest=?, name=?, info=? WHERE pid=?",
+        (
+            (info["pid"] if "pid" in info else ""),
+            contest,
+            name,
+            json.dumps(info),
+            pid,
+        ),
+    )
+    conn.commit()
+    conn.close()
+
+
+def delete_problem(pid):
+    """
+    Delete a problem
+    """
+    conn = connect_db()
+    cursor = conn.cursor()
+    cursor.execute("DELETE FROM problems WHERE pid=?", (pid,))
     conn.commit()
     conn.close()

@@ -9,14 +9,14 @@ from flask import render_template, request, Blueprint, redirect
 from app.database import connect_db
 from app.utils import check_admin, update_rating
 from app.custom.auto_problems import auto_problems
-from app.admin.api import add_problem
+from app.problem.api import add_problem, update_problem, delete_problem
 from app.announcement.api import update_announcement
 
 admin_bp = Blueprint("admin", __name__)
 
 
 @admin_bp.route("/", methods=["GET"])
-def admin():
+def admin_route():
     """
     Admin page
     """
@@ -110,24 +110,12 @@ def update_problem_route():
     """
     if not check_admin(request.cookies.get("id")):
         return redirect("/")
-    conn = connect_db()
-    cursor = conn.cursor()
-    cursor.execute(
-        "UPDATE problems SET OJpid=?, contest=?, name=?, info=? WHERE pid=?",
-        (
-            (
-                json.loads(request.form.get("info"))["pid"]
-                if "pid" in json.loads(request.form.get("info"))
-                else ""
-            ),
-            request.form.get("contest"),
-            request.form.get("name"),
-            request.form.get("info"),
-            request.form.get("pid"),
-        ),
+    update_problem(
+        request.form.get("pid"),
+        request.form.get("contest"),
+        request.form.get("name"),
+        json.loads(request.form.get("info")),
     )
-    conn.commit()
-    conn.close()
     return redirect("/admin/")
 
 
@@ -138,11 +126,7 @@ def delete_problem_route():
     """
     if not check_admin(request.cookies.get("id")):
         return redirect("/")
-    conn = connect_db()
-    cursor = conn.cursor()
-    cursor.execute("DELETE FROM problems WHERE pid=?", (request.form.get("pid"),))
-    conn.commit()
-    conn.close()
+    delete_problem(request.form.get("pid"))
     return redirect("/admin/")
 
 
