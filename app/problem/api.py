@@ -20,7 +20,7 @@ def add_problem(contest, name, info):
         if res is not None:
             cursor.execute(
                 "UPDATE problems SET contest = ? WHERE OJpid = ?",
-                (res[0] + "," + contest + "(" + name + ")", info["pid"]),
+                (contest + "(" + name + ")" + "," + res[0], info["pid"]),
             )
             conn.commit()
             conn.close()
