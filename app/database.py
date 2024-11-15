@@ -97,6 +97,13 @@ CREATE TABLE IF NOT EXISTS verify (
     ); 
                     """
         )
+        cursor.execute(
+            """ 
+CREATE TABLE IF NOT EXISTS announcement (
+    announcement VARCHAR(2048)
+    ); 
+                    """
+        )
         conn.commit()
     except sl.Error:
         conn = None

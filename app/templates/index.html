@@ -9,6 +9,11 @@
     src="{{ url_for('static', filename='js/index.js') }}"
   ></script>
   <div class="ui container">
+    <div
+      class="ui bottom attached warning message"
+      style="display: none;"
+      id="announcement"
+    ></div>
     <div class="ui toggle checkbox" style="margin-top: 20px">
       <input type="checkbox" id="use-median" />
       <label>Use Median</label>
@@ -98,7 +103,7 @@
       }
       window.data = [];
       $.ajax({
-        url: '/backend/get_problems',
+        url: '/backend/get_problems/',
         type: 'GET',
         success: function (data) {
           window.data = data;
@@ -112,6 +117,15 @@
         success: function (data) {
           localStorage.setItem('status', JSON.stringify(data));
           showTable();
+        },
+      });
+      $.ajax({
+        url: '/backend/get_announcement/',
+        type: 'POST',
+        success: function (data) {
+          if (data != '') {
+            $('#announcement').html(data).show();
+          }
         },
       });
 

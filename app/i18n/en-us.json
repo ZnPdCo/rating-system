@@ -47,5 +47,6 @@
   "update_password": "Update Password",
   "old_password": "Old Password",
   "new_password": "New Password",
-  "auto_update_problem": "Auto Update Problem"
+  "auto_update_problem": "Auto Update Problem",
+  "announcement": "Announcement"
 }

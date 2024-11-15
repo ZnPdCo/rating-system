@@ -9,7 +9,8 @@ from flask import render_template, request, Blueprint, redirect
 from app.database import connect_db
 from app.utils import check_admin, update_rating
 from app.custom.auto_problems import auto_problems
-from app.api import add_problem
+from app.admin.api import add_problem
+from app.announcement.api import update_announcement
 
 admin_bp = Blueprint("admin", __name__)
 
@@ -204,4 +205,15 @@ def auto_update_problems():
     if not check_admin(request.cookies.get("id")):
         return redirect("/")
     auto_problems(json.loads(request.form.get("params")))
+    return redirect("/admin/")
+
+
+@admin_bp.route("/update_announcement/", methods=["POST"])
+def update_announcement_route():
+    """
+    Update announcement
+    """
+    if not check_admin(request.cookies.get("id")):
+        return redirect("/")
+    update_announcement(request.form.get("announcement"))
     return redirect("/admin/")

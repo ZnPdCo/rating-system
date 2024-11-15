@@ -47,5 +47,6 @@
   "update_password": "更新密码",
   "old_password": "旧密码",
   "new_password": "新密码",
-  "auto_update_problem": "自动拉取问题"
+  "auto_update_problem": "自动拉取问题",
+  "announcement": "公告"
 }

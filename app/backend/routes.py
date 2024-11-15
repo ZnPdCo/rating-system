@@ -9,6 +9,7 @@ from app.database import connect_db
 from app.utils import check_login, get_username, random_string, update_rating
 from app.custom.auto_status import auto_status
 from app.config import config
+from app.announcement.api import get_announcement
 
 backend_bp = Blueprint("backend", __name__)
 
@@ -364,3 +365,11 @@ def update_status():
     conn.commit()
     conn.close()
     return ""
+
+
+@backend_bp.route("/get_announcement/", methods=["POST"])
+def get_announcement_route():
+    """
+    Get the latest announcement.
+    """
+    return get_announcement()
