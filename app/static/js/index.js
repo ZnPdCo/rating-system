@@ -61,7 +61,9 @@ function Vote() {
       pid: window.pid,
     },
     success: function (data) {
-      $('#difficulty').val(data['difficulty'] == '-1' ? '' : data['difficulty']);
+      $('#difficulty').val(
+        data['difficulty'] == '-1' ? '' : data['difficulty']
+      );
       $('#quality').val(data['quality'] == '-1' ? '' : data['quality']);
       $('#comment').val(data['comment']);
       $('#vote').modal('show');
