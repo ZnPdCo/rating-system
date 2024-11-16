@@ -10,41 +10,17 @@ from app.utils import check_login, get_username, random_string, update_rating
 from app.custom.auto_status import auto_status
 from app.config import config
 from app.announcement.api import get_announcement
+from app.problem.api import get_problems
 
 backend_bp = Blueprint("backend", __name__)
 
 
 @backend_bp.route("/get_problems/", methods=["GET"])
-def get_problems():
+def get_problems_route():
     """
     Get all problems from the database.
     """
-    conn = connect_db()
-    cursor = conn.cursor()
-    cursor.execute(
-        "SELECT pid, contest, name, difficulty, \
-                quality, difficulty2, quality2, \
-                cnt1, cnt2, info FROM problems"
-    )
-    problems = cursor.fetchall()
-    conn.close()
-    res = []
-    for problem in problems:
-        res.append(
-            {
-                "pid": problem[0],
-                "contest": problem[1],
-                "name": problem[2],
-                "difficulty": problem[3],
-                "quality": problem[4],
-                "difficulty2": problem[5],
-                "quality2": problem[6],
-                "cnt1": problem[7],
-                "cnt2": problem[8],
-                "info": json.loads(problem[9]),
-            }
-        )
-    return json.dumps(res), 200, {"Content-Type": "application/json"}
+    return json.dumps(get_problems()), 200, {"Content-Type": "application/json"}
 
 
 @backend_bp.route("/vote/", methods=["POST"])

@@ -67,3 +67,34 @@ def delete_problem(pid):
     cursor.execute("DELETE FROM problems WHERE pid=?", (pid,))
     conn.commit()
     conn.close()
+
+def get_problems():
+    """
+    Get all problems from the database.
+    """
+    conn = connect_db()
+    cursor = conn.cursor()
+    cursor.execute(
+        "SELECT pid, contest, name, difficulty, \
+                quality, difficulty2, quality2, \
+                cnt1, cnt2, info FROM problems"
+    )
+    problems = cursor.fetchall()
+    conn.close()
+    res = []
+    for problem in problems:
+        res.append(
+            {
+                "pid": problem[0],
+                "contest": problem[1],
+                "name": problem[2],
+                "difficulty": problem[3],
+                "quality": problem[4],
+                "difficulty2": problem[5],
+                "quality2": problem[6],
+                "cnt1": problem[7],
+                "cnt2": problem[8],
+                "info": json.loads(problem[9]),
+            }
+        )
+    return res
