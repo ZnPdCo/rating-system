@@ -68,6 +68,7 @@ def delete_problem(pid):
     conn.commit()
     conn.close()
 
+
 def get_problems():
     """
     Get all problems from the database.

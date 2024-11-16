@@ -7,10 +7,11 @@ import json
 import hashlib
 from flask import render_template, request, Blueprint, redirect
 from app.database import connect_db
-from app.utils import check_admin, update_rating
+from app.utils import check_admin
 from app.custom.auto_problems import auto_problems
 from app.problem.api import add_problem, update_problem, delete_problem
 from app.announcement.api import update_announcement
+from app.vote.api import update_report, get_reports
 
 admin_bp = Blueprint("admin", __name__)
 
@@ -131,53 +132,23 @@ def delete_problem_route():
 
 
 @admin_bp.route("/get_reports/", methods=["POST"])
-def get_reports():
+def get_reports_route():
     """
     Get all reports
     """
     if not check_admin(request.cookies.get("id")):
         return redirect("/")
-    conn = connect_db()
-    cursor = conn.cursor()
-    cursor.execute("SELECT id, pid, difficulty, quality, comment, username FROM report")
-    reports = cursor.fetchall()
-    conn.close()
-    res = []
-    for report in reports:
-        res.append(
-            {
-                "id": report[0],
-                "pid": report[1],
-                "difficulty": report[2],
-                "quality": report[3],
-                "comment": report[4],
-                "username": report[5],
-            }
-        )
-    return json.dumps(res), 200, {"Content-Type": "application/json"}
+    return json.dumps(get_reports()), 200, {"Content-Type": "application/json"}
 
 
 @admin_bp.route("/update_report/", methods=["POST"])
-def update_report():
+def update_report_route():
     """
     Update a report
     """
     if not check_admin(request.cookies.get("id")):
         return redirect("/")
-    conn = connect_db()
-    cursor = conn.cursor()
-    cursor.execute("SELECT pid FROM report WHERE id=?", (request.form.get("id"),))
-    pid = cursor.fetchone()
-    if request.form.get("delete") == "1":
-        cursor.execute("DELETE FROM difficulty WHERE id=?", (request.form.get("id"),))
-        cursor.execute("DELETE FROM quality WHERE id=?", (request.form.get("id"),))
-        cursor.execute("DELETE FROM comment WHERE id=?", (request.form.get("id"),))
-    cursor.execute("DELETE FROM report WHERE id=?", (request.form.get("id"),))
-    conn.commit()
-    conn.close()
-    if pid is not None:
-        pid = pid[0]
-        update_rating(pid)
+    update_report(request.form.get("id"), request.form.get("delete") == "1")
     return ""
 
 
