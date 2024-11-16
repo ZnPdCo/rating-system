@@ -117,7 +117,7 @@ def auto_update_status(username):
 
 
 @backend_bp.route("/get_status/", methods=["POST"])
-def get_status():
+def get_status_route():
     """
     Get the status of a user.
     """
@@ -141,7 +141,7 @@ def get_status():
 
 
 @backend_bp.route("/update_status/", methods=["POST"])
-def update_status():
+def update_status_route():
     """
     Update the status of a user.
     """

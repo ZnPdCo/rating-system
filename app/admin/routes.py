@@ -29,7 +29,7 @@ def admin_route():
 
 
 @admin_bp.route("/edit_permissions/", methods=["POST"])
-def edit_permissions():
+def edit_permissions_route():
     """
     Edit user permissions
     """
@@ -51,7 +51,7 @@ def edit_permissions():
 
 
 @admin_bp.route("/get_users/", methods=["POST"])
-def get_users():
+def get_users_route():
     """
     Get all users
     """
@@ -69,7 +69,7 @@ def get_users():
 
 
 @admin_bp.route("/update_user_password/", methods=["POST"])
-def update_user_password():
+def update_user_password_route():
     """
     update user password
     """
@@ -153,7 +153,7 @@ def update_report_route():
 
 
 @admin_bp.route("/auto_update_problems/", methods=["POST"])
-def auto_update_problems():
+def auto_update_problems_route():
     """
     Auto update problems
     """

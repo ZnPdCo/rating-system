@@ -9,7 +9,7 @@ main_bp = Blueprint("main", __name__)
 
 
 @main_bp.route("/", methods=["GET"])
-def index():
+def index_route():
     """
     The problems page of the website.
     """
@@ -19,7 +19,7 @@ def index():
 
 
 @main_bp.route("/legal/", methods=["GET"])
-def legal():
+def legal_route():
     """
     The legal page of the website.
     """

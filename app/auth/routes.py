@@ -14,7 +14,7 @@ auth_bp = Blueprint("auth", __name__)
 
 
 @auth_bp.route("/login/", methods=["GET", "POST"])
-def login():
+def login_route():
     """
     Login page
     """
@@ -87,7 +87,7 @@ def login():
 
 
 @auth_bp.route("/logout/", methods=["GET"])
-def logout():
+def logout_route():
     """
     Logout page
     """
@@ -97,7 +97,7 @@ def logout():
 
 
 @auth_bp.route("/verify/", methods=["GET", "POST"])
-def verify():
+def verify_route():
     """
     Verify page
     """
@@ -144,7 +144,7 @@ def verify():
 
 
 @auth_bp.route("/update_password/", methods=["GET", "POST"])
-def update_password():
+def update_password_route():
     """
     Update password page
     """
