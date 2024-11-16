@@ -34,7 +34,7 @@ def vote(username, difficulty, quality, comment, pid):
         conn.commit()
         conn.close()
 
-    if quality == -1 or 1 <= quality <= 5:
+    if quality == -1 or 0 <= quality <= 5:
         conn = connect_db()
         cursor = conn.cursor()
         res = cursor.execute(
@@ -100,11 +100,11 @@ def get_vote(username, pid):
     comment = cursor.fetchone()
     conn.close()
     if difficulty is None:
-        difficulty = 0
+        difficulty = -1
     else:
         difficulty = difficulty[0]
     if quality is None:
-        quality = 0
+        quality = -1
     else:
         quality = quality[0]
     if comment is None:
