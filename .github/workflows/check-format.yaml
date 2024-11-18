@@ -32,3 +32,26 @@ jobs:
 
       - name: Check Format
         run: git diff --exit-code
+  check-frontend-format:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./frontend
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        name: Setup Node.js 18.20
+        with:
+          node-version: '18.20'
+          check-latest: true
+
+      - name: Install dependencies
+        run: |
+          npm install
+
+      - name: Format
+        run: npm run format
+
+      - name: Check Format
+        run: git diff --exit-code

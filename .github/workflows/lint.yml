@@ -1,4 +1,4 @@
-name: Pylint
+name: Lint
 
 on: [push, pull_request]
 
@@ -21,3 +21,21 @@ jobs:
       - name: Analysing the code with pylint
         run: |
           pylint $(git ls-files '*.py')
+  frontend-lint:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./frontend
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        name: Setup Node.js 18.20
+        with:
+          node-version: '18.20'
+          check-latest: true
+      - name: Install dependencies
+        run: |
+          npm install
+      - name: Analysing the code with eslint
+        run: |
+          npm run lint
