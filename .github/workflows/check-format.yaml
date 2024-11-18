@@ -2,8 +2,11 @@ name: Check Format
 
 on: [push, pull_request]
 jobs:
-  check-format:
+  check-backend-format:
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./backend
     steps:
       - uses: actions/checkout@v4
 
@@ -20,7 +23,6 @@ jobs:
 
       - name: Install dependencies
         run: |
-          cd backend
           npm install
           python -m pip install --upgrade pip
           pip install -r requirements.txt
