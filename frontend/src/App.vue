@@ -31,5 +31,13 @@ const loggedIn = window.loggedIn
   </Menu>
   <SuiContainer>
     <RouterView />
+    <div class="ui center aligned container">
+      <div class="ui horizontal small divided link list">
+        <p class="item">
+          基于
+          <a href="https://github.com/ZnPdCo/rating-system">Rating System</a>
+        </p>
+      </div>
+    </div>
   </SuiContainer>
 </template>
