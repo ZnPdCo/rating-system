@@ -1,7 +1,7 @@
 <script setup>
 import $ from 'jquery'
 import { ref } from 'vue'
-import { SuiModal } from 'vue-fomantic-ui'
+import { SuiModal, SuiButton } from 'vue-fomantic-ui'
 import { useRouter } from 'vue-router'
 
 const router = useRouter()
@@ -454,14 +454,15 @@ table {
         <div class="ui label">质量(0-5)</div>
         <input type="number" placeholder="质量" data-tribute="true" id="quality" />
       </div>
-      <div class="ui labeled input">
+      <br />
+      <div class="ui labeled input" style="margin-top: 10px">
         <div class="ui label">评论</div>
-        <input type="text" placeholder="评论" data-tribute="true" id="comment" />
+        <textarea type="text" placeholder="评论" data-tribute="true" id="comment"></textarea>
       </div>
     </div>
     <div class="actions">
-      <div class="ui black deny button" @click="voteModal = false">Cancel</div>
-      <div class="ui positive button" @click="(voteModal = false), SendVote()">Save</div>
+      <SuiButton black @click="voteModal = false">取消</SuiButton>
+      <SuiButton positive @click="(voteModal = false), SendVote()">保存</SuiButton>
     </div>
   </SuiModal>
   <SuiModal v-model="showVotesModal">
