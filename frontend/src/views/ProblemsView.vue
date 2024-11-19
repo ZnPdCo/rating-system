@@ -70,7 +70,7 @@ function difficulty2Str(difficulty, cnt) {
   }
   res.css('font-weight', '500')
   res.attr('data-toggle', 'popover')
-  if (cnt != null) res.attr('data-tooltip', `Number of votes: ${cnt}`)
+  if (cnt != null) res.attr('data-tooltip', `投票人数： ${cnt}`)
   res.append(difficulty2Circle(difficulty))
   res.append(` ${difficulty == null ? 'N/A' : Math.round(difficulty)}`)
   return res
@@ -167,7 +167,7 @@ function quality2Str(quality, cnt) {
   }
   res.css('font-weight', '500')
   res.attr('data-toggle', 'popover')
-  if (cnt != null) res.attr('data-tooltip', `Number of votes: ${cnt}`)
+  if (cnt != null) res.attr('data-tooltip', `投票人数： ${cnt}`)
   res.text(showQuality)
   return res
 }
@@ -177,36 +177,36 @@ function showTable() {
   table.empty()
   for (let i = 0; i < problemsData.length; i++) {
     let row = $('<tr>')
-    ;(function (data) {
-      row.append($('<td>').text(data['pid']))
-      row.append($('<td>').text(data['contest']))
-      row.append(
-        name2Str(data['pid'], data['name'], function () {
-          Details(data)
-        }).click(function (e) {
-          if ($(e.target).prop('tagName') == 'TD' && !window.auto_status) changeStatus(data['pid'])
-        }),
-      )
-      row.append(difficulty2Str(data['difficulty'], data['cnt1']))
-      row.append(quality2Str(data['quality'], data['cnt2']))
-      row.append(
-        $('<td>')
-          .html('<a>Vote</a>')
-          .click(function () {
-            window.pid = data['pid']
-            Vote()
+      ; (function (data) {
+        row.append($('<td>').text(data['pid']))
+        row.append($('<td>').text(data['contest']))
+        row.append(
+          name2Str(data['pid'], data['name'], function () {
+            Details(data)
+          }).click(function (e) {
+            if ($(e.target).prop('tagName') == 'TD' && !window.autoStatus) changeStatus(data['pid'])
           }),
-      )
-      row.append(
-        $('<td>')
-          .html('<a>Show Votes</a>')
-          .click(function () {
-            window.pid = data['pid']
-            showVotesModal.value = true
-            showVotes()
-          }),
-      )
-    })(problemsData[i])
+        )
+        row.append(difficulty2Str(data['difficulty'], data['cnt1']))
+        row.append(quality2Str(data['quality'], data['cnt2']))
+        row.append(
+          $('<td>')
+            .html('<a>投票</a>')
+            .click(function () {
+              window.pid = data['pid']
+              Vote()
+            }),
+        )
+        row.append(
+          $('<td>')
+            .html('<a>显示投票</a>')
+            .click(function () {
+              window.pid = data['pid']
+              showVotesModal.value = true
+              showVotes()
+            }),
+        )
+      })(problemsData[i])
     table.append(row)
   }
 }
@@ -318,7 +318,6 @@ function sortData(sortBy) {
   }
 }
 
-window.auto_status = '%%auto_status%%' == 'True'
 $(document).ready(function () {
   if (localStorage.getItem('status') == null) {
     localStorage.setItem('status', JSON.stringify('{}'))
@@ -351,23 +350,23 @@ $(document).ready(function () {
   })
 
   $('#contest-header').click(function () {
-    $('#contest-header').text('Contest ▾')
-    $('#difficulty-header').text('Difficulty ▴')
-    $('#quality-header').text('Quality ▴')
+    $('#contest-header').text('比赛 ▾')
+    $('#difficulty-header').text('难度 ▴')
+    $('#quality-header').text('质量 ▴')
     sortData('contest')
   })
 
   $('#difficulty-header').click(function () {
-    $('#contest-header').text('Contest ▴')
-    $('#difficulty-header').text('Difficulty ▾')
-    $('#quality-header').text('Quality ▴')
+    $('#contest-header').text('比赛 ▴')
+    $('#difficulty-header').text('难度 ▾')
+    $('#quality-header').text('质量 ▴')
     sortData('difficulty')
   })
 
   $('#quality-header').click(function () {
-    $('#contest-header').text('Contest ▴')
-    $('#difficulty-header').text('Difficulty ▴')
-    $('#quality-header').text('Quality ▾')
+    $('#contest-header').text('比赛 ▴')
+    $('#difficulty-header').text('难度 ▴')
+    $('#quality-header').text('质量 ▾')
     sortData('quality')
   })
 
@@ -377,52 +376,87 @@ $(document).ready(function () {
         problemsData[i]['difficulty2'],
         problemsData[i]['difficulty'],
       ]
-      ;[problemsData[i]['quality'], problemsData[i]['quality2']] = [
-        problemsData[i]['quality2'],
-        problemsData[i]['quality'],
-      ]
+        ;[problemsData[i]['quality'], problemsData[i]['quality2']] = [
+          problemsData[i]['quality2'],
+          problemsData[i]['quality'],
+        ]
     }
     showTable()
   })
 })
 </script>
 
+<style scoped>
+table {
+  table-layout: fixed;
+  word-break: break-all;
+}
+
+#problems-table th:nth-child(1) {
+  width: 10%;
+}
+
+#problems-table th:nth-child(2) {
+  width: 20%;
+}
+
+#problems-table th:nth-child(3) {
+  width: 40%;
+}
+
+#problems-table th:nth-child(4) {
+  width: 7%;
+}
+
+#problems-table th:nth-child(5) {
+  width: 7%;
+}
+
+#problems-table th:nth-child(6) {
+  width: 7%;
+}
+
+#problems-table th:nth-child(7) {
+  width: 9%;
+}
+</style>
+
 <template>
   <div class="ui bottom attached warning message" style="display: none" id="announcement"></div>
   <div class="ui toggle checkbox" style="margin-top: 20px">
     <input type="checkbox" id="use-median" />
-    <label>Use Median</label>
+    <label>显示中位数数据</label>
   </div>
   <div class="column" style="margin-top: 20px">
     <table class="ui left aligned table" id="problems-table">
       <thead>
         <tr>
           <th>Pid</th>
-          <th id="contest-header">Contest ▾</th>
-          <th>Name</th>
-          <th id="difficulty-header">Difficulty ▴</th>
-          <th id="quality-header">Quality ▴</th>
-          <th>Vote</th>
-          <th>Show Votes</th>
+          <th id="contest-header">比赛 ▾</th>
+          <th>题目名</th>
+          <th id="difficulty-header">难度 ▴</th>
+          <th id="quality-header">质量 ▴</th>
+          <th>投票</th>
+          <th>显示投票</th>
         </tr>
       </thead>
       <tbody></tbody>
     </table>
   </div>
   <SuiModal v-model="voteModal">
-    <div class="header">Vote</div>
+    <div class="header">投票</div>
     <div class="content">
       <div class="ui labeled input" style="margin-right: 10px">
-        <div class="ui label">Difficulty(800-3500)</div>
-        <input type="number" placeholder="Difficulty" data-tribute="true" id="difficulty" />
+        <div class="ui label">难度(800-3500)</div>
+        <input type="number" placeholder="难度" data-tribute="true" id="difficulty" />
       </div>
       <div class="ui labeled input">
-        <div class="ui label">Quality(0-5)</div>
-        <input type="number" placeholder="Quality" data-tribute="true" id="quality" />
+        <div class="ui label">质量(0-5)</div>
+        <input type="number" placeholder="质量" data-tribute="true" id="quality" />
       </div>
       <div class="ui labeled input">
-        <div class="ui label">Comment</div>
-        <input type="text" placeholder="Comment" data-tribute="true" id="comment" />
+        <div class="ui label">评论</div>
+        <input type="text" placeholder="评论" data-tribute="true" id="comment" />
       </div>
     </div>
     <div class="actions">
@@ -431,15 +465,15 @@ $(document).ready(function () {
     </div>
   </SuiModal>
   <SuiModal v-model="showVotesModal">
-    <div class="header">Show Votes</div>
+    <div class="header">显示投票</div>
     <div class="content">
       <table class="ui left aligned table" id="vote-table">
         <thead>
           <tr>
-            <th>Difficulty</th>
-            <th>Quality</th>
-            <th>Comment</th>
-            <th>Report</th>
+            <th>难度</th>
+            <th>质量</th>
+            <th>评论</th>
+            <th>举报</th>
           </tr>
         </thead>
         <tbody></tbody>
@@ -450,7 +484,7 @@ $(document).ready(function () {
     </div>
   </SuiModal>
   <SuiModal v-model="detailsModal">
-    <div class="header">Details</div>
+    <div class="header">详细信息</div>
     <div class="content">
       <ul class="ui list" id="details"></ul>
     </div>

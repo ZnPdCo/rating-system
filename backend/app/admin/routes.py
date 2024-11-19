@@ -24,7 +24,7 @@ def admin_route():
     if not check_admin(request.cookies.get("id")):
         return redirect("/")
     return render_template(
-        "admin.html",
+        "index.html",
     )
 
 

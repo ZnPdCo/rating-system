@@ -1,5 +1,7 @@
 # rating-system-frontend
 
+这部分还在迁移中，代码能用，但是很丑，不建议看。
+
 This template should help get you started developing with Vue 3 in Vite.
 
 ## Recommended IDE Setup

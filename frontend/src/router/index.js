@@ -9,32 +9,27 @@ const router = createRouter({
       component: () => import('../views/ProblemsView.vue'),
     },
     {
-      path: '/legal',
+      path: '/legal/',
       name: 'legal',
       component: () => import('../views/LegalView.vue'),
     },
     {
-      path: '/admin',
+      path: '/admin/',
       name: 'admin',
       component: () => import('../views/AdminView.vue'),
     },
     {
-      path: '/login',
+      path: '/login/',
       name: 'Login',
       component: () => import('../views/LoginView.vue'),
     },
     {
-      path: '/logout',
-      name: 'Logout',
-      component: () => import('../views/LogoutView.vue'),
-    },
-    {
-      path: '/update_password',
+      path: '/update_password/',
       name: 'Update Password',
       component: () => import('../views/UpdatePasswordView.vue'),
     },
     {
-      path: '/verify',
+      path: '/verify/',
       name: 'Verify',
       component: () => import('../views/VerifyView.vue'),
     },

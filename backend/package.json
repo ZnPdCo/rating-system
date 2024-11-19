@@ -1,7 +1,6 @@
 {
   "name": "rating-system-backend",
   "version": "0.0.1",
-  "description": "A concise, easy-to-configure, and powerful algorithm competition problems rating system. Developed with Python and Flask.",
   "scripts": {
     "format": "npx prettier --write app/ && python -m black app/",
     "lint": "pylint app/"

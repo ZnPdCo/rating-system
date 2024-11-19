@@ -26,7 +26,7 @@ def legal_route():
     The legal page of the website.
     """
     return render_template(
-        "legal.html",
+        "index.html",
     )
 
 @main_bp.route("/title/", methods=["GET"])

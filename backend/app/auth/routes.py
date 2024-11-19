@@ -22,7 +22,7 @@ def login_route():
     password = request.form.get("password")
     if username is None and password is None:
         return render_template(
-            "login.html",
+            "index.html",
         )
     if (
         len(username) == 0
@@ -120,7 +120,7 @@ def verify_route():
     code = user[2]
     if request.method == "GET":
         return render_template(
-            "verify.html",
+            "index.html",
             code=code,
         )
     if not verify_account(username, code):
@@ -150,7 +150,7 @@ def update_password_route():
     """
     if request.method == "GET":
         return render_template(
-            "update_password.html",
+            "index.html",
         )
     idx = request.cookies.get("id")
     if idx is None:

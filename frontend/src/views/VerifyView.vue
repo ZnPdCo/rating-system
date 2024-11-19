@@ -1,5 +1,7 @@
 <script setup>
 import $ from 'jquery'
+const ojName = window.ojName
+const code = window.code
 $(document).ready(function () {
   var urlParams = new URLSearchParams(window.location.search)
   if (urlParams.has('error')) {
@@ -14,11 +16,13 @@ $(document).ready(function () {
   <main>
     <div class="ui attached message" style="display: none" id="message"></div>
     <div class="ui attached message">
-      <div class="header">Verify your account. CODE: <b>"%% code %%"</b>.</div>
+      <div class="header">
+        验证您的帐户。验证码：<b>"{{ code }}"</b>.
+      </div>
       <p>
-        Please add "%% code %%" at the beginning of the description of your account in %% oj_name %%
-        (no prefix is required be added). We will verify this to ensure that it is your unique
-        account.
+        请在您在 {{ ojName }} 中的账户 description 前面添加 "{{
+          code
+        }}"，我们将对此进行验证，以确保它是您的唯一账户。
       </p>
     </div>
     <form class="ui form attached fluid segment" method="post">

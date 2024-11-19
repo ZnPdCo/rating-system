@@ -1,35 +1,32 @@
 <script setup>
 import { RouterLink, RouterView } from 'vue-router'
 import { Menu, MenuItem, SuiContainer } from 'vue-fomantic-ui'
+
+const title = window.title
+const isAdmin = window.isAdmin
+const loggedIn = window.loggedIn
 </script>
 
 <template>
   <Menu>
-    <MenuItem header>%% title %%</MenuItem>
+    <MenuItem header>{{ title }}</MenuItem>
     <RouterLink to="/">
-      <MenuItem>Problems</MenuItem>
+      <MenuItem>题目</MenuItem>
     </RouterLink>
-    <RouterLink to="/legal">
-      <MenuItem>Legal</MenuItem>
+    <RouterLink to="/legal/">
+      <MenuItem>条款</MenuItem>
     </RouterLink>
-    {% if is_admin == True %}
-    <RouterLink to="/admin">
-      <MenuItem>Admin</MenuItem>
+    <RouterLink to="/admin/" v-if="isAdmin">
+      <MenuItem>管理</MenuItem>
     </RouterLink>
-    {% endif %}
     <template #right>
-      {% if logged_in == False %}
-      <RouterLink to="/login">
-        <MenuItem>Login</MenuItem>
+      <RouterLink to="/login/" v-if="!loggedIn">
+        <MenuItem>登录/注册</MenuItem>
       </RouterLink>
-      {% endif %} {% if logged_in == True %}
-      <RouterLink to="/update_password">
-        <MenuItem>Update Password</MenuItem>
+      <RouterLink to="/update_password/" v-if="loggedIn">
+        <MenuItem>更新密码</MenuItem>
       </RouterLink>
-      <RouterLink to="/logout">
-        <MenuItem>Logout</MenuItem>
-      </RouterLink>
-      {% endif %}
+      <MenuItem href="/logout/" v-if="loggedIn">登出</MenuItem>
     </template>
   </Menu>
   <SuiContainer>

@@ -56,7 +56,7 @@ function addUpdateLinks(row, id) {
   row.append(
     $('<td>').append(
       $('<a>')
-        .text('Delete')
+        .text('删除')
         .click(function () {
           $.post('/admin/update_report/', { id: id, delete: 1 }, function () {
             row.remove()
@@ -67,7 +67,7 @@ function addUpdateLinks(row, id) {
   row.append(
     $('<td>').append(
       $('<a>')
-        .text('Keep')
+        .text('保留')
         .click(function () {
           $.post('/admin/update_report/', { id: id, delete: 0 }, function () {
             row.remove()
@@ -81,85 +81,76 @@ function addUpdateLinks(row, id) {
 <template>
   <main>
     <div class="ui attached message" style="margin-top: 20px">
-      <div class="header">Permission settings</div>
+      <div class="header">权限设置</div>
     </div>
     <form class="ui form attached fluid segment" method="post" action="/admin/edit_permissions/">
       <div class="field">
-        <label>Username</label>
-        <input placeholder="Username" type="text" name="username" />
+        <label>用户名</label>
+        <input placeholder="用户名" type="text" name="username" />
       </div>
       <div class="field">
-        <label>Admin(1 for admin, 0 for normal user)</label>
-        <input placeholder="Admin" type="number" name="admin" value="1" />
+        <label>管理员(1表示管理员，0表示普通用户)</label>
+        <input placeholder="管理员" type="number" name="admin" value="1" />
       </div>
-      <button type="submit" class="ui blue submit button">Submit</button>
+      <button type="submit" class="ui blue submit button">提交</button>
     </form>
     <table class="ui left aligned table" id="user-table">
       <thead>
-        <th>Username</th>
-        <th>Admin</th>
+        <tr>
+          <th>用户名</th>
+          <th>管理员</th>
+        </tr>
       </thead>
       <tbody></tbody>
     </table>
     <div class="ui attached message" style="margin-top: 20px">
-      <div class="header">Update Password</div>
+      <div class="header">更新密码</div>
     </div>
-    <form
-      class="ui form attached fluid segment"
-      method="post"
-      action="/admin/update_user_password/"
-    >
+    <form class="ui form attached fluid segment" method="post" action="/admin/update_user_password/">
       <div class="field">
-        <label>Username</label>
-        <input placeholder="Username" type="text" name="username" />
+        <label>用户名</label>
+        <input placeholder="用户名" type="text" name="username" />
       </div>
       <div class="field">
-        <label>Password</label>
-        <input placeholder="Password" type="password" name="password" />
+        <label>密码</label>
+        <input placeholder="密码" type="password" name="password" />
       </div>
-      <button type="submit" class="ui blue submit button">Submit</button>
+      <button type="submit" class="ui blue submit button">提交</button>
     </form>
 
     <div class="ui attached message" style="margin-top: 20px">
-      <div class="header">Add Problem</div>
+      <div class="header">添加题目</div>
     </div>
     <form class="ui form attached fluid segment" method="post" action="/admin/add_problem/">
       <div class="field">
-        <label>Contest</label>
-        <input placeholder="Contest" type="text" name="contest" />
+        <label>比赛</label>
+        <input placeholder="比赛" type="text" name="contest" />
       </div>
       <div class="field">
-        <label>Name</label>
-        <input placeholder="Name" type="text" name="name" />
+        <label>题目名</label>
+        <input placeholder="题目名" type="text" name="name" />
       </div>
       <div class="field">
-        <label>Extra Info(JSON)</label>
-        <input
-          placeholder="Extra Info"
-          type="text"
-          name="info"
-          value='{"links": "https://codeforces.com/contest/2024/problem/A", "pid": "2024A"}'
-        />
+        <label>额外信息(JSON)</label>
+        <input placeholder="额外信息" type="text" name="info"
+          value='{"links": "https://codeforces.com/contest/2024/problem/A", "pid": "2024A"}' />
       </div>
-      <button type="submit" class="ui blue submit button">Submit</button>
+      <button type="submit" class="ui blue submit button">提交</button>
     </form>
     <div class="ui bottom attached warning message">
-      Extra Info Must have a links key with the problem link. For example:
+      额外信息必须有一个带有问题链接的 <code>links</code> 键。例如：
       <pre>
 {"links": "https://codeforces.com/contest/2024/problem/A"}
-</pre
-      >
+</pre>
       <br />
-      Extra Info should have a pid key refer to the pid on oj if you want auto update status. For
-      example:
+      如果你想自动更新通过状态，额外信息应该有一个 <code>pid</code> 键，表示 oj 上的 pid。例如：
       <pre>
 {"links": "https://codeforces.com/contest/2024/problem/A", "pid": "2024A"}
-</pre
-      >
+</pre>
     </div>
 
     <div class="ui attached message" style="margin-top: 20px">
-      <div class="header">Update Problem</div>
+      <div class="header">更新题目</div>
     </div>
     <form class="ui form attached fluid segment" method="post" action="/admin/update_problem/">
       <div class="field">
@@ -167,91 +158,80 @@ function addUpdateLinks(row, id) {
         <input placeholder="Pid" type="number" name="pid" />
       </div>
       <div class="field">
-        <label>Contest</label>
-        <input placeholder="Contest" type="text" name="contest" />
+        <label>比赛</label>
+        <input placeholder="比赛" type="text" name="contest" />
       </div>
       <div class="field">
-        <label>Name</label>
-        <input placeholder="Name" type="text" name="name" />
+        <label>题目名</label>
+        <input placeholder="题目名" type="text" name="name" />
       </div>
       <div class="field">
-        <label>Extra Info(JSON)</label>
-        <input
-          placeholder="Extra Info"
-          type="text"
-          name="info"
-          value='{"links": "https://codeforces.com/contest/2024/problem/A", "pid": "2024A"}'
-        />
+        <label>额外信息(JSON)</label>
+        <input placeholder="额外信息" type="text" name="info"
+          value='{"links": "https://codeforces.com/contest/2024/problem/A", "pid": "2024A"}' />
       </div>
-      <button type="submit" class="ui blue submit button">Submit</button>
+      <button type="submit" class="ui blue submit button">提交</button>
     </form>
     <div class="ui bottom attached warning message">
-      Extra Info Must have a links key with the problem link. For example:
+      额外信息必须有一个带有问题链接的 <code>links</code> 键。例如：
       <pre>
 {"links": "https://codeforces.com/contest/2024/problem/A"}
-</pre
-      >
+</pre>
       <br />
-      Extra Info should have a pid key refer to the pid on oj if you want auto update status. For
-      example:
+      如果你想自动更新通过状态，额外信息应该有一个 <code>pid</code> 键，表示 oj 上的 pid。例如：
       <pre>
 {"links": "https://codeforces.com/contest/2024/problem/A", "pid": "2024A"}
-</pre
-      >
+</pre>
     </div>
 
     <div class="ui attached message" style="margin-top: 20px">
-      <div class="header">Delete Problem</div>
+      <div class="header">删除问题</div>
     </div>
     <form class="ui form attached fluid segment" method="post" action="/admin/delete_problem/">
       <div class="field">
         <label>Pid</label>
         <input placeholder="Pid" type="number" name="pid" />
       </div>
-      <button type="submit" class="ui blue submit button">Submit</button>
+      <button type="submit" class="ui blue submit button">提交</button>
     </form>
-    <div class="ui bottom attached error message">
-      Be careful when deleting problems, it will delete all the ratings to that problem.
-    </div>
+    <div class="ui bottom attached error message">删除问题时要小心，它将删除该问题的所有评分。</div>
 
     <div class="ui attached message" style="margin-top: 20px">
-      <div class="header">Rating Reports</div>
+      <div class="header">举报</div>
     </div>
     <table class="ui left aligned table" id="report-table">
       <thead>
-        <th>Difficulty</th>
-        <th>Quality</th>
-        <th>Comment</th>
-        <th>Delete</th>
-        <th>Keep</th>
+        <tr>
+          <th>难度</th>
+          <th>质量</th>
+          <th>评论</th>
+          <th>删除</th>
+          <th>保留</th>
+        </tr>
       </thead>
       <tbody></tbody>
     </table>
 
     <div class="ui attached message" style="margin-top: 20px">
-      <div class="header">Auto Update Problem</div>
+      <div class="header">自动拉取题目</div>
     </div>
-    <form
-      class="ui form attached fluid segment"
-      method="post"
-      action="/admin/auto_update_problems/"
-    >
+    <form class="ui form attached fluid segment" method="post" action="/admin/auto_update_problems/">
       <div class="field">
-        <label></label>
-        <input placeholder="" type="text" name="params" value="{}" />
+        <label>参数</label>
+        <input placeholder="参数" type="text" name="params" value="{}" />
       </div>
-      <button type="submit" class="ui blue submit button">Submit</button>
+      <button type="submit" class="ui blue submit button">提交</button>
     </form>
 
     <div class="ui attached message" style="margin-top: 20px">
-      <div class="header">Announcement</div>
+      <div class="header">设置公告</div>
     </div>
     <form class="ui form attached fluid segment" method="post" action="/admin/update_announcement/">
       <div class="field">
-        <label>Announcement</label>
-        <input placeholder="Announcement" type="text" name="announcement" />
+        <label>公告</label>
+        <input placeholder="公告" type="text" name="announcement" />
       </div>
-      <button type="submit" class="ui blue submit button">Submit</button>
+      <button type="submit" class="ui blue submit button">提交</button>
     </form>
   </main>
 </template>

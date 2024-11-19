@@ -15,14 +15,14 @@ $(document).ready(function () {
     <div class="ui attached message" style="display: none" id="message"></div>
     <form class="ui form attached fluid segment" method="post">
       <div class="field">
-        <label>Old Password</label>
-        <input placeholder="Old Password" type="password" name="old_password" />
+        <label>旧密码</label>
+        <input placeholder="旧密码" type="password" name="old_password" />
       </div>
       <div class="field">
-        <label>New Password</label>
-        <input placeholder="New Password" type="password" name="new_password" />
+        <label>新密码</label>
+        <input placeholder="新密码" type="password" name="new_password" />
       </div>
-      <button type="submit" class="ui blue submit button">Submit</button>
+      <button type="submit" class="ui blue submit button">提交</button>
     </form>
   </main>
 </template>

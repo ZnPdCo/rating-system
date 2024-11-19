@@ -19,18 +19,14 @@
 </p>
 <br />
 
-A concise, easy-to-configure, and powerful algorithm competition problems rating system. Developed with Python and Flask.
+一个基于 Python+Flask+Vue3+Fomantic-UI 开发的简洁、易于配置、功能强大的算法竞赛问题评分系统。
 
-You can add problems to the system, rate your algorithm competition problems, or use other people's evaluations to filter problems.
-
-## Help
-
-Improve our translation. In `app/i18n`.
+您可以向系统添加问题，对算法竞赛问题进行评分，或使用其他人的评估来选择问题。
 
 ## Wiki
 
 [Wiki](https://github.com/ZnPdCo/rating-system/wiki)
 
-## Screenshots
+## 截图（可能不是最新的，仅供参考）
 
 ![](screenshots.png)
