@@ -1,18 +1,11 @@
 <script setup>
-import $ from 'jquery'
-$(document).ready(function () {
-  var urlParams = new URLSearchParams(window.location.search)
-  if (urlParams.has('error')) {
-    $('#message').show()
-    $('#message').text(urlParams.get('error'))
-    $('#message').addClass('error')
-  }
-})
+import { Message } from 'vue-fomantic-ui'
+const urlParams = new URLSearchParams(window.location.search)
 </script>
 
 <template>
   <main>
-    <div class="ui attached message" style="display: none" id="message"></div>
+    <Message error v-if="urlParams.has('error')" :content="urlParams.get('error')" />
     <form class="ui form attached fluid segment" method="post">
       <div class="field">
         <label>旧密码</label>

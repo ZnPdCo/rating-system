@@ -1,5 +1,6 @@
 <script setup>
 import $ from 'jquery'
+import { Message } from 'vue-fomantic-ui'
 $(document).ready(function () {
   window.data = []
   $.ajax({
@@ -80,9 +81,7 @@ function addUpdateLinks(row, id) {
 
 <template>
   <main>
-    <div class="ui attached message" style="margin-top: 20px">
-      <div class="header">权限设置</div>
-    </div>
+    <Message attached header="权限设置" style="margin-top: 20px" />
     <form class="ui form attached fluid segment" method="post" action="/admin/edit_permissions/">
       <div class="field">
         <label>用户名</label>
@@ -103,14 +102,8 @@ function addUpdateLinks(row, id) {
       </thead>
       <tbody></tbody>
     </table>
-    <div class="ui attached message" style="margin-top: 20px">
-      <div class="header">更新密码</div>
-    </div>
-    <form
-      class="ui form attached fluid segment"
-      method="post"
-      action="/admin/update_user_password/"
-    >
+    <Message attached header="更新密码" style="margin-top: 20px" />
+    <form class="ui form attached fluid segment" method="post" action="/admin/update_user_password/">
       <div class="field">
         <label>用户名</label>
         <input placeholder="用户名" type="text" name="username" />
@@ -122,9 +115,7 @@ function addUpdateLinks(row, id) {
       <button type="submit" class="ui blue submit button">提交</button>
     </form>
 
-    <div class="ui attached message" style="margin-top: 20px">
-      <div class="header">添加题目</div>
-    </div>
+    <Message attached header="添加题目" style="margin-top: 20px" />
     <form class="ui form attached fluid segment" method="post" action="/admin/add_problem/">
       <div class="field">
         <label>比赛</label>
@@ -136,32 +127,24 @@ function addUpdateLinks(row, id) {
       </div>
       <div class="field">
         <label>额外信息(JSON)</label>
-        <input
-          placeholder="额外信息"
-          type="text"
-          name="info"
-          value='{"links": "https://codeforces.com/contest/2024/problem/A", "pid": "2024A"}'
-        />
+        <input placeholder="额外信息" type="text" name="info"
+          value='{"links": "https://codeforces.com/contest/2024/problem/A", "pid": "2024A"}' />
       </div>
       <button type="submit" class="ui blue submit button">提交</button>
     </form>
-    <div class="ui bottom attached warning message">
+    <Message warning attached="bottom">
       额外信息必须有一个带有问题链接的 <code>links</code> 键。例如：
       <pre>
 {"links": "https://codeforces.com/contest/2024/problem/A"}
-</pre
-      >
+</pre>
       <br />
       如果你想自动更新通过状态，额外信息应该有一个 <code>pid</code> 键，表示 oj 上的 pid。例如：
       <pre>
 {"links": "https://codeforces.com/contest/2024/problem/A", "pid": "2024A"}
-</pre
-      >
-    </div>
+</pre>
+    </Message>
 
-    <div class="ui attached message" style="margin-top: 20px">
-      <div class="header">更新题目</div>
-    </div>
+    <Message attached header="更新题目" style="margin-top: 20px" />
     <form class="ui form attached fluid segment" method="post" action="/admin/update_problem/">
       <div class="field">
         <label>Pid</label>
@@ -177,32 +160,24 @@ function addUpdateLinks(row, id) {
       </div>
       <div class="field">
         <label>额外信息(JSON)</label>
-        <input
-          placeholder="额外信息"
-          type="text"
-          name="info"
-          value='{"links": "https://codeforces.com/contest/2024/problem/A", "pid": "2024A"}'
-        />
+        <input placeholder="额外信息" type="text" name="info"
+          value='{"links": "https://codeforces.com/contest/2024/problem/A", "pid": "2024A"}' />
       </div>
       <button type="submit" class="ui blue submit button">提交</button>
     </form>
-    <div class="ui bottom attached warning message">
+    <Message warning attached="bottom">
       额外信息必须有一个带有问题链接的 <code>links</code> 键。例如：
       <pre>
 {"links": "https://codeforces.com/contest/2024/problem/A"}
-</pre
-      >
+</pre>
       <br />
       如果你想自动更新通过状态，额外信息应该有一个 <code>pid</code> 键，表示 oj 上的 pid。例如：
       <pre>
 {"links": "https://codeforces.com/contest/2024/problem/A", "pid": "2024A"}
-</pre
-      >
-    </div>
+</pre>
+    </Message>
 
-    <div class="ui attached message" style="margin-top: 20px">
-      <div class="header">删除问题</div>
-    </div>
+    <Message attached header="删除问题" style="margin-top: 20px" />
     <form class="ui form attached fluid segment" method="post" action="/admin/delete_problem/">
       <div class="field">
         <label>Pid</label>
@@ -210,11 +185,11 @@ function addUpdateLinks(row, id) {
       </div>
       <button type="submit" class="ui blue submit button">提交</button>
     </form>
-    <div class="ui bottom attached error message">删除问题时要小心，它将删除该问题的所有评分。</div>
+    <Message warning attached="error">
+      删除问题时要小心，它将删除该问题的所有评分。
+    </Message>
 
-    <div class="ui attached message" style="margin-top: 20px">
-      <div class="header">举报</div>
-    </div>
+    <Message attached header="举报" style="margin-top: 20px" />
     <table class="ui left aligned table" id="report-table">
       <thead>
         <tr>
@@ -228,14 +203,8 @@ function addUpdateLinks(row, id) {
       <tbody></tbody>
     </table>
 
-    <div class="ui attached message" style="margin-top: 20px">
-      <div class="header">自动拉取题目</div>
-    </div>
-    <form
-      class="ui form attached fluid segment"
-      method="post"
-      action="/admin/auto_update_problems/"
-    >
+    <Message attached header="自动拉取题目" style="margin-top: 20px" />
+    <form class="ui form attached fluid segment" method="post" action="/admin/auto_update_problems/">
       <div class="field">
         <label>参数</label>
         <input placeholder="参数" type="text" name="params" value="{}" />
@@ -243,9 +212,7 @@ function addUpdateLinks(row, id) {
       <button type="submit" class="ui blue submit button">提交</button>
     </form>
 
-    <div class="ui attached message" style="margin-top: 20px">
-      <div class="header">设置公告</div>
-    </div>
+    <Message attached header="设置公告" style="margin-top: 20px" />
     <form class="ui form attached fluid segment" method="post" action="/admin/update_announcement/">
       <div class="field">
         <label>公告</label>

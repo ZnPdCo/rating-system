@@ -1,20 +1,13 @@
 <script setup>
-import $ from 'jquery'
+import { Message } from 'vue-fomantic-ui'
 const ojName = window.ojName
 const code = window.code
-$(document).ready(function () {
-  var urlParams = new URLSearchParams(window.location.search)
-  if (urlParams.has('error')) {
-    $('#message').show()
-    $('#message').text(urlParams.get('error'))
-    $('#message').addClass('error')
-  }
-})
+const urlParams = new URLSearchParams(window.location.search)
 </script>
 
 <template>
   <main>
-    <div class="ui attached message" style="display: none" id="message"></div>
+    <Message error v-if="urlParams.has('error')" :content="urlParams.get('error')" />
     <div class="ui attached message">
       <div class="header">
         验证您的帐户。验证码：<b>"{{ code }}"</b>.

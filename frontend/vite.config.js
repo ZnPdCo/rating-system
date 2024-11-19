@@ -10,6 +10,7 @@ const createProxyConfig = (target, onlyPost = true) => ({
   configure: (proxy) => {
     proxy.on('proxyReq', (proxyReq, req) => {
       if (req.method === 'GET' && onlyPost) {
+        console.log('Aborting GET request to', req.url);
         proxyReq.abort();
       }
     });
