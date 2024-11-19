@@ -3,7 +3,9 @@ Filename: main/routes.py
 Author: ZnPdCo
 """
 
+import json
 from flask import render_template, Blueprint
+from app.config import config
 
 main_bp = Blueprint("main", __name__)
 
@@ -26,3 +28,10 @@ def legal_route():
     return render_template(
         "legal.html",
     )
+
+@main_bp.route("/title/", methods=["GET"])
+def title_route():
+    """
+    The title page of the website.
+    """
+    return json.dumps({"title": config["title"]}), 200, {"Content-Type": "application/json"}

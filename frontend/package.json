@@ -1,9 +1,8 @@
 {
   "name": "rating-system-frontend",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "private": true,
   "type": "module",
-  "description": "A concise, easy-to-configure, and powerful algorithm competition problems rating system. Developed with Python and Flask.",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
@@ -11,11 +10,16 @@
     "lint": "eslint . --fix",
     "format": "prettier --write src/"
   },
-  "dependencies": {
-    "vue": "^3.5.12"
-  },
   "author": "ZnPdCo",
   "license": "MIT",
+  "dependencies": {
+    "axios": "^1.7.7",
+    "fomantic-ui-css": "^2.9.3",
+    "jquery": "^3.7.1",
+    "vue": "^3.5.12",
+    "vue-fomantic-ui": "^0.29.0",
+    "vue-router": "^4.4.5"
+  },
   "devDependencies": {
     "@eslint/js": "^9.14.0",
     "@vitejs/plugin-vue": "^5.1.4",

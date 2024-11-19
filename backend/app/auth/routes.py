@@ -91,7 +91,7 @@ def logout_route():
     """
     Logout page
     """
-    resp = redirect("/")
+    resp = redirect("/login/")
     resp.set_cookie("id", "", expires=0)
     return resp
 

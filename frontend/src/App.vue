@@ -1,47 +1,38 @@
 <script setup>
-import HelloWorld from './components/HelloWorld.vue'
-import TheWelcome from './components/TheWelcome.vue'
+import { RouterLink, RouterView } from 'vue-router'
+import { Menu, MenuItem, SuiContainer } from 'vue-fomantic-ui'
 </script>
 
 <template>
-  <header>
-    <img alt="Vue logo" class="logo" src="./assets/logo.svg" width="125" height="125" />
-
-    <div class="wrapper">
-      <HelloWorld msg="You did it!" />
-    </div>
-  </header>
-
-  <main>
-    <TheWelcome />
-  </main>
+  <Menu>
+    <MenuItem header>%% title %%</MenuItem>
+    <RouterLink to="/">
+      <MenuItem>Problems</MenuItem>
+    </RouterLink>
+    <RouterLink to="/legal">
+      <MenuItem>Legal</MenuItem>
+    </RouterLink>
+    {% if is_admin == True %}
+    <RouterLink to="/admin">
+      <MenuItem>Admin</MenuItem>
+    </RouterLink>
+    {% endif %}
+    <template #right>
+      {% if logged_in == False %}
+      <RouterLink to="/login">
+        <MenuItem>Login</MenuItem>
+      </RouterLink>
+      {% endif %} {% if logged_in == True %}
+      <RouterLink to="/update_password">
+        <MenuItem>Update Password</MenuItem>
+      </RouterLink>
+      <RouterLink to="/logout">
+        <MenuItem>Logout</MenuItem>
+      </RouterLink>
+      {% endif %}
+    </template>
+  </Menu>
+  <SuiContainer>
+    <RouterView />
+  </SuiContainer>
 </template>
-
-<style scoped>
-header {
-  line-height: 1.5;
-}
-
-.logo {
-  display: block;
-  margin: 0 auto 2rem;
-}
-
-@media (min-width: 1024px) {
-  header {
-    display: flex;
-    place-items: center;
-    padding-right: calc(var(--section-gap) / 2);
-  }
-
-  .logo {
-    margin: 0 2rem 0 0;
-  }
-
-  header .wrapper {
-    display: flex;
-    place-items: flex-start;
-    flex-wrap: wrap;
-  }
-}
-</style>
