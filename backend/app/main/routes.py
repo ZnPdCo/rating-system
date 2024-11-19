@@ -29,9 +29,14 @@ def legal_route():
         "index.html",
     )
 
+
 @main_bp.route("/title/", methods=["GET"])
 def title_route():
     """
     The title page of the website.
     """
-    return json.dumps({"title": config["title"]}), 200, {"Content-Type": "application/json"}
+    return (
+        json.dumps({"title": config["title"]}),
+        200,
+        {"Content-Type": "application/json"},
+    )

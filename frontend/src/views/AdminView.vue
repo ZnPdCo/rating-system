@@ -106,7 +106,11 @@ function addUpdateLinks(row, id) {
     <div class="ui attached message" style="margin-top: 20px">
       <div class="header">更新密码</div>
     </div>
-    <form class="ui form attached fluid segment" method="post" action="/admin/update_user_password/">
+    <form
+      class="ui form attached fluid segment"
+      method="post"
+      action="/admin/update_user_password/"
+    >
       <div class="field">
         <label>用户名</label>
         <input placeholder="用户名" type="text" name="username" />
@@ -132,8 +136,12 @@ function addUpdateLinks(row, id) {
       </div>
       <div class="field">
         <label>额外信息(JSON)</label>
-        <input placeholder="额外信息" type="text" name="info"
-          value='{"links": "https://codeforces.com/contest/2024/problem/A", "pid": "2024A"}' />
+        <input
+          placeholder="额外信息"
+          type="text"
+          name="info"
+          value='{"links": "https://codeforces.com/contest/2024/problem/A", "pid": "2024A"}'
+        />
       </div>
       <button type="submit" class="ui blue submit button">提交</button>
     </form>
@@ -141,12 +149,14 @@ function addUpdateLinks(row, id) {
       额外信息必须有一个带有问题链接的 <code>links</code> 键。例如：
       <pre>
 {"links": "https://codeforces.com/contest/2024/problem/A"}
-</pre>
+</pre
+      >
       <br />
       如果你想自动更新通过状态，额外信息应该有一个 <code>pid</code> 键，表示 oj 上的 pid。例如：
       <pre>
 {"links": "https://codeforces.com/contest/2024/problem/A", "pid": "2024A"}
-</pre>
+</pre
+      >
     </div>
 
     <div class="ui attached message" style="margin-top: 20px">
@@ -167,8 +177,12 @@ function addUpdateLinks(row, id) {
       </div>
       <div class="field">
         <label>额外信息(JSON)</label>
-        <input placeholder="额外信息" type="text" name="info"
-          value='{"links": "https://codeforces.com/contest/2024/problem/A", "pid": "2024A"}' />
+        <input
+          placeholder="额外信息"
+          type="text"
+          name="info"
+          value='{"links": "https://codeforces.com/contest/2024/problem/A", "pid": "2024A"}'
+        />
       </div>
       <button type="submit" class="ui blue submit button">提交</button>
     </form>
@@ -176,12 +190,14 @@ function addUpdateLinks(row, id) {
       额外信息必须有一个带有问题链接的 <code>links</code> 键。例如：
       <pre>
 {"links": "https://codeforces.com/contest/2024/problem/A"}
-</pre>
+</pre
+      >
       <br />
       如果你想自动更新通过状态，额外信息应该有一个 <code>pid</code> 键，表示 oj 上的 pid。例如：
       <pre>
 {"links": "https://codeforces.com/contest/2024/problem/A", "pid": "2024A"}
-</pre>
+</pre
+      >
     </div>
 
     <div class="ui attached message" style="margin-top: 20px">
@@ -215,7 +231,11 @@ function addUpdateLinks(row, id) {
     <div class="ui attached message" style="margin-top: 20px">
       <div class="header">自动拉取题目</div>
     </div>
-    <form class="ui form attached fluid segment" method="post" action="/admin/auto_update_problems/">
+    <form
+      class="ui form attached fluid segment"
+      method="post"
+      action="/admin/auto_update_problems/"
+    >
       <div class="field">
         <label>参数</label>
         <input placeholder="参数" type="text" name="params" value="{}" />

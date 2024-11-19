@@ -4,6 +4,18 @@ import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
 import vueDevTools from 'vite-plugin-vue-devtools'
 
+const createProxyConfig = (target, onlyPost = true) => ({
+  target,
+  changeOrigin: true,
+  configure: (proxy) => {
+    proxy.on('proxyReq', (proxyReq, req) => {
+      if (req.method === 'GET' && onlyPost) {
+        proxyReq.abort();
+      }
+    });
+  }
+});
+
 // https://vite.dev/config/
 export default defineConfig({
   plugins: [
@@ -17,14 +29,12 @@ export default defineConfig({
   },
   server: {
     proxy: {
-      '/backend': {
-        target: 'http://127.0.0.1:5000/',
-        changeOrigin: true,
-      },
-      '/admin': {
-        target: 'http://127.0.0.1:5000/',
-        changeOrigin: true,
-      },
+      '/backend': createProxyConfig('http://127.0.0.1:5000/', false),
+      '/admin': createProxyConfig('http://127.0.0.1:5000/'),
+      '/login': createProxyConfig('http://127.0.0.1:5000/'),
+      '/logout': createProxyConfig('http://127.0.0.1:5000/'),
+      '/verify': createProxyConfig('http://127.0.0.1:5000/'),
+      '/update_password': createProxyConfig('http://127.0.0.1:5000/'),
     }
   }
 })

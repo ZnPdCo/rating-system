@@ -12,21 +12,23 @@ from app.backend.routes import backend_bp
 from app.utils import check_login, check_admin
 from app.config import config
 
-DIR_PATH_BASE='../../frontend/'
+DIR_PATH_BASE = "../../frontend/"
+
 
 class WanmaitFlask(Flask):
     """
     Default is '{{', I'm changing this because Vue.js uses '{{' / '}}'
     """
-    jinja_options = Flask.jinja_options.copy()
-    jinja_options.update({
-        'variable_start_string': '%%',
-        'variable_end_string': '%%'
-    })
 
-app = WanmaitFlask(__name__,
-static_folder=DIR_PATH_BASE+'dist/assets',
-template_folder = DIR_PATH_BASE+"dist")
+    jinja_options = Flask.jinja_options.copy()
+    jinja_options.update({"variable_start_string": "%%", "variable_end_string": "%%"})
+
+
+app = WanmaitFlask(
+    __name__,
+    static_folder=DIR_PATH_BASE + "dist/assets",
+    template_folder=DIR_PATH_BASE + "dist",
+)
 
 app.register_blueprint(main_bp, url_prefix="/")
 app.register_blueprint(auth_bp, url_prefix="/")

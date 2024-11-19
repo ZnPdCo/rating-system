@@ -177,36 +177,36 @@ function showTable() {
   table.empty()
   for (let i = 0; i < problemsData.length; i++) {
     let row = $('<tr>')
-      ; (function (data) {
-        row.append($('<td>').text(data['pid']))
-        row.append($('<td>').text(data['contest']))
-        row.append(
-          name2Str(data['pid'], data['name'], function () {
-            Details(data)
-          }).click(function (e) {
-            if ($(e.target).prop('tagName') == 'TD' && !window.autoStatus) changeStatus(data['pid'])
+    ;(function (data) {
+      row.append($('<td>').text(data['pid']))
+      row.append($('<td>').text(data['contest']))
+      row.append(
+        name2Str(data['pid'], data['name'], function () {
+          Details(data)
+        }).click(function (e) {
+          if ($(e.target).prop('tagName') == 'TD' && !window.autoStatus) changeStatus(data['pid'])
+        }),
+      )
+      row.append(difficulty2Str(data['difficulty'], data['cnt1']))
+      row.append(quality2Str(data['quality'], data['cnt2']))
+      row.append(
+        $('<td>')
+          .html('<a>投票</a>')
+          .click(function () {
+            window.pid = data['pid']
+            Vote()
           }),
-        )
-        row.append(difficulty2Str(data['difficulty'], data['cnt1']))
-        row.append(quality2Str(data['quality'], data['cnt2']))
-        row.append(
-          $('<td>')
-            .html('<a>投票</a>')
-            .click(function () {
-              window.pid = data['pid']
-              Vote()
-            }),
-        )
-        row.append(
-          $('<td>')
-            .html('<a>显示投票</a>')
-            .click(function () {
-              window.pid = data['pid']
-              showVotesModal.value = true
-              showVotes()
-            }),
-        )
-      })(problemsData[i])
+      )
+      row.append(
+        $('<td>')
+          .html('<a>显示投票</a>')
+          .click(function () {
+            window.pid = data['pid']
+            showVotesModal.value = true
+            showVotes()
+          }),
+      )
+    })(problemsData[i])
     table.append(row)
   }
 }
@@ -376,10 +376,10 @@ $(document).ready(function () {
         problemsData[i]['difficulty2'],
         problemsData[i]['difficulty'],
       ]
-        ;[problemsData[i]['quality'], problemsData[i]['quality2']] = [
-          problemsData[i]['quality2'],
-          problemsData[i]['quality'],
-        ]
+      ;[problemsData[i]['quality'], problemsData[i]['quality2']] = [
+        problemsData[i]['quality2'],
+        problemsData[i]['quality'],
+      ]
     }
     showTable()
   })
