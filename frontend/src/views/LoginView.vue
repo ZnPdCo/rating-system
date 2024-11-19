@@ -1,6 +1,6 @@
 <script setup>
 import $ from 'jquery'
-import { Message } from 'vue-fomantic-ui'
+import { Message, SuiHeader, SuiForm } from 'vue-fomantic-ui'
 const title = window.title
 const ojName = window.ojName
 const urlParams = new URLSearchParams(window.location.search)
@@ -11,7 +11,7 @@ const urlParams = new URLSearchParams(window.location.search)
     <Message error v-if="urlParams.has('error')" :content="urlParams.get('error')" />
     <Message success v-if="urlParams.has('success')" :content="urlParams.get('success')" />
     <Message attached>
-      <div class="header">欢迎来到 {{ title }}</div>
+      <SuiHeader>欢迎来到 {{ title }}</SuiHeader>
       <p>填写表单以登录</p>
     </Message>
     <form class="ui form attached fluid segment" method="post">
