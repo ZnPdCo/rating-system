@@ -6,11 +6,11 @@ const show = defineModel('show')
 const pid = defineModel('pid')
 const emit = defineEmits(['rating-change'])
 const qualityValue = ref(0)
-const reloadKey = ref(0)    // 用于重新渲染rating组件
+const reloadKey = ref(0) // 用于重新渲染rating组件
 
 function SendVote() {
   let difficulty = $('#difficulty').val()
-  let quality = qualityValue.value - 1;
+  let quality = qualityValue.value - 1
   let comment = $('#comment').val()
   if (difficulty < 800 || difficulty > 3500 || difficulty == '') {
     difficulty = -1
@@ -29,11 +29,11 @@ function SendVote() {
     },
     success: function () {
       emit('rating-change')
-    }
+    },
   })
 }
 watch(show, async (value) => {
-  if (value != true) return;
+  if (value != true) return
   $.ajax({
     url: '/backend/get_vote/',
     type: 'POST',
@@ -43,14 +43,14 @@ watch(show, async (value) => {
     success: function (data) {
       $('#difficulty').val(data['difficulty'] == '-1' ? '' : data['difficulty'])
       qualityValue.value = parseInt(data['quality']) + 1
-      reloadKey.value ++;
+      reloadKey.value++
       $('#comment').val(data['comment'])
     },
   })
 })
 function cancleQuality() {
   qualityValue.value = 0
-  reloadKey.value ++;
+  reloadKey.value++
 }
 </script>
 
@@ -60,12 +60,23 @@ function cancleQuality() {
     <div class="content">
       <div class="ui labeled input" style="margin-right: 10px">
         <div class="ui label">难度(800-3500)</div>
-        <input type="number" placeholder="难度" data-tribute="true" id="difficulty"
-          oninput="this.value = this.value.replace(/[^0-9]/g, '');" />
+        <input
+          type="number"
+          placeholder="难度"
+          data-tribute="true"
+          id="difficulty"
+          oninput="this.value = this.value.replace(/[^0-9]/g, '');"
+        />
       </div>
       <div class="ui labeled input">
         <div class="ui label">质量(0-5)</div>
-        <Rating :key="reloadKey" size="massive" v-model="qualityValue" :maxRating="6" color="yellow" />
+        <Rating
+          :key="reloadKey"
+          size="massive"
+          v-model="qualityValue"
+          :maxRating="6"
+          color="yellow"
+        />
         <SuiButton @click="cancleQuality()">取消</SuiButton>
       </div>
       <br />
@@ -86,6 +97,10 @@ function cancleQuality() {
   content: '💩';
 }
 :deep(.star.active.icon:nth-child(1)) {
-  text-shadow: 0 -1px 0 #cc7722, -1px 0 0 #cc7722, 0 1px 0 #cc7722, 1px 0 0 #cc7722 !important;
+  text-shadow:
+    0 -1px 0 #cc7722,
+    -1px 0 0 #cc7722,
+    0 1px 0 #cc7722,
+    1px 0 0 #cc7722 !important;
 }
 </style>
