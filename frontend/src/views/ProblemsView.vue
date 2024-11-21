@@ -1,40 +1,17 @@
 <script setup>
 import $ from 'jquery'
 import { ref } from 'vue'
-import { SuiModal, SuiButton } from 'vue-fomantic-ui'
+import { SuiModal } from 'vue-fomantic-ui'
 import { useRouter } from 'vue-router'
+import VoteModal from '../components/VoteModal.vue'
 
 const router = useRouter()
 var problemsData = []
 var statusData = {}
 const voteModal = ref(false)
+const pid = ref(1)
 const showVotesModal = ref(false)
 const detailsModal = ref(false)
-
-function SendVote() {
-  let difficulty = $('#difficulty').val()
-  let quality = $('#quality').val()
-  let comment = $('#comment').val()
-  if (difficulty < 800 || difficulty > 3500 || difficulty == '') {
-    difficulty = -1
-  }
-  if (quality < 0 || quality > 5 || quality == '') {
-    quality = -1
-  }
-  $.ajax({
-    url: '/backend/vote/',
-    type: 'POST',
-    data: {
-      pid: window.pid,
-      difficulty: difficulty,
-      quality: quality,
-      comment: comment,
-    },
-    success: function () {
-      router.go(0)
-    },
-  })
-}
 
 function name2Str(pid, name, func) {
   statusData = JSON.parse(localStorage.getItem('status'))
@@ -193,8 +170,8 @@ function showTable() {
         $('<td>')
           .html('<a>投票</a>')
           .click(function () {
-            window.pid = data['pid']
-            Vote()
+            pid.value = data['pid']
+            voteModal.value = true
           }),
       )
       row.append(
@@ -222,21 +199,6 @@ function changeStatus(pid) {
     type: 'POST',
     data: {
       status: JSON.stringify(statusData),
-    },
-  })
-}
-function Vote() {
-  $.ajax({
-    url: '/backend/get_vote/',
-    type: 'POST',
-    data: {
-      pid: window.pid,
-    },
-    success: function (data) {
-      $('#difficulty').val(data['difficulty'] == '-1' ? '' : data['difficulty'])
-      $('#quality').val(data['quality'] == '-1' ? '' : data['quality'])
-      $('#comment').val(data['comment'])
-      voteModal.value = true
     },
   })
 }
@@ -443,28 +405,7 @@ table {
       <tbody></tbody>
     </table>
   </div>
-  <SuiModal v-model="voteModal">
-    <div class="header">投票</div>
-    <div class="content">
-      <div class="ui labeled input" style="margin-right: 10px">
-        <div class="ui label">难度(800-3500)</div>
-        <input type="number" placeholder="难度" data-tribute="true" id="difficulty" />
-      </div>
-      <div class="ui labeled input">
-        <div class="ui label">质量(0-5)</div>
-        <input type="number" placeholder="质量" data-tribute="true" id="quality" />
-      </div>
-      <br />
-      <div class="ui labeled input" style="margin-top: 10px">
-        <div class="ui label">评论</div>
-        <textarea type="text" placeholder="评论" data-tribute="true" id="comment"></textarea>
-      </div>
-    </div>
-    <div class="actions">
-      <SuiButton black @click="voteModal = false">取消</SuiButton>
-      <SuiButton positive @click="(voteModal = false), SendVote()">保存</SuiButton>
-    </div>
-  </SuiModal>
+  <VoteModal v-model:show="voteModal" v-model:pid="pid" @rating-change="router.go(0)" />
   <SuiModal v-model="showVotesModal">
     <div class="header">显示投票</div>
     <div class="content">

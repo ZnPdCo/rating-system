@@ -14,6 +14,9 @@ def vote(username, difficulty, quality, comment, pid):
 
     rating_id = random_string(128)
 
+    difficulty = int(difficulty)
+    quality = int(quality)
+
     if difficulty == -1 or 800 <= difficulty <= 3500:
         conn = connect_db()
         cursor = conn.cursor()

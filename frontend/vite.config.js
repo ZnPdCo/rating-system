@@ -32,7 +32,7 @@ export default defineConfig({
     proxy: {
       '/backend': createProxyConfig('http://127.0.0.1:5000/', false),
       '/admin': createProxyConfig('http://127.0.0.1:5000/'),
-      // '/login': createProxyConfig('http://127.0.0.1:5000/'),
+      '/login': createProxyConfig('http://127.0.0.1:5000/'),
       '/logout': createProxyConfig('http://127.0.0.1:5000/'),
       '/verify': createProxyConfig('http://127.0.0.1:5000/'),
       '/update_password': createProxyConfig('http://127.0.0.1:5000/'),
