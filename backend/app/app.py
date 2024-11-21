@@ -3,7 +3,6 @@ Filename: app.py
 Author: ZnPdCo
 """
 
-import json
 from flask import Flask, request
 from app.main.routes import main_bp
 from app.auth.routes import auth_bp
@@ -41,13 +40,10 @@ def inject_globals():
     """
     Injects global variables to all templates
     """
-    with open("i18n/" + config["language"] + ".json", "r", encoding="utf-8") as fp:
-        text = json.load(fp)
     return {
         "title": config["title"],
         "logged_in": check_login(request.cookies.get("id")),
         "is_admin": check_admin(request.cookies.get("id")),
-        "text": text,
         "oj_name": config["oj_name"],
         "auto_status": config["auto_status"],
     }
