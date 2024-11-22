@@ -23,6 +23,10 @@
 
 您可以向系统添加问题，对算法竞赛问题进行评分，或使用其他人的评估来选择问题。
 
+## 联系我
+
+项目目前正在快速迭代，如果想要部署，可以 email 我：poiuytreertyuiop@outlook.com。
+
 ## Wiki
 
 [Wiki](https://github.com/ZnPdCo/rating-system/wiki)
