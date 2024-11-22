@@ -1,12 +1,12 @@
 name: 发起新提案 | Request for Comments
 description: 为了解决现存争议、完善项目方针等而发起一个新提案（RFC） | To propose a new feature or improvement to the project, an RFC (Request for Comments) is needed.
-title: "[Feature]"
+title: "[RFC] "
 labels: ["提案 | RFC", "需要帮助 | Help Wanted"]
 
 - body:
-  - type: textarea
-    id: rfc
-    attributes:
-      label: 提案的具体内容 | The content of the proposal
-    validations:
-      required: false
+- type: textarea
+  id: rfc
+  attributes:
+    label: 提案的具体内容 | The content of the proposal
+  validations:
+    required: false

@@ -4,21 +4,21 @@ title: "[Feature]"
 labels: ["想要点新功能 | Feature Request", "需要帮助 | Help Wanted"]
 
 - body:
-  - type: textarea
-    id: about-feature
-    attributes:
-      label: 你的功能请求是否与某些问题有关？请描述。 | Is your feature request related to a problem? Please describe.
-    validations:
-      required: false
-  - type: textarea
-    id: solution
-    attributes:
-      label: 描述您想要的解决方案 | Describe the solution you'd like
-    validations:
-      required: false
-  - type: textarea
-    id: additional-context
-    attributes:
-      label: 如果，你还有想说的话…… | Add any other context about the problem here. 
-    validations:
-      required: false
+- type: textarea
+  id: about-feature
+  attributes:
+    label: 你的功能请求是否与某些问题有关？请描述。 | Is your feature request related to a problem? Please describe.
+  validations:
+    required: false
+- type: textarea
+  id: solution
+  attributes:
+    label: 描述您想要的解决方案 | Describe the solution you'd like
+  validations:
+    required: false
+- type: textarea
+  id: additional-context
+  attributes:
+    label: 如果，你还有想说的话…… | Add any other context about the problem here. 
+  validations:
+    required: false
