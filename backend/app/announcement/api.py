@@ -14,7 +14,7 @@ def update_announcement(announcement):
     cursor = conn.cursor()
     cursor.execute("DELETE FROM announcement")
     cursor.execute(
-        "INSERT INTO announcement (announcement) VALUES (?)",
+        "INSERT INTO announcement (announcement) VALUES (%s)",
         (announcement,),
     )
     conn.commit()

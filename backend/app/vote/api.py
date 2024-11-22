@@ -20,18 +20,13 @@ def vote(username, difficulty, quality, comment, pid):
     if difficulty == -1 or 800 <= difficulty <= 3500:
         conn = connect_db()
         cursor = conn.cursor()
-        res = cursor.execute(
-            "SELECT * FROM difficulty WHERE username=? AND pid=?",
+        cursor.execute(
+            "DELETE FROM difficulty WHERE username=%s AND pid=%s",
             (username, pid),
         )
-        if res.fetchone() is not None:
-            cursor.execute(
-                "DELETE FROM difficulty WHERE username=? AND pid=?",
-                (username, pid),
-            )
         if difficulty != -1:
             cursor.execute(
-                "INSERT INTO difficulty (username, pid, val, id) VALUES (?,?,?,?)",
+                "INSERT INTO difficulty (username, pid, val, id) VALUES (%s,%s,%s,%s)",
                 (username, pid, difficulty, rating_id),
             )
         conn.commit()
@@ -40,18 +35,13 @@ def vote(username, difficulty, quality, comment, pid):
     if quality == -1 or 0 <= quality <= 5:
         conn = connect_db()
         cursor = conn.cursor()
-        res = cursor.execute(
-            "SELECT * FROM quality WHERE username=? AND pid=?",
+        cursor.execute(
+            "DELETE FROM quality WHERE username=%s AND pid=%s",
             (username, pid),
         )
-        if res.fetchone() is not None:
-            cursor.execute(
-                "DELETE FROM quality WHERE username=? AND pid=?",
-                (username, pid),
-            )
         if quality != -1:
             cursor.execute(
-                "INSERT INTO quality (username, pid, val, id) VALUES (?,?,?,?)",
+                "INSERT INTO quality (username, pid, val, id) VALUES (%s,%s,%s,%s)",
                 (username, pid, quality, rating_id),
             )
         conn.commit()
@@ -60,18 +50,13 @@ def vote(username, difficulty, quality, comment, pid):
     if len(comment) <= 500:
         conn = connect_db()
         cursor = conn.cursor()
-        res = cursor.execute(
-            "SELECT * FROM comment WHERE username=? AND pid=?",
+        cursor.execute(
+            "DELETE FROM comment WHERE username=%s AND pid=%s",
             (username, pid),
         )
-        if res.fetchone() is not None:
-            cursor.execute(
-                "DELETE FROM comment WHERE username=? AND pid=?",
-                (username, pid),
-            )
         if comment != "":
             cursor.execute(
-                "INSERT INTO comment (username, pid, val, id) VALUES (?,?,?,?)",
+                "INSERT INTO comment (username, pid, val, id) VALUES (%s,%s,%s,%s)",
                 (username, pid, comment, rating_id),
             )
         conn.commit()
@@ -87,17 +72,17 @@ def get_vote(username, pid):
     conn = connect_db()
     cursor = conn.cursor()
     cursor.execute(
-        "SELECT val FROM difficulty WHERE pid=? AND username=?",
+        "SELECT val FROM difficulty WHERE pid=%s AND username=%s",
         (pid, username),
     )
     difficulty = cursor.fetchone()
     cursor.execute(
-        "SELECT val FROM quality WHERE pid=? AND username=?",
+        "SELECT val FROM quality WHERE pid=%s AND username=%s",
         (pid, username),
     )
     quality = cursor.fetchone()
     cursor.execute(
-        "SELECT val FROM comment WHERE pid=? AND username=?",
+        "SELECT val FROM comment WHERE pid=%s AND username=%s",
         (pid, username),
     )
     comment = cursor.fetchone()
@@ -124,11 +109,11 @@ def get_votes(pid):
     """
     conn = connect_db()
     cursor = conn.cursor()
-    cursor.execute("SELECT username, val, id FROM difficulty WHERE pid=?", (pid,))
+    cursor.execute("SELECT username, val, id FROM difficulty WHERE pid=%s", (pid,))
     difficulty = cursor.fetchall()
-    cursor.execute("SELECT username, val, id FROM quality WHERE pid=?", (pid,))
+    cursor.execute("SELECT username, val, id FROM quality WHERE pid=%s", (pid,))
     quality = cursor.fetchall()
-    cursor.execute("SELECT username, val, id FROM comment WHERE pid=?", (pid,))
+    cursor.execute("SELECT username, val, id FROM comment WHERE pid=%s", (pid,))
     comment = cursor.fetchall()
 
     rating = {}
@@ -190,7 +175,7 @@ def report(idx):
     conn = connect_db()
     cursor = conn.cursor()
     cursor.execute(
-        "SELECT username, val, pid FROM difficulty WHERE id=?",
+        "SELECT username, val, pid FROM difficulty WHERE id=%s",
         (idx,),
     )
     res = cursor.fetchone()
@@ -198,13 +183,13 @@ def report(idx):
         username = res[0]
         difficulty = res[1]
         pid = res[2]
-    cursor.execute("SELECT username, val, pid FROM quality WHERE id=?", (idx,))
+    cursor.execute("SELECT username, val, pid FROM quality WHERE id=%s", (idx,))
     res = cursor.fetchone()
     if res is not None:
         username = res[0]
         quality = res[1]
         pid = res[2]
-    cursor.execute("SELECT username, val, pid FROM comment WHERE id=?", (idx,))
+    cursor.execute("SELECT username, val, pid FROM comment WHERE id=%s", (idx,))
     res = cursor.fetchone()
     if res is not None:
         username = res[0]
@@ -218,7 +203,8 @@ def report(idx):
     conn = connect_db()
     cursor = conn.cursor()
     cursor.execute(
-        "INSERT INTO report (username, pid, difficulty, quality, comment, id) VALUES (?,?,?,?,?,?)",
+        "INSERT INTO report (username, pid, difficulty, quality, comment, id) \
+        VALUES (%s,%s,%s,%s,%s,%s)",
         (username, pid, difficulty, quality, comment, idx),
     )
     conn.commit()
@@ -255,13 +241,13 @@ def update_report(idx, delete):
     """
     conn = connect_db()
     cursor = conn.cursor()
-    cursor.execute("SELECT pid FROM report WHERE id=?", (idx,))
+    cursor.execute("SELECT pid FROM report WHERE id=%s", (idx,))
     pid = cursor.fetchone()
     if delete:
-        cursor.execute("DELETE FROM difficulty WHERE id=?", (idx,))
-        cursor.execute("DELETE FROM quality WHERE id=?", (idx,))
-        cursor.execute("DELETE FROM comment WHERE id=?", (idx,))
-    cursor.execute("DELETE FROM report WHERE id=?", (idx,))
+        cursor.execute("DELETE FROM difficulty WHERE id=%s", (idx,))
+        cursor.execute("DELETE FROM quality WHERE id=%s", (idx,))
+        cursor.execute("DELETE FROM comment WHERE id=%s", (idx,))
+    cursor.execute("DELETE FROM report WHERE id=%s", (idx,))
     conn.commit()
     conn.close()
     if pid is not None:

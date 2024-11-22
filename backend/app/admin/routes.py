@@ -37,14 +37,19 @@ def edit_permissions_route():
         return redirect("/")
     conn = connect_db()
     cursor = conn.cursor()
-    cursor.execute(
-        "UPDATE users SET admin=? WHERE username=?",
-        (request.form.get("admin"), request.form.get("username")),
-    )
     cursor.execute("SELECT username FROM users WHERE admin=1")
     admins = cursor.fetchall()
-    if len(admins) == 0:
-        conn.rollback()
+    if (
+        len(admins) == 1
+        and request.form.get("username") == admins[0][0]
+        and request.form.get("admin") == "0"
+    ):
+        conn.close()
+        return "Cannot remove the only admin"
+    cursor.execute(
+        "UPDATE users SET admin=%s WHERE username=%s",
+        (request.form.get("admin"), request.form.get("username")),
+    )
     conn.commit()
     conn.close()
     return redirect("/admin/")
@@ -78,7 +83,7 @@ def update_user_password_route():
     conn = connect_db()
     cursor = conn.cursor()
     cursor.execute(
-        "UPDATE users SET password=? WHERE username=?",
+        "UPDATE users SET password=%s WHERE username=%s",
         (
             hashlib.sha256(request.form.get("password").encode("utf-8")).hexdigest(),
             request.form.get("username"),

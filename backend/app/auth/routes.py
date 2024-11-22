@@ -36,20 +36,18 @@ def login_route():
     # check user exist
     conn = connect_db()
     cursor = conn.cursor()
-    cursor.execute("SELECT * FROM users WHERE username=?", (username,))
+    cursor.execute("SELECT * FROM users WHERE username=%s", (username,))
     user = cursor.fetchone()
     conn.close()
     if user is None:
         # register user
         conn = connect_db()
         cursor = conn.cursor()
-        cursor.execute("DELETE FROM verify WHERE username=?", (username,))
-        cursor.execute(
-            "DELETE FROM verify WHERE julianday('now') - julianday(created_at) >= 1"
-        )
+        cursor.execute("DELETE FROM verify WHERE username=%s", (username,))
+        cursor.execute("DELETE FROM verify WHERE created_at < NOW() - INTERVAL 1 HOUR")
         idx = random_string(128)
         cursor.execute(
-            "INSERT INTO verify (id, username, password, code) VALUES (?,?,?,?)",
+            "INSERT INTO verify (id, username, password, code) VALUES (%s,%s,%s,%s)",
             (
                 idx,
                 username,
@@ -64,7 +62,7 @@ def login_route():
     # check password
     conn = connect_db()
     cursor = conn.cursor()
-    cursor.execute("SELECT id, password FROM users WHERE username=?", (username,))
+    cursor.execute("SELECT id, password FROM users WHERE username=%s", (username,))
     user = cursor.fetchone()
     if hashlib.sha256(password.encode("utf-8")).hexdigest() != user[1]:
         message = "Password or username is incorrect. Please try again."
@@ -77,7 +75,7 @@ def login_route():
     cursor.execute("SELECT id FROM users")
     res = cursor.fetchall()
     if len(res) == 1:
-        cursor.execute("UPDATE users SET admin=1 WHERE id=?", (user[0],))
+        cursor.execute("UPDATE users SET admin=1 WHERE id=%s", (user[0],))
         conn.commit()
     conn.close()
 
@@ -106,10 +104,8 @@ def verify_route():
         return redirect("/login/")
     conn = connect_db()
     cursor = conn.cursor()
-    cursor.execute(
-        "DELETE FROM verify WHERE julianday('now') - julianday(created_at) >= 1"
-    )
-    cursor.execute("SELECT username, password, code FROM verify WHERE id=?", (idx,))
+    cursor.execute("DELETE FROM verify WHERE created_at < NOW() - INTERVAL 1 HOUR")
+    cursor.execute("SELECT username, password, code FROM verify WHERE id=%s", (idx,))
     user = cursor.fetchone()
     conn.close()
     if user is None:
@@ -128,13 +124,14 @@ def verify_route():
         return redirect(f"/verify?id={idx}&error={parse.quote(message)}")
     conn = connect_db()
     cursor = conn.cursor()
-    cursor.execute("DELETE FROM verify WHERE id=?", (idx,))
+    cursor.execute("DELETE FROM verify WHERE id=%s", (idx,))
     cursor.execute(
-        "INSERT INTO users (id, username, password) VALUES (?,?,?)",
+        "INSERT INTO users (id, username, password, status) VALUES (%s,%s,%s,%s)",
         (
             random_string(128),
             username,
             password,
+            "{}",
         ),
     )
     conn.commit()
@@ -167,7 +164,7 @@ def update_password_route():
         return redirect(f"/update_password/?error={parse.quote(message)}")
     conn = connect_db()
     cursor = conn.cursor()
-    cursor.execute("SELECT password FROM users WHERE id=?", (idx,))
+    cursor.execute("SELECT password FROM users WHERE id=%s", (idx,))
     user = cursor.fetchone()
     conn.close()
     if user is None:
@@ -178,7 +175,7 @@ def update_password_route():
     conn = connect_db()
     cursor = conn.cursor()
     cursor.execute(
-        "UPDATE users SET id=?, password=? WHERE id=?",
+        "UPDATE users SET id=%s, password=%s WHERE id=%s",
         (
             random_string(128),
             hashlib.sha256(new_password.encode("utf-8")).hexdigest(),

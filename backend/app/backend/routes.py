@@ -96,10 +96,10 @@ def auto_update_status(username):
     oj_status = auto_status(username)
     conn = connect_db()
     cursor = conn.cursor()
-    cursor.execute("SELECT status FROM users WHERE username=?", (username,))
+    cursor.execute("SELECT status FROM users WHERE username=%s", (username,))
     system_status = json.loads(cursor.fetchone()[0])
     for oj_pid, status in oj_status.items():
-        cursor.execute("SELECT pid FROM problems WHERE ojpid=?", (oj_pid,))
+        cursor.execute("SELECT pid FROM problems WHERE ojpid=%s", (oj_pid,))
         system_pid = cursor.fetchone()
         if system_pid is None:
             continue
@@ -109,7 +109,7 @@ def auto_update_status(username):
         else:
             system_status[system_pid] = status
     cursor.execute(
-        "UPDATE users SET status=? WHERE username=?",
+        "UPDATE users SET status=%s WHERE username=%s",
         (json.dumps(system_status), username),
     )
     conn.commit()
@@ -131,7 +131,7 @@ def get_status_route():
 
     conn = connect_db()
     cursor = conn.cursor()
-    cursor.execute("SELECT status FROM users WHERE username=?", (username,))
+    cursor.execute("SELECT status FROM users WHERE username=%s", (username,))
     res = cursor.fetchone()
     if res is None:
         return ""
@@ -155,7 +155,7 @@ def update_status_route():
     status = request.values.get("status")
     conn = connect_db()
     cursor = conn.cursor()
-    cursor.execute("UPDATE users SET status=? WHERE username=?", (status, username))
+    cursor.execute("UPDATE users SET status=%s WHERE username=%s", (status, username))
     conn.commit()
     conn.close()
     return ""

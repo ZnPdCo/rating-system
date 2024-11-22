@@ -15,18 +15,18 @@ def add_problem(contest, name, info):
     cursor = conn.cursor()
     # have same pid
     if "pid" in info:
-        cursor.execute("SELECT contest FROM problems WHERE OJpid =?", (info["pid"],))
+        cursor.execute("SELECT contest FROM problems WHERE OJpid =%s", (info["pid"],))
         res = cursor.fetchone()
         if res is not None:
             cursor.execute(
-                "UPDATE problems SET contest = ? WHERE OJpid = ?",
+                "UPDATE problems SET contest = %s WHERE OJpid = %s",
                 (contest + "(" + name + ")" + "," + res[0], info["pid"]),
             )
             conn.commit()
             conn.close()
             return
     cursor.execute(
-        "INSERT INTO problems (OJpid, contest, name, info) VALUES (?,?,?,?)",
+        "INSERT INTO problems (OJpid, contest, name, info) VALUES (%s,%s,%s,%s)",
         (
             (info["pid"] if "pid" in info else ""),
             contest,
@@ -45,7 +45,7 @@ def update_problem(pid, contest, name, info):
     conn = connect_db()
     cursor = conn.cursor()
     cursor.execute(
-        "UPDATE problems SET OJpid=?, contest=?, name=?, info=? WHERE pid=?",
+        "UPDATE problems SET OJpid=%s, contest=%s, name=%s, info=%s WHERE pid=%s",
         (
             (info["pid"] if "pid" in info else ""),
             contest,
@@ -64,7 +64,7 @@ def delete_problem(pid):
     """
     conn = connect_db()
     cursor = conn.cursor()
-    cursor.execute("DELETE FROM problems WHERE pid=?", (pid,))
+    cursor.execute("DELETE FROM problems WHERE pid=%s", (pid,))
     conn.commit()
     conn.close()
 

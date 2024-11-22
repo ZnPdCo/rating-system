@@ -3,7 +3,8 @@ Filename: database.py
 Author: ZnPdCo
 """
 
-import sqlite3 as sl
+import pymysql
+from app.config import config
 
 
 def connect_db():
@@ -13,98 +14,102 @@ def connect_db():
     Returns:
         conn: Connection object to the database.
     """
-    try:
-        conn = sl.connect("rating.db", check_same_thread=False)
-        cursor = conn.cursor()
-        cursor.execute(
-            """ 
+    conn = pymysql.connect(
+        host=config["db_host"],
+        port=config["db_port"],
+        user=config["db_user"],
+        password=config["db_password"],
+        db=config["db_name"],
+        charset="utf8mb4",
+    )
+    cursor = conn.cursor()
+    cursor.execute(
+        """ 
 CREATE TABLE IF NOT EXISTS problems (
-	pid INTEGER PRIMARY KEY AUTOINCREMENT, 
-    contest VARCHAR(2048), 
-    name VARCHAR(2048), 
-    difficulty DOUBLE DEFAULT null,
-    quality DOUBLE DEFAULT null,
-    difficulty2 DOUBLE DEFAULT null,
-    quality2 DOUBLE DEFAULT null,
-    cnt1 INTEGER DEFAULT 0,
-    cnt2 INTEGER DEFAULT 0,
-    info json,
-    OJpid VARCHAR(2048) DEFAULT ""
+pid INTEGER PRIMARY KEY AUTO_INCREMENT, 
+contest VARCHAR(255), 
+name VARCHAR(255), 
+difficulty DOUBLE DEFAULT null,
+quality DOUBLE DEFAULT null,
+difficulty2 DOUBLE DEFAULT null,
+quality2 DOUBLE DEFAULT null,
+cnt1 INTEGER DEFAULT 0,
+cnt2 INTEGER DEFAULT 0,
+info VARCHAR(255),
+OJpid VARCHAR(255) DEFAULT ""
 ); 
-                    """
-        )
-        cursor.execute(
-            """ 
+                """
+    )
+    cursor.execute(
+        """ 
 CREATE TABLE IF NOT EXISTS users (
-    id VARCHAR(2048) PRIMARY KEY,
-    username VARCHAR(2048),
-    password VARCHAR(2048),
-    admin INTEGER DEFAULT 0,
-    status json DEFAULT "{}"
+id VARCHAR(255) PRIMARY KEY,
+username VARCHAR(255),
+password VARCHAR(255),
+admin INTEGER DEFAULT 0,
+status MEDIUMTEXT
 ); 
-                    """
-        )
-        cursor.execute(
-            """ 
+                """
+    )
+    cursor.execute(
+        """ 
 CREATE TABLE IF NOT EXISTS difficulty (
-    id VARCHAR(2048) PRIMARY KEY,
-	username VARCHAR(2048), 
-    pid INTEGER, 
-    val DOUBLE
-    ); 
-                    """
-        )
-        cursor.execute(
-            """ 
+id VARCHAR(255) PRIMARY KEY,
+username VARCHAR(255), 
+pid INTEGER, 
+val DOUBLE
+); 
+                """
+    )
+    cursor.execute(
+        """ 
 CREATE TABLE IF NOT EXISTS quality (
-    id VARCHAR(2048) PRIMARY KEY,
-	username VARCHAR(2048), 
-    pid INTEGER, 
-    val DOUBLE
-    ); 
-                    """
-        )
-        cursor.execute(
-            """ 
+id VARCHAR(255) PRIMARY KEY,
+username VARCHAR(255), 
+pid INTEGER, 
+val DOUBLE
+); 
+                """
+    )
+    cursor.execute(
+        """ 
 CREATE TABLE IF NOT EXISTS comment (
-    id VARCHAR(2048) PRIMARY KEY,
-	username VARCHAR(2048), 
-    pid INTEGER, 
-    val VARCHAR(2048)
-    ); 
-                    """
-        )
-        cursor.execute(
-            """ 
+id VARCHAR(255) PRIMARY KEY,
+username VARCHAR(255), 
+pid INTEGER, 
+val VARCHAR(255)
+); 
+                """
+    )
+    cursor.execute(
+        """ 
 CREATE TABLE IF NOT EXISTS report (
-    id VARCHAR(2048),
-    pid INTEGER, 
-    difficulty DOUBLE,
-    quality DOUBLE,
-    comment VARCHAR(2048),
-    username VARCHAR(2048)
-    ); 
-                    """
-        )
-        cursor.execute(
-            """ 
+id VARCHAR(255),
+pid INTEGER, 
+difficulty DOUBLE,
+quality DOUBLE,
+comment VARCHAR(255),
+username VARCHAR(255)
+); 
+                """
+    )
+    cursor.execute(
+        """ 
 CREATE TABLE IF NOT EXISTS verify (
-    id VARCHAR(2048),
-    username VARCHAR(2048),
-    password VARCHAR(2048),
-    code VARCHAR(2048),
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-    ); 
-                    """
-        )
-        cursor.execute(
-            """ 
+id VARCHAR(255),
+username VARCHAR(255),
+password VARCHAR(255),
+code VARCHAR(255),
+created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+); 
+                """
+    )
+    cursor.execute(
+        """ 
 CREATE TABLE IF NOT EXISTS announcement (
-    announcement VARCHAR(2048)
-    ); 
-                    """
-        )
-        conn.commit()
-    except sl.Error:
-        conn = None
+announcement TEXT
+); 
+                """
+    )
+    conn.commit()
     return conn

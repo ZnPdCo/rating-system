@@ -18,7 +18,7 @@ def check_login(uid):
     """
     conn = connect_db()
     cursor = conn.cursor()
-    cursor.execute("SELECT * FROM users WHERE id=?", (uid,))
+    cursor.execute("SELECT * FROM users WHERE id=%s", (uid,))
     user = cursor.fetchone()
     conn.close()
     if user is None:
@@ -35,7 +35,7 @@ def check_admin(uid):
     """
     conn = connect_db()
     cursor = conn.cursor()
-    cursor.execute("SELECT admin FROM users WHERE id=?", (uid,))
+    cursor.execute("SELECT admin FROM users WHERE id=%s", (uid,))
     admin = cursor.fetchone()
     conn.close()
     if admin is None:
@@ -54,7 +54,7 @@ def get_username(uid):
     """
     conn = connect_db()
     cursor = conn.cursor()
-    cursor.execute("SELECT username FROM users WHERE id=?", (uid,))
+    cursor.execute("SELECT username FROM users WHERE id=%s", (uid,))
     username = cursor.fetchone()
     conn.close()
     if username is None:
@@ -79,10 +79,10 @@ def update_rating(pid):
     """
     conn = connect_db()
     cursor = conn.cursor()
-    cursor.execute("SELECT val FROM difficulty WHERE pid=?", (pid,))
+    cursor.execute("SELECT val FROM difficulty WHERE pid=%s", (pid,))
     res = cursor.fetchall()
     difficulty = [item[0] for item in res]
-    cursor.execute("SELECT val FROM quality WHERE pid=?", (pid,))
+    cursor.execute("SELECT val FROM quality WHERE pid=%s", (pid,))
     res = cursor.fetchall()
     quality = [item[0] for item in res]
 
@@ -92,31 +92,31 @@ def update_rating(pid):
     quality2 = np.median(np.array(quality)) if len(quality) > 0 else None
 
     if difficulty1 is None:
-        cursor.execute("UPDATE problems SET difficulty=null WHERE pid=?", (pid,))
+        cursor.execute("UPDATE problems SET difficulty=null WHERE pid=%s", (pid,))
     else:
         cursor.execute(
-            "UPDATE problems SET difficulty=? WHERE pid=?", (difficulty1, pid)
+            "UPDATE problems SET difficulty=%s WHERE pid=%s", (difficulty1, pid)
         )
 
     if difficulty2 is None:
-        cursor.execute("UPDATE problems SET difficulty2=null WHERE pid=?", (pid,))
+        cursor.execute("UPDATE problems SET difficulty2=null WHERE pid=%s", (pid,))
     else:
         cursor.execute(
-            "UPDATE problems SET difficulty2=? WHERE pid=?", (difficulty2, pid)
+            "UPDATE problems SET difficulty2=%s WHERE pid=%s", (difficulty2, pid)
         )
 
     if quality1 is None:
-        cursor.execute("UPDATE problems SET quality=null WHERE pid=?", (pid,))
+        cursor.execute("UPDATE problems SET quality=null WHERE pid=%s", (pid,))
     else:
-        cursor.execute("UPDATE problems SET quality=? WHERE pid=?", (quality1, pid))
+        cursor.execute("UPDATE problems SET quality=%s WHERE pid=%s", (quality1, pid))
 
     if quality2 is None:
-        cursor.execute("UPDATE problems SET quality2=null WHERE pid=?", (pid,))
+        cursor.execute("UPDATE problems SET quality2=null WHERE pid=%s", (pid,))
     else:
-        cursor.execute("UPDATE problems SET quality2=? WHERE pid=?", (quality2, pid))
+        cursor.execute("UPDATE problems SET quality2=%s WHERE pid=%s", (quality2, pid))
 
     cursor.execute(
-        "UPDATE problems SET cnt1=?, cnt2=? WHERE pid=?",
+        "UPDATE problems SET cnt1=%s, cnt2=%s WHERE pid=%s",
         (len(difficulty), len(quality), pid),
     )
     conn.commit()
