@@ -1,27 +1,24 @@
-name: Add new features
-description: Apply to add a new feature
-title: "[Feature] "
-labels: ["enhancement", "help wanted"]
+name: 想要点新功能 | Feature request
+description: 对这个项目提个建议 | Suggest an idea for this project
+title: "[Feature]"
+labels: ["想要点新功能 | Feature Request", "需要帮助 | Help Wanted"]
 
-body:
-  - type: markdown
-    attributes:
-      value: Welcome to raise new issues for the Rating System! Please fill out the following form
+- body:
   - type: textarea
-    id: page
+    id: about-feature
     attributes:
-      label: The problem I encountered is
+      label: 你的功能请求是否与某些问题有关？请描述。 | Is your feature request related to a problem? Please describe.
     validations:
-      required: true
+      required: false
   - type: textarea
-    id: problem
+    id: solution
     attributes:
-      label: I hope to have such a solution
+      label: 描述您想要的解决方案 | Describe the solution you'd like
     validations:
-      required: true
+      required: false
   - type: textarea
-    id: alternate
+    id: additional-context
     attributes:
-      label: I think these alternative options are also acceptable
+      label: 如果，你还有想说的话…… | Add any other context about the problem here. 
     validations:
       required: false
