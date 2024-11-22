@@ -3,7 +3,7 @@ description: "为了解决现存争议、完善项目方针等而发起一个新
 title: "[RFC] "
 labels: ["提案 | RFC", "需要帮助 | Help Wanted"]
 
-- body:
+body:
 - type: textarea
   id: rfc
   attributes:

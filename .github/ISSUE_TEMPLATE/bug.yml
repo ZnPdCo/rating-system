@@ -3,7 +3,7 @@ description: "汇报一个错误让工作人员处理 | Create a report to help 
 title: "[BUG]"
 labels: ["整叉劈了 | Bug", "需要帮助 | Help Wanted"]
 
-- body:
+body:
 - type: textarea
   id: what-happened
   attributes:
