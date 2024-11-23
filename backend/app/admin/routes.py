@@ -180,6 +180,7 @@ def update_announcement_route():
     update_announcement(request.form.get("announcement"))
     return redirect("/admin/")
 
+
 @admin_bp.route("/export_database/", methods=["GET"])
 def export_database_route():
     """
@@ -188,10 +189,12 @@ def export_database_route():
     if not check_admin(request.cookies.get("id")):
         return redirect("/")
     sqlfromat = "mysqldump -h%s -u%s -p%s -P%s %s > database.sql"
-    sql = (sqlfromat % (config['db_host'],
-                        config['db_user'],
-                        config['db_password'],
-                        config['db_port'],
-                        config['db_name']))
+    sql = sqlfromat % (
+        config["db_host"],
+        config["db_user"],
+        config["db_password"],
+        config["db_port"],
+        config["db_name"],
+    )
     os.system(sql)
     return send_file("database.sql", as_attachment=True)
