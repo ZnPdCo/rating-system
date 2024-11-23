@@ -238,5 +238,10 @@ function addUpdateLinks(row, id) {
       </div>
       <button type="submit" class="ui blue submit button">提交</button>
     </form>
+
+    <Message attached header="导出数据库" style="margin-top: 20px" />
+    <form class="ui form attached fluid segment" method="get" action="/admin/export_database/">
+      <button type="submit" class="ui blue submit button">导出</button>
+    </form>
   </main>
 </template>

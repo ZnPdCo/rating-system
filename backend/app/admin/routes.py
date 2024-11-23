@@ -5,13 +5,15 @@ Author: ZnPdCo
 
 import json
 import hashlib
-from flask import render_template, request, Blueprint, redirect
+import os
+from flask import render_template, request, Blueprint, redirect, send_file
 from app.database import connect_db
 from app.utils import check_admin
 from app.custom.auto_problems import auto_problems
 from app.problem.api import add_problem, update_problem, delete_problem
 from app.announcement.api import update_announcement
 from app.vote.api import update_report, get_reports
+from app.config import config
 
 admin_bp = Blueprint("admin", __name__)
 
@@ -177,3 +179,19 @@ def update_announcement_route():
         return redirect("/")
     update_announcement(request.form.get("announcement"))
     return redirect("/admin/")
+
+@admin_bp.route("/export_database/", methods=["GET"])
+def export_database_route():
+    """
+    Export database
+    """
+    if not check_admin(request.cookies.get("id")):
+        return redirect("/")
+    sqlfromat = "mysqldump -h%s -u%s -p%s -P%s %s > database.sql"
+    sql = (sqlfromat % (config['db_host'],
+                        config['db_user'],
+                        config['db_password'],
+                        config['db_port'],
+                        config['db_name']))
+    os.system(sql)
+    return send_file("database.sql", as_attachment=True)

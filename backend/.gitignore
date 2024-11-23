@@ -30,4 +30,4 @@ coverage
 *.tsbuildinfo
 
 __pycache__
-rating.db
+database.sql
