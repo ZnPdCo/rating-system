@@ -12,6 +12,7 @@ const voteModal = ref(false)
 const pid = ref(1)
 const showVotesModal = ref(false)
 const detailsModal = ref(false)
+const loggedIn = window.loggedIn
 
 function name2Str(pid, name, func) {
   statusData = JSON.parse(localStorage.getItem('status'))
@@ -171,6 +172,9 @@ function showTable() {
           .html('<a>投票</a>')
           .click(function () {
             pid.value = data['pid']
+            if (!loggedIn) {
+              router.push('/login')
+            }
             voteModal.value = true
           }),
       )
