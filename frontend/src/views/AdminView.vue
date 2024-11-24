@@ -45,6 +45,8 @@ $.ajax({
     var table = $('#report-table tbody')
     data.forEach(function (report) {
       var row = $('<tr>')
+      row.append($('<td>').text(report['pid']))
+      row.append($('<td>').text(report['username']))
       row.append($('<td>').text(report['difficulty']))
       row.append($('<td>').text(report['quality']))
       row.append($('<td>').text(report['comment']))
@@ -207,6 +209,8 @@ function addUpdateLinks(row, id) {
     <table class="ui left aligned table" id="report-table">
       <thead>
         <tr>
+          <th>Pid</th>
+          <th>用户名</th>
           <th>难度</th>
           <th>质量</th>
           <th>评论</th>
