@@ -39,18 +39,9 @@ def edit_permissions_route():
         return redirect("/")
     conn = connect_db()
     cursor = conn.cursor()
-    cursor.execute("SELECT username FROM users WHERE admin=1")
-    admins = cursor.fetchall()
-    if (
-        len(admins) == 1
-        and request.form.get("username") == admins[0][0]
-        and request.form.get("admin") == "0"
-    ):
-        conn.close()
-        return "Cannot remove the only admin"
     cursor.execute(
-        "UPDATE users SET admin=%s WHERE username=%s",
-        (request.form.get("admin"), request.form.get("username")),
+        "UPDATE users SET permission=%s WHERE username=%s",
+        (request.form.get("permission"), request.form.get("username")),
     )
     conn.commit()
     conn.close()
@@ -66,12 +57,12 @@ def get_users_route():
         return redirect("/")
     conn = connect_db()
     cursor = conn.cursor()
-    cursor.execute("SELECT username, admin FROM users")
+    cursor.execute("SELECT username, permission FROM users")
     users = cursor.fetchall()
     conn.close()
     res = []
     for user in users:
-        res.append({"username": user[0], "admin": user[1]})
+        res.append({"username": user[0], "permission": user[1]})
     return json.dumps(res), 200, {"Content-Type": "application/json"}
 
 

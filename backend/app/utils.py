@@ -6,6 +6,7 @@ Author: ZnPdCo
 import string
 import random
 import numpy as np
+import app.constants
 from app.database import connect_db
 
 
@@ -18,12 +19,33 @@ def check_login(uid):
     """
     conn = connect_db()
     cursor = conn.cursor()
-    cursor.execute("SELECT * FROM users WHERE id=%s", (uid,))
-    user = cursor.fetchone()
+    cursor.execute("SELECT permission FROM users WHERE id=%s", (uid,))
+    permission = cursor.fetchone()
     conn.close()
-    if user is None:
+    if permission is None:
         return False
-    return True
+    if permission[0] & app.constants.permission["login"]:
+        return True
+    return False
+
+
+def check_vote(uid):
+    """
+    Check if the user with the given id can vote.
+
+    Returns:
+        True if the user can vote, False otherwise.
+    """
+    conn = connect_db()
+    cursor = conn.cursor()
+    cursor.execute("SELECT permission FROM users WHERE id=%s", (uid,))
+    permission = cursor.fetchone()
+    conn.close()
+    if permission is None:
+        return False
+    if permission[0] & app.constants.permission["vote"]:
+        return True
+    return False
 
 
 def check_admin(uid):
@@ -35,14 +57,14 @@ def check_admin(uid):
     """
     conn = connect_db()
     cursor = conn.cursor()
-    cursor.execute("SELECT admin FROM users WHERE id=%s", (uid,))
-    admin = cursor.fetchone()
+    cursor.execute("SELECT permission FROM users WHERE id=%s", (uid,))
+    permission = cursor.fetchone()
     conn.close()
-    if admin is None:
+    if permission is None:
         return False
-    if admin[0] == 0:
-        return False
-    return True
+    if permission[0] & app.constants.permission["admin"]:
+        return True
+    return False
 
 
 def get_username(uid):

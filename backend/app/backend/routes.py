@@ -6,7 +6,7 @@ Author: ZnPdCo
 import json
 from flask import request, Blueprint
 from app.database import connect_db
-from app.utils import check_login, get_username
+from app.utils import check_login, get_username, check_vote
 from app.custom.auto_status import auto_status
 from app.config import config
 from app.announcement.api import get_announcement
@@ -31,6 +31,8 @@ def vote_route():
     """
     if not check_login(request.cookies.get("id")):
         return ""
+    if not check_vote(request.cookies.get("id")):
+        return "-1"
     if request.form.get("pid") is None:
         return ""
 

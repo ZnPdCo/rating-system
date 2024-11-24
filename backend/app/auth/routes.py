@@ -8,7 +8,8 @@ from urllib import parse
 from flask import render_template, request, Blueprint, redirect
 from app.custom.verify import verify_account
 from app.database import connect_db
-from app.utils import random_string
+import app.constants
+from app.utils import random_string, check_login
 
 auth_bp = Blueprint("auth", __name__)
 
@@ -67,6 +68,7 @@ def login_route():
     if hashlib.sha256(password.encode("utf-8")).hexdigest() != user[1]:
         message = "Password or username is incorrect. Please try again."
         return redirect(f"/login/?error={parse.quote(message)}")
+
     conn.close()
 
     # if the first username, it is admin
@@ -75,9 +77,20 @@ def login_route():
     cursor.execute("SELECT id FROM users")
     res = cursor.fetchall()
     if len(res) == 1:
-        cursor.execute("UPDATE users SET admin=1 WHERE id=%s", (user[0],))
+        cursor.execute(
+            "UPDATE users SET permission=%s WHERE id=%s",
+            (
+                app.constants.role["admin"],
+                user[0],
+            ),
+        )
         conn.commit()
     conn.close()
+
+    # if the user cannot login, redirect to login page
+    if not check_login(user[0]):
+        message = "Your account is locked, please contact the administrator."
+        return redirect(f"/login/?error={parse.quote(message)}")
 
     resp = redirect("/")
     resp.set_cookie("id", user[0], httponly=False, max_age=3600 * 24 * 30)
@@ -126,12 +139,13 @@ def verify_route():
     cursor = conn.cursor()
     cursor.execute("DELETE FROM verify WHERE id=%s", (idx,))
     cursor.execute(
-        "INSERT INTO users (id, username, password, status) VALUES (%s,%s,%s,%s)",
+        "INSERT INTO users (id, username, password, status, permission) VALUES (%s,%s,%s,%s,%s)",
         (
             random_string(128),
             username,
             password,
             "{}",
+            app.constants.role["user"],
         ),
     )
     conn.commit()

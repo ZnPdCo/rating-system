@@ -46,7 +46,7 @@ CREATE TABLE IF NOT EXISTS users (
 id VARCHAR(255) PRIMARY KEY,
 username VARCHAR(255),
 password VARCHAR(255),
-admin INTEGER DEFAULT 0,
+permission INTEGER DEFAULT 0,
 status MEDIUMTEXT
 ); 
                 """

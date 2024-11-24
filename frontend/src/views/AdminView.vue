@@ -32,7 +32,7 @@ $(document).ready(function () {
       data.forEach(function (user) {
         var row = $('<tr>')
         row.append($('<td>').text(user['username']))
-        row.append($('<td>').text(user['admin']))
+        row.append($('<td>').text(user['permission']))
         table.append(row)
       })
     },
@@ -88,8 +88,8 @@ function addUpdateLinks(row, id) {
         <input placeholder="用户名" type="text" name="username" />
       </div>
       <div class="field">
-        <label>管理员(1表示管理员，0表示普通用户)</label>
-        <input placeholder="管理员" type="number" name="admin" value="1" />
+        <label>管理员(1表示登录权限，2表示投票权限，4表示管理权限，或起来)</label>
+        <input placeholder="管理员" type="number" name="permission" value="3" />
       </div>
       <button type="submit" class="ui blue submit button">提交</button>
     </form>
@@ -97,7 +97,7 @@ function addUpdateLinks(row, id) {
       <thead>
         <tr>
           <th>用户名</th>
-          <th>管理员</th>
+          <th>权限</th>
         </tr>
       </thead>
       <tbody></tbody>

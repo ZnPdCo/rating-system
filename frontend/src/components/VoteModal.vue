@@ -27,7 +27,11 @@ function SendVote() {
       quality: quality,
       comment: comment,
     },
-    success: function () {
+    success: function (data) {
+      if (data == -1) {
+        alert('您暂无投票权限，请联系管理员')
+        return
+      }
       emit('rating-change')
     },
   })
