@@ -3,6 +3,7 @@ Filename: app.py
 Author: ZnPdCo
 """
 
+import json
 from flask import Flask, request
 from app.main.routes import main_bp
 from app.auth.routes import auth_bp
@@ -13,6 +14,8 @@ from app.config import config
 
 DIR_PATH_BASE = "../../frontend/"
 
+with open("../package.json", "r", encoding="utf-8") as f:
+    BACKEND_VERSION = json.load(f)["version"]
 
 class WanmaitFlask(Flask):
     """
@@ -46,4 +49,5 @@ def inject_globals():
         "is_admin": check_admin(request.cookies.get("id")),
         "oj_name": config["oj_name"],
         "auto_status": config["auto_status"],
+        "backend_version": BACKEND_VERSION,
     }

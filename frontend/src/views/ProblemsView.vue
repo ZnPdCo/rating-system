@@ -191,6 +191,18 @@ function showTable() {
     table.append(row)
   }
 }
+function updateProblemsData() {
+  $.ajax({
+    url: '/backend/get_problems/',
+    type: 'GET',
+    success: function (data) {
+      for (let i = 0; i < problemsData.length; i++) {
+        problemsData[i] = data.find((item) => item['pid'] == problemsData[i]['pid'])
+      }
+      showTable()
+    },
+  })
+}
 function changeStatus(pid) {
   statusData = JSON.parse(localStorage.getItem('status'))
   if (!(pid in statusData)) statusData[pid] = 0
@@ -409,7 +421,7 @@ table {
       <tbody></tbody>
     </table>
   </div>
-  <VoteModal v-model:show="voteModal" v-model:pid="pid" @rating-change="router.go(0)" />
+  <VoteModal v-model:show="voteModal" v-model:pid="pid" @rating-change="updateProblemsData()" />
   <SuiModal v-model="showVotesModal">
     <div class="header">显示投票</div>
     <div class="content">

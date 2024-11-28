@@ -1,10 +1,13 @@
 <script setup>
+import config from '../package.json'
 import { RouterLink, RouterView } from 'vue-router'
 import { Menu, MenuItem, SuiContainer } from 'vue-fomantic-ui'
 
 const title = window.title
 const isAdmin = window.isAdmin
 const loggedIn = window.loggedIn
+const backendVersion = window.backendVersion
+const frontendVersion = config.version
 </script>
 
 <template>
@@ -31,13 +34,21 @@ const loggedIn = window.loggedIn
   </Menu>
   <SuiContainer>
     <RouterView />
+  </SuiContainer>
+  <div class="ui vertical footer">
     <div class="ui center aligned container">
+      <div class="ui section divider"></div>
       <div class="ui horizontal small divided link list">
-        <p class="item">
-          基于
-          <a href="https://github.com/ZnPdCo/rating-system">Rating System</a>
-        </p>
+        <a class="item" href="https://github.com/ZnPdCo/rating-system">
+          由 Rating System 驱动
+        </a>
+        <a class="item">
+          Frontend v{{ frontendVersion }}
+        </a>
+        <a class="item">
+          Backend v{{ backendVersion }}
+        </a>
       </div>
     </div>
-  </SuiContainer>
+  </div>
 </template>
