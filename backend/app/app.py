@@ -17,6 +17,7 @@ DIR_PATH_BASE = "../../frontend/"
 with open("../package.json", "r", encoding="utf-8") as f:
     BACKEND_VERSION = json.load(f)["version"]
 
+
 class WanmaitFlask(Flask):
     """
     Default is '{{', I'm changing this because Vue.js uses '{{' / '}}'
