@@ -162,7 +162,6 @@ function showTable() {
   for (let i = 0; i < problemsData.length; i++) {
     var type = '未分类'
     if ('type' in problemsData[i]['info']) type = problemsData[i]['info']['type']
-    console.log(type)
     if (!Object.values(options.value).some((el) => el.value == type)) {
       options.value.push({ text: type, value: type })
     }
