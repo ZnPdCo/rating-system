@@ -1,7 +1,7 @@
 <script setup>
 import $ from 'jquery'
-import { ref } from 'vue'
-import { SuiModal } from 'vue-fomantic-ui'
+import { ref, watch } from 'vue'
+import { SuiModal, Dropdown } from 'vue-fomantic-ui'
 import { useRouter } from 'vue-router'
 import VoteModal from '../components/VoteModal.vue'
 
@@ -11,8 +11,14 @@ var statusData = {}
 const voteModal = ref(false)
 const pid = ref(1)
 const showVotesModal = ref(false)
+const selected = ref()
+const options = ref([{ text: '未分类', value: '未分类' }])
 const detailsModal = ref(false)
 const loggedIn = window.loggedIn
+
+watch(selected, () => {
+  showTable()
+})
 
 function name2Str(pid, name, func) {
   statusData = JSON.parse(localStorage.getItem('status'))
@@ -154,6 +160,13 @@ function showTable() {
   let table = $('#problems-table tbody')
   table.empty()
   for (let i = 0; i < problemsData.length; i++) {
+    var type = '未分类'
+    if ('type' in problemsData[i]['info']) type = problemsData[i]['info']['type']
+    console.log(type)
+    if (!Object.values(options.value).some((el) => el.value == type)) {
+      options.value.push({ text: type, value: type })
+    }
+    if (selected.value != undefined && selected.value.value != type) continue
     let row = $('<tr>')
     ;(function (data) {
       row.append($('<td>').text(data['pid']))
@@ -401,10 +414,12 @@ table {
 
 <template>
   <div class="ui bottom attached warning message" style="display: none" id="announcement"></div>
-  <div class="ui toggle checkbox" style="margin-top: 20px">
+  <div class="ui toggle checkbox" style="margin-top: 20px; margin-right: 20px">
     <input type="checkbox" id="use-median" />
     <label>显示中位数数据</label>
   </div>
+  <Dropdown v-model="selected" :options="options" clearable selection placeholder="选择分类" />
+
   <div class="column" style="margin-top: 20px">
     <table class="ui left aligned table" id="problems-table">
       <thead>

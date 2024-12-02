@@ -137,7 +137,7 @@ function addUpdateLinks(row, id) {
           placeholder="额外信息"
           type="text"
           name="info"
-          value='{"links": "https://codeforces.com/contest/2024/problem/A", "pid": "2024A"}'
+          value='{"links": "https://codeforces.com/contest/2024/problem/A", "pid": "2024A", "type": "未分类"}'
         />
       </div>
       <button type="submit" class="ui blue submit button">提交</button>
@@ -176,7 +176,7 @@ function addUpdateLinks(row, id) {
           placeholder="额外信息"
           type="text"
           name="info"
-          value='{"links": "https://codeforces.com/contest/2024/problem/A", "pid": "2024A"}'
+          value='{"links": "https://codeforces.com/contest/2024/problem/A", "pid": "2024A", "type": "未分类"}'
         />
       </div>
       <button type="submit" class="ui blue submit button">提交</button>
