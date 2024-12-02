@@ -37,11 +37,10 @@ const frontendVersion = config.version
   </SuiContainer>
   <div class="ui vertical footer">
     <div class="ui center aligned container">
-      <div class="ui section divider"></div>
-      <div class="ui horizontal small divided link list">
+      <div class="ui divider"></div>
+      <div class="ui horizontal small divided link list" style="margin-top: 0">
         <a class="item" href="https://github.com/ZnPdCo/rating-system"> 由 Rating System 驱动 </a>
-        <a class="item"> Frontend v{{ frontendVersion }} </a>
-        <a class="item"> Backend v{{ backendVersion }} </a>
+        <a class="item"> v{{ frontendVersion }} </a>
       </div>
     </div>
   </div>
