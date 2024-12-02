@@ -6,8 +6,11 @@ import { Menu, MenuItem, SuiContainer } from 'vue-fomantic-ui'
 const title = window.title
 const isAdmin = window.isAdmin
 const loggedIn = window.loggedIn
-const backendVersion = window.backendVersion
 const frontendVersion = config.version
+const backendVersion = window.backendVersion
+if (frontendVersion !== backendVersion) {
+  console.error('前端版本与后端版本不匹配！')
+}
 </script>
 
 <template>
