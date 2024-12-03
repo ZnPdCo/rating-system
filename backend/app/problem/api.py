@@ -15,12 +15,15 @@ def add_problem(contest, name, info):
     cursor = conn.cursor()
     # have same pid
     if "pid" in info:
-        cursor.execute("SELECT contest FROM problems WHERE OJpid =%s", (info["pid"],))
+        cursor.execute("SELECT contest, info FROM problems WHERE OJpid =%s", (info["pid"],))
         res = cursor.fetchone()
         if res is not None:
+            # 如果两个都拥有type，则将它们合并
+            if "type" in info and "type" in json.loads(res[1]):
+                info["type"] = list(set(json.loads(res[1])["type"] + info["type"]))
             cursor.execute(
-                "UPDATE problems SET contest = %s WHERE OJpid = %s",
-                (contest + "(" + name + ")" + "," + res[0], info["pid"]),
+                "UPDATE problems SET contest = %s, info = %s WHERE OJpid = %s",
+                (contest + "(" + name + ")" + "," + res[0], json.dumps(info), info["pid"]),
             )
             conn.commit()
             conn.close()
