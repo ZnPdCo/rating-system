@@ -4,7 +4,7 @@ Author: ZnPdCo
 """
 
 import json
-from flask import Flask, request
+from flask import Flask, request, send_file
 from app.main.routes import main_bp
 from app.auth.routes import auth_bp
 from app.admin.routes import admin_bp
@@ -52,3 +52,10 @@ def inject_globals():
         "auto_status": config["auto_status"],
         "backend_version": BACKEND_VERSION,
     }
+
+@app.route('/favicon.ico', methods=['GET'])
+def favicon_route():
+    """
+    `/favicon.ico` route to serve the favicon
+    """
+    return send_file(DIR_PATH_BASE + "dist/favicon.ico")
