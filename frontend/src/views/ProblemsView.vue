@@ -12,7 +12,7 @@ const voteModal = ref(false)
 const pid = ref(1)
 const showVotesModal = ref(false)
 const selected = ref()
-const options = ref([{ text: '未分类', value: '未分类' }])
+const options = ref([])
 const detailsModal = ref(false)
 const loggedIn = window.loggedIn
 
@@ -160,12 +160,14 @@ function showTable() {
   let table = $('#problems-table tbody')
   table.empty()
   for (let i = 0; i < problemsData.length; i++) {
-    var type = '未分类'
+    var type = ['未分类']
     if ('type' in problemsData[i]['info']) type = problemsData[i]['info']['type']
-    if (!Object.values(options.value).some((el) => el.value == type)) {
-      options.value.push({ text: type, value: type })
-    }
-    if (selected.value != undefined && selected.value.value != type) continue
+    type.forEach(function (t) {
+      if (!options.value.some((el) => el.value == t)) {
+        options.value.push({ text: t, value: t })
+      }
+    })
+    if (selected.value != undefined && !type.includes(selected.value.value)) continue
     let row = $('<tr>')
     ;(function (data) {
       row.append($('<td>').text(data['pid']))
