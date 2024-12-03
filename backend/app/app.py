@@ -53,7 +53,8 @@ def inject_globals():
         "backend_version": BACKEND_VERSION,
     }
 
-@app.route('/favicon.ico', methods=['GET'])
+
+@app.route("/favicon.ico", methods=["GET"])
 def favicon_route():
     """
     `/favicon.ico` route to serve the favicon
