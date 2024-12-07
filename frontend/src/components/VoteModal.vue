@@ -1,39 +1,35 @@
 <script setup>
 import $ from 'jquery'
+import axios from 'axios'
 import { SuiModal, SuiButton, Rating } from 'vue-fomantic-ui'
 import { ref, watch } from 'vue'
 const show = defineModel('show')
 const pid = defineModel('pid')
 const emit = defineEmits(['rating-change'])
 const qualityValue = ref(0)
-const reloadKey = ref(0) // 用于重新渲染rating组件
+const reloadKey = ref(0) // for reloading the rating when the modal is closed and reopened or the rating is zero
+const difficulty = ref(0)
+const comment = ref('')
 
 function SendVote() {
-  let difficulty = $('#difficulty').val()
-  let quality = qualityValue.value - 1
-  let comment = $('#comment').val()
-  if (difficulty < 800 || difficulty > 3500 || difficulty == '') {
-    difficulty = -1
+  if (difficulty.value < 800 || difficulty.value > 3500) {
+    difficulty.value = ''
   }
-  if (quality < 0 || quality > 5) {
-    quality = -1
-  }
-  $.ajax({
-    url: '/backend/vote/',
-    type: 'POST',
+  axios('/backend/vote/', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8' },
     data: {
       pid: pid.value,
-      difficulty: difficulty,
-      quality: quality,
-      comment: comment,
+      difficulty: difficulty.value == '' ? -1 : difficulty.value,
+      quality: qualityValue.value - 1,
+      comment: comment.value,
     },
-    success: function (data) {
-      if (data == -1) {
-        alert('您暂无投票权限，请联系管理员')
-        return
-      }
-      emit('rating-change')
-    },
+  }).then(function (response) {
+    if (response.data == -1) {
+      alert('您暂无投票权限，请联系管理员')
+      return
+    }
+    emit('rating-change')
   })
 }
 watch(show, async (value) => {
@@ -45,10 +41,10 @@ watch(show, async (value) => {
       pid: pid.value,
     },
     success: function (data) {
-      $('#difficulty').val(data['difficulty'] == '-1' ? '' : data['difficulty'])
+      difficulty.value = data['difficulty'] == '-1' ? '' : data['difficulty']
       qualityValue.value = parseInt(data['quality']) + 1
       reloadKey.value++
-      $('#comment').val(data['comment'])
+      comment.value = data['comment']
     },
   })
 })
@@ -68,7 +64,7 @@ function cancleQuality() {
           type="number"
           placeholder="难度"
           data-tribute="true"
-          id="difficulty"
+          v-model="difficulty"
           oninput="this.value = this.value.replace(/[^0-9]/g, '');"
         />
       </div>
@@ -86,7 +82,13 @@ function cancleQuality() {
       <br />
       <div class="ui labeled input" style="margin-top: 10px">
         <div class="ui label">评论</div>
-        <textarea type="text" placeholder="评论" data-tribute="true" id="comment"></textarea>
+        <textarea
+          type="text"
+          placeholder="评论"
+          data-tribute="true"
+          v-model="comment"
+          maxlength="255"
+        ></textarea>
       </div>
     </div>
     <div class="actions">
@@ -100,6 +102,7 @@ function cancleQuality() {
 :deep(.star.icon:nth-child(1)::before) {
   content: '💩';
 }
+
 :deep(.star.active.icon:nth-child(1)) {
   text-shadow:
     0 -1px 0 #cc7722,

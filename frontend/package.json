@@ -13,7 +13,7 @@
   "author": "ZnPdCo",
   "license": "MIT",
   "dependencies": {
-    "axios": "^1.7.7",
+    "axios": "^1.7.9",
     "fomantic-ui-css": "^2.9.3",
     "jquery": "^3.7.1",
     "vue": "^3.5.12",
