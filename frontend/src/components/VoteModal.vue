@@ -1,5 +1,4 @@
 <script setup>
-import $ from 'jquery'
 import axios from 'axios'
 import { SuiModal, SuiButton, Rating } from 'vue-fomantic-ui'
 import { ref, watch } from 'vue'
@@ -34,18 +33,17 @@ function SendVote() {
 }
 watch(show, async (value) => {
   if (value != true) return
-  $.ajax({
-    url: '/backend/get_vote/',
-    type: 'POST',
+  axios('/backend/get_vote/', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8' },
     data: {
       pid: pid.value,
     },
-    success: function (data) {
-      difficulty.value = data['difficulty'] == '-1' ? '' : data['difficulty']
-      qualityValue.value = parseInt(data['quality']) + 1
-      reloadKey.value++
-      comment.value = data['comment']
-    },
+  }).then(function (response) {
+    difficulty.value = response.data['difficulty'] == '-1' ? '' : response.data['difficulty']
+    qualityValue.value = parseInt(response.data['quality']) + 1
+    reloadKey.value++
+    comment.value = response.data['comment']
   })
 })
 function cancleQuality() {
