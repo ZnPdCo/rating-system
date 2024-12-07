@@ -4,6 +4,8 @@ import { ref, watch } from 'vue'
 import { SuiModal, Dropdown } from 'vue-fomantic-ui'
 import { useRouter } from 'vue-router'
 import VoteModal from '../components/VoteModal.vue'
+import ShowVotesModal from '../components/ShowVotesModal.vue'
+import Difficulty from '../components/Difficulty.vue'
 
 const router = useRouter()
 var problemsData = []
@@ -196,9 +198,9 @@ function showTable() {
         $('<td>')
           .html('<a>显示投票</a>')
           .click(function () {
+            pid.value = data['pid']
             window.pid = data['pid']
             showVotesModal.value = true
-            showVotes()
           }),
       )
     })(problemsData[i])
@@ -232,28 +234,6 @@ function changeStatus(pid) {
     },
   })
 }
-function showVotes() {
-  let table = $('#vote-table tbody')
-  table.empty()
-
-  $.ajax({
-    url: '/backend/get_votes/',
-    type: 'POST',
-    data: {
-      pid: window.pid,
-    },
-    success: function (data) {
-      data.forEach(function (vote) {
-        let row = $('<tr>')
-        row.append(difficulty2Str(vote['difficulty'], null))
-        row.append(quality2Str(vote['quality'], null))
-        row.append($('<td>').text(vote['comment']))
-        addReportLink(row, vote['id'])
-        table.append(row)
-      })
-    },
-  })
-}
 function Details(details) {
   detailsModal.value = true
   $('#details').empty()
@@ -269,25 +249,6 @@ function Details(details) {
       $('#details').append($('<li>').text(`${key}: ${value}`))
     }
   })
-}
-
-function addReportLink(row, id) {
-  row.append(
-    $('<td>')
-      .html('<a>Report</a>')
-      .click(function () {
-        $.ajax({
-          url: '/backend/report/',
-          type: 'POST',
-          data: {
-            id: id,
-          },
-          success: function () {
-            alert('Report!')
-          },
-        })
-      }),
-  )
 }
 
 function sortData(sortBy) {
@@ -414,6 +375,7 @@ table {
 </style>
 
 <template>
+  <Difficulty difficulty="2700" />
   <div class="ui bottom attached warning message" style="display: none" id="announcement"></div>
   <div class="ui toggle checkbox" style="margin-top: 20px; margin-right: 20px">
     <input type="checkbox" id="use-median" />
@@ -438,25 +400,7 @@ table {
     </table>
   </div>
   <VoteModal v-model:show="voteModal" v-model:pid="pid" @rating-change="updateProblemsData()" />
-  <SuiModal v-model="showVotesModal">
-    <div class="header">显示投票</div>
-    <div class="content">
-      <table class="ui left aligned table" id="vote-table">
-        <thead>
-          <tr>
-            <th>难度</th>
-            <th>质量</th>
-            <th>评论</th>
-            <th>举报</th>
-          </tr>
-        </thead>
-        <tbody></tbody>
-      </table>
-    </div>
-    <div class="actions">
-      <div class="ui positive button" @click="showVotesModal = false">OK</div>
-    </div>
-  </SuiModal>
+  <ShowVotesModal v-model:show="showVotesModal" v-model:pid="pid" />
   <SuiModal v-model="detailsModal">
     <div class="header">详细信息</div>
     <div class="content">
