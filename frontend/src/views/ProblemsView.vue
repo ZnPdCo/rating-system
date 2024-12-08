@@ -375,7 +375,7 @@ table {
 </style>
 
 <template>
-  <Difficulty difficulty="2700" />
+  <!-- <Difficulty difficulty="2200" /> -->
   <div class="ui bottom attached warning message" style="display: none" id="announcement"></div>
   <div class="ui toggle checkbox" style="margin-top: 20px; margin-right: 20px">
     <input type="checkbox" id="use-median" />

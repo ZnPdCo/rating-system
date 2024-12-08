@@ -2,7 +2,7 @@
 import { ref, watch } from 'vue'
 const difficulty = defineModel('difficulty')
 const textColor = ref('gray')
-const circleStyle = ref('')
+const circleStyle = ref({})
 
 const thresholds = [
   { min: 2400, color: 'red' },
@@ -23,10 +23,8 @@ function colorText(value) {
   textColor.value = thresholds.find(threshold => value >= threshold.min).color
 }
 function colorCircle(value) {
-  if (value == null) {
-    textColor.value = 'gray'
-    return
-  }
+  var col = ''
+  var percentage = 0
   if (value == null) {
     col += 'gray'
     percentage = 0
@@ -35,7 +33,7 @@ function colorCircle(value) {
     percentage = (value - 2400) / 6
   } else if (value >= 2100) {
     col += 'rgb(255,140,0)'
-    percentage = (diffvalueiculty - 2100) / 3
+    percentage = (value - 2100) / 3
   } else if (value >= 1900) {
     col += 'rgb(170,0,170)'
     percentage = (value - 1900) / 2
@@ -56,34 +54,35 @@ function colorCircle(value) {
     percentage = (value - 800) / 2
   }
   if (value >= 3400) {
-    res.css({
-      'border-color': '#FFD700',
+    circleStyle.value = {
+      borderColor: '#FFD700',
       background: 'linear-gradient(to right, #FFD700, white, #FFD700)',
-    })
+    }
   } else if (value >= 3200) {
-    res.css({
-      'border-color': '#808080',
+    circleStyle.value = {
+      borderColor: '#808080',
       background: 'linear-gradient(to right, #808080, white, #808080)',
-    })
+    }
   } else if (value >= 3000) {
-    res.css({
-      'border-color': '#965C2C',
+    circleStyle.value = {
+      borderColor: '#965C2C',
       background: 'linear-gradient(to right, #965C2C, #FFDABD, #965C2C)',
-    })
+    }
   } else {
     percentage = Math.round(10 * percentage) / 10
-    res.css({
-      'border-color': col,
+    circleStyle.value = {
+      borderColor: col,
       background: `linear-gradient(to top, ${col} 0%, ${col} ${percentage}%, rgba(0, 0, 0, 0) ${percentage}%, rgba(0, 0, 0, 0) 100%)`,
-    })
+    }
   }
 }
 
 watch(difficulty, (value) => {
     colorText(value)
-
+    colorCircle(value)
 })
 colorText(difficulty.value)
+colorCircle(difficulty.value)
 </script>
 
 <template>
