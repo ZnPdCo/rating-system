@@ -5,7 +5,6 @@ import { SuiModal, Dropdown } from 'vue-fomantic-ui'
 import { useRouter } from 'vue-router'
 import VoteModal from '../components/VoteModal.vue'
 import ShowVotesModal from '../components/ShowVotesModal.vue'
-import Difficulty from '../components/Difficulty.vue'
 
 const router = useRouter()
 var problemsData = []
@@ -375,7 +374,6 @@ table {
 </style>
 
 <template>
-  <!-- <Difficulty difficulty="2200" /> -->
   <div class="ui bottom attached warning message" style="display: none" id="announcement"></div>
   <div class="ui toggle checkbox" style="margin-top: 20px; margin-right: 20px">
     <input type="checkbox" id="use-median" />

@@ -1,8 +1,7 @@
 <script setup>
 import $ from 'jquery'
-import axios from 'axios'
-import { SuiModal, SuiButton } from 'vue-fomantic-ui'
-import { ref, watch } from 'vue'
+import { SuiModal } from 'vue-fomantic-ui'
+import { watch } from 'vue'
 const show = defineModel('show')
 const pid = defineModel('pid')
 
