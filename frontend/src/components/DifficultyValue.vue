@@ -24,6 +24,11 @@ function colorText(value) {
   textColor.value = thresholds.find((threshold) => value >= threshold.min).color
 }
 function colorCircle(value) {
+  if (value == null) {
+    circleBorder.value = 'gray'
+    circleBackground.value = 'transparent'
+    return
+  }
   if (value >= 3400) {
     circleBorder.value = '#FFD700'
     circleBackground.value = 'linear-gradient(to right, #FFD700, white, #FFD700)'
@@ -56,7 +61,7 @@ colorCircle(difficulty.value)
       :style="{ borderColor: circleBorder, background: circleBackground }"
       class="circle"
     ></span
-    >{{ difficulty == null ? 'N/A' : difficulty }}</span
+    >{{ difficulty == null ? 'N/A' : Math.round(difficulty) }}</span
   >
 </template>
 
