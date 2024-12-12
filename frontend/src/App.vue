@@ -43,7 +43,12 @@ if (frontendVersion !== backendVersion) {
       <div class="ui divider"></div>
       <div class="ui horizontal small divided link list" style="margin-top: 0">
         <a class="item" href="https://github.com/ZnPdCo/rating-system"> 由 Rating System 驱动 </a>
-        <a class="item" href="https://github.com/ZnPdCo/rating-system"> v{{ frontendVersion }} </a>
+        <a
+          class="item"
+          :href="'https://github.com/ZnPdCo/rating-system/releases/tag/' + frontendVersion"
+        >
+          v{{ frontendVersion }}
+        </a>
         <a class="item" href="https://openmoji.org/"> 网站图标由 OpenMoji 提供 </a>
       </div>
     </div>
