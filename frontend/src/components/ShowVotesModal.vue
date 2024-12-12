@@ -62,17 +62,3 @@ watch(show, async (value) => {
     </div>
   </SuiModal>
 </template>
-
-<style scoped>
-:deep(.star.icon:nth-child(1)::before) {
-  content: '💩';
-}
-
-:deep(.star.active.icon:nth-child(1)) {
-  text-shadow:
-    0 -1px 0 #cc7722,
-    -1px 0 0 #cc7722,
-    0 1px 0 #cc7722,
-    1px 0 0 #cc7722 !important;
-}
-</style>
