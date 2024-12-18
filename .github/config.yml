@@ -2,18 +2,18 @@
 
 # Comment to be posted to on first time issues
 newIssueWelcomeComment: >
-  Thank you for your interest in the Rating System! Remember to express yourself clearly in the issue
+  感谢你对 Rating System 的关注！记得在 Issue 中表达清楚自己的意思哦～
 
 # Configuration for new-pr-welcome - https://github.com/behaviorbot/new-pr-welcome
 
 # Comment to be posted to on PRs from first time contributors in your repository
 newPRWelcomeComment: >
-  Thank you for your interest in the Rating System! Remember to check if you have followed the formatting standards and formatted the code. I heard that Pull Requests that are consistent with the project style are easier to merge
+  感谢你对 Rating System 的关注！记得检查是否遵守了格式规范，有没有将代码格式化，听说和项目风格统一的 Pull Request 会更容易被 Merge～
 
 # Configuration for first-pr-merge - https://github.com/behaviorbot/first-pr-merge
 
 # Comment to be posted to on pull requests merged by a first time user
 firstPRMergeComment: >
-  congratulations! Your Pull Request has been merged for the first time! :smile:
+  恭喜！你的 Pull Request 首次被 Merge 了！ :smile:
 
 # It is recommend to include as many gifs and emojis as possible
