@@ -1,20 +1,22 @@
 <script setup>
 import $ from 'jquery'
 import { ref, watch } from 'vue'
-import { SuiModal, Dropdown } from 'vue-fomantic-ui'
+import { Dropdown } from 'vue-fomantic-ui'
 import { useRouter } from 'vue-router'
 import VoteModal from '../components/VoteModal.vue'
 import ShowVotesModal from '../components/ShowVotesModal.vue'
+import DetailsModal from '../components/DetailsModal.vue'
 
 const router = useRouter()
 var problemsData = []
 var statusData = {}
-const voteModal = ref(false)
 const pid = ref(1)
+const details = ref({})
+const voteModal = ref(false)
 const showVotesModal = ref(false)
+const detailsModal = ref(false)
 const selected = ref()
 const options = ref([])
-const detailsModal = ref(false)
 const loggedIn = window.loggedIn
 
 watch(selected, () => {
@@ -175,7 +177,8 @@ function showTable() {
       row.append($('<td>').text(data['contest']))
       row.append(
         name2Str(data['pid'], data['name'], function () {
-          Details(data)
+          detailsModal.value = true
+          details.value = data
         }).click(function (e) {
           if ($(e.target).prop('tagName') == 'TD' && !window.autoStatus) changeStatus(data['pid'])
         }),
@@ -231,22 +234,6 @@ function changeStatus(pid) {
     data: {
       status: JSON.stringify(statusData),
     },
-  })
-}
-function Details(details) {
-  detailsModal.value = true
-  $('#details').empty()
-  $('#details').append($('<li>').text(`Contest: ${details['contest']}`))
-  $('#details').append($('<li>').text(`Name: ${details['name']}`))
-  $('#details').append(
-    $('<li>').append(
-      $('<a>').text(`Links: ${details['info']['links']}`).attr('href', details['info']['links']),
-    ),
-  )
-  Object.entries(details['info']).forEach(function ([key, value]) {
-    if (key != 'links') {
-      $('#details').append($('<li>').text(`${key}: ${value}`))
-    }
   })
 }
 
@@ -399,13 +386,5 @@ table {
   </div>
   <VoteModal v-model:show="voteModal" v-model:pid="pid" @rating-change="updateProblemsData()" />
   <ShowVotesModal v-model:show="showVotesModal" v-model:pid="pid" />
-  <SuiModal v-model="detailsModal">
-    <div class="header">详细信息</div>
-    <div class="content">
-      <ul class="ui list" id="details"></ul>
-    </div>
-    <div class="actions">
-      <div class="ui positive button" @click="detailsModal = false">OK</div>
-    </div>
-  </SuiModal>
+  <DetailsModal v-model:show="detailsModal" v-model:details="details" />
 </template>
