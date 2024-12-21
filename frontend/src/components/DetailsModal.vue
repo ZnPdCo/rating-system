@@ -1,5 +1,5 @@
 <script setup>
-import { SuiModal } from 'vue-fomantic-ui'
+import { SuiModal, SuiLabel } from 'vue-fomantic-ui'
 const show = defineModel('show')
 const details = defineModel('details')
 function isUrl(string) {
@@ -27,7 +27,10 @@ function isUrl(string) {
             >来源/作者：<a :href="value" target="_blank">{{ value }}</a></span
           >
           <span v-else-if="key == 'source'">来源/作者：{{ value }}</span>
-          <span v-else-if="key == 'type'">分类：{{ value }}</span>
+          <span v-else-if="key == 'type'"
+            >分类：
+            <SuiLabel as="a" v-for="(type, index) in value" :key="index">{{ type }}</SuiLabel>
+          </span>
           <span v-else>{{ key }}：{{ value }}</span>
         </li>
       </ul>
