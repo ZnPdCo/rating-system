@@ -51,7 +51,7 @@ watch(show, async (value) => {
           <tr v-for="(item, index) in votesData" :key="index">
             <td><DifficultyValue :difficulty="item.difficulty" /></td>
             <td><QualityValue :quality="item.quality" /></td>
-            <td>{{ item.comment }}</td>
+            <td style="overflow: hidden;">{{ item.comment }}</td>
             <td><a @click="report(item.id)">举报</a></td>
           </tr>
         </tbody>
