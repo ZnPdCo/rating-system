@@ -38,7 +38,7 @@ watch(show, async (value) => {
   <SuiModal v-model="show">
     <div class="header">显示投票</div>
     <div class="content">
-      <table class="ui left aligned table" id="vote-table">
+      <table class="ui left aligned table unstackable scrolling" id="vote-table">
         <thead>
           <tr>
             <th>难度</th>
