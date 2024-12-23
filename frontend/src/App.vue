@@ -19,8 +19,8 @@ if (frontendVersion !== backendVersion) {
     <RouterLink to="/">
       <MenuItem>题目</MenuItem>
     </RouterLink>
-    <RouterLink to="/legal/">
-      <MenuItem>条款</MenuItem>
+    <RouterLink to="/FAQ/">
+      <MenuItem>FAQ</MenuItem>
     </RouterLink>
     <RouterLink to="/admin/" v-if="isAdmin">
       <MenuItem>管理</MenuItem>

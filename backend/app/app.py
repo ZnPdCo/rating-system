@@ -49,6 +49,7 @@ def inject_globals():
         "logged_in": check_login(request.cookies.get("id")),
         "is_admin": check_admin(request.cookies.get("id")),
         "oj_name": config["oj_name"],
+        "contact": config["contact"],
         "auto_status": config["auto_status"],
         "backend_version": BACKEND_VERSION,
     }

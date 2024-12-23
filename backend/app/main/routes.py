@@ -20,10 +20,10 @@ def index_route():
     )
 
 
-@main_bp.route("/legal/", methods=["GET"])
-def legal_route():
+@main_bp.route("/FAQ/", methods=["GET"])
+def faq_route():
     """
-    The legal page of the website.
+    The FAQ page of the website.
     """
     return render_template(
         "index.html",
