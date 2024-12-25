@@ -38,7 +38,7 @@ function SendVote() {
 watch(show, async (value) => {
   if (value != true) return
   loader.value = true
-    ; (difficulty.value = ''), (qualityValue.value = 0), (comment.value = ''), reloadKey.value++
+  ;(difficulty.value = ''), (qualityValue.value = 0), (comment.value = ''), reloadKey.value++
 
   axios('/backend/get_vote/', {
     method: 'POST',
@@ -68,18 +68,35 @@ function cancleQuality() {
         <SuiLoader :active="loader" />
         <div class="ui labeled input" style="margin-right: 10px">
           <div class="ui label">难度(800-3500)</div>
-          <input type="number" placeholder="难度" data-tribute="true" v-model="difficulty"
-            oninput="this.value = this.value.replace(/[^0-9]/g, '');" />
+          <input
+            type="number"
+            placeholder="难度"
+            data-tribute="true"
+            v-model="difficulty"
+            oninput="this.value = this.value.replace(/[^0-9]/g, '');"
+          />
         </div>
         <div class="ui labeled input">
           <div class="ui label">质量(0-5)</div>
-          <Rating :key="reloadKey" size="massive" v-model="qualityValue" :maxRating="6" color="yellow" />
+          <Rating
+            :key="reloadKey"
+            size="massive"
+            v-model="qualityValue"
+            :maxRating="6"
+            color="yellow"
+          />
           <SuiButton @click="cancleQuality()">取消</SuiButton>
         </div>
         <br />
         <div class="ui labeled input" style="margin-top: 10px">
           <div class="ui label">评论</div>
-          <textarea type="text" placeholder="评论" data-tribute="true" v-model="comment" maxlength="255"></textarea>
+          <textarea
+            type="text"
+            placeholder="评论"
+            data-tribute="true"
+            v-model="comment"
+            maxlength="255"
+          ></textarea>
         </div>
       </SuiSegment>
     </div>

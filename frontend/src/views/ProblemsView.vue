@@ -173,40 +173,40 @@ function showTable() {
     })
     if (selected.value != undefined && !type.includes(selected.value.value)) continue
     let row = $('<tr>')
-      ; (function (data) {
-        row.append($('<td>').text(data['pid']))
-        row.append($('<td>').text(data['contest']))
-        row.append(
-          name2Str(data['pid'], data['name'], function () {
-            detailsModal.value = true
-            details.value = data
-          }).click(function (e) {
-            if ($(e.target).prop('tagName') == 'TD' && !window.autoStatus) changeStatus(data['pid'])
+    ;(function (data) {
+      row.append($('<td>').text(data['pid']))
+      row.append($('<td>').text(data['contest']))
+      row.append(
+        name2Str(data['pid'], data['name'], function () {
+          detailsModal.value = true
+          details.value = data
+        }).click(function (e) {
+          if ($(e.target).prop('tagName') == 'TD' && !window.autoStatus) changeStatus(data['pid'])
+        }),
+      )
+      row.append(difficulty2Str(data['difficulty'], data['cnt1']))
+      row.append(quality2Str(data['quality'], data['cnt2']))
+      row.append(
+        $('<td>')
+          .html('<a>投票</a>')
+          .click(function () {
+            pid.value = data['pid']
+            if (!loggedIn) {
+              router.push('/login')
+            }
+            voteModal.value = true
           }),
-        )
-        row.append(difficulty2Str(data['difficulty'], data['cnt1']))
-        row.append(quality2Str(data['quality'], data['cnt2']))
-        row.append(
-          $('<td>')
-            .html('<a>投票</a>')
-            .click(function () {
-              pid.value = data['pid']
-              if (!loggedIn) {
-                router.push('/login')
-              }
-              voteModal.value = true
-            }),
-        )
-        row.append(
-          $('<td>')
-            .html('<a>显示投票</a>')
-            .click(function () {
-              pid.value = data['pid']
-              window.pid = data['pid']
-              showVotesModal.value = true
-            }),
-        )
-      })(problemsData[i])
+      )
+      row.append(
+        $('<td>')
+          .html('<a>显示投票</a>')
+          .click(function () {
+            pid.value = data['pid']
+            window.pid = data['pid']
+            showVotesModal.value = true
+          }),
+      )
+    })(problemsData[i])
     table.append(row)
   }
 }
@@ -318,10 +318,10 @@ $(document).ready(function () {
         problemsData[i]['difficulty2'],
         problemsData[i]['difficulty'],
       ]
-        ;[problemsData[i]['quality'], problemsData[i]['quality2']] = [
-          problemsData[i]['quality2'],
-          problemsData[i]['quality'],
-        ]
+      ;[problemsData[i]['quality'], problemsData[i]['quality2']] = [
+        problemsData[i]['quality2'],
+        problemsData[i]['quality'],
+      ]
     }
     showTable()
   })
