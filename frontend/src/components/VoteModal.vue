@@ -1,6 +1,6 @@
 <script setup>
 import axios from 'axios'
-import { SuiModal, SuiButton, Rating } from 'vue-fomantic-ui'
+import { SuiModal, SuiButton, Rating, SuiLoader, SuiSegment } from 'vue-fomantic-ui'
 import { ref, watch } from 'vue'
 const show = defineModel('show')
 const pid = defineModel('pid')
@@ -9,8 +9,10 @@ const qualityValue = ref(0)
 const reloadKey = ref(0) // for reloading the rating when the modal is closed and reopened or the rating is zero
 const difficulty = ref(0)
 const comment = ref('')
+const loader = ref(false)
 
 function SendVote() {
+  loader.value = true
   if (difficulty.value < 800 || difficulty.value > 3500) {
     difficulty.value = ''
   }
@@ -24,6 +26,8 @@ function SendVote() {
       comment: comment.value,
     },
   }).then(function (response) {
+    loader.value = false
+    show.value = false
     if (response.data == -1) {
       alert('您暂无投票权限，请联系管理员')
       return
@@ -33,6 +37,9 @@ function SendVote() {
 }
 watch(show, async (value) => {
   if (value != true) return
+  loader.value = true
+    ; (difficulty.value = ''), (qualityValue.value = 0), (comment.value = ''), reloadKey.value++
+
   axios('/backend/get_vote/', {
     method: 'POST',
     headers: { 'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8' },
@@ -44,6 +51,7 @@ watch(show, async (value) => {
     qualityValue.value = parseInt(response.data['quality']) + 1
     reloadKey.value++
     comment.value = response.data['comment']
+    loader.value = false
   })
 })
 function cancleQuality() {
@@ -56,42 +64,28 @@ function cancleQuality() {
   <SuiModal v-model="show">
     <div class="header">投票</div>
     <div class="content">
-      <div class="ui labeled input" style="margin-right: 10px">
-        <div class="ui label">难度(800-3500)</div>
-        <input
-          type="number"
-          placeholder="难度"
-          data-tribute="true"
-          v-model="difficulty"
-          oninput="this.value = this.value.replace(/[^0-9]/g, '');"
-        />
-      </div>
-      <div class="ui labeled input">
-        <div class="ui label">质量(0-5)</div>
-        <Rating
-          :key="reloadKey"
-          size="massive"
-          v-model="qualityValue"
-          :maxRating="6"
-          color="yellow"
-        />
-        <SuiButton @click="cancleQuality()">取消</SuiButton>
-      </div>
-      <br />
-      <div class="ui labeled input" style="margin-top: 10px">
-        <div class="ui label">评论</div>
-        <textarea
-          type="text"
-          placeholder="评论"
-          data-tribute="true"
-          v-model="comment"
-          maxlength="255"
-        ></textarea>
-      </div>
+      <SuiSegment basic>
+        <SuiLoader :active="loader" />
+        <div class="ui labeled input" style="margin-right: 10px">
+          <div class="ui label">难度(800-3500)</div>
+          <input type="number" placeholder="难度" data-tribute="true" v-model="difficulty"
+            oninput="this.value = this.value.replace(/[^0-9]/g, '');" />
+        </div>
+        <div class="ui labeled input">
+          <div class="ui label">质量(0-5)</div>
+          <Rating :key="reloadKey" size="massive" v-model="qualityValue" :maxRating="6" color="yellow" />
+          <SuiButton @click="cancleQuality()">取消</SuiButton>
+        </div>
+        <br />
+        <div class="ui labeled input" style="margin-top: 10px">
+          <div class="ui label">评论</div>
+          <textarea type="text" placeholder="评论" data-tribute="true" v-model="comment" maxlength="255"></textarea>
+        </div>
+      </SuiSegment>
     </div>
     <div class="actions">
-      <SuiButton black @click="show = false">取消</SuiButton>
-      <SuiButton positive @click="SendVote(), (show = false)">保存</SuiButton>
+      <SuiButton black @click="show = false" :disabled="loader">取消</SuiButton>
+      <SuiButton positive @click="SendVote()" :disabled="loader">保存</SuiButton>
     </div>
   </SuiModal>
 </template>

@@ -1,7 +1,7 @@
 <script setup>
 import $ from 'jquery'
 import { ref, watch } from 'vue'
-import { Dropdown } from 'vue-fomantic-ui'
+import { Dropdown, SuiLoader, SuiSegment } from 'vue-fomantic-ui'
 import { useRouter } from 'vue-router'
 import VoteModal from '../components/VoteModal.vue'
 import ShowVotesModal from '../components/ShowVotesModal.vue'
@@ -18,6 +18,7 @@ const detailsModal = ref(false)
 const selected = ref()
 const options = ref([])
 const loggedIn = window.loggedIn
+const loader = ref(false)
 
 watch(selected, () => {
   showTable()
@@ -172,40 +173,40 @@ function showTable() {
     })
     if (selected.value != undefined && !type.includes(selected.value.value)) continue
     let row = $('<tr>')
-    ;(function (data) {
-      row.append($('<td>').text(data['pid']))
-      row.append($('<td>').text(data['contest']))
-      row.append(
-        name2Str(data['pid'], data['name'], function () {
-          detailsModal.value = true
-          details.value = data
-        }).click(function (e) {
-          if ($(e.target).prop('tagName') == 'TD' && !window.autoStatus) changeStatus(data['pid'])
-        }),
-      )
-      row.append(difficulty2Str(data['difficulty'], data['cnt1']))
-      row.append(quality2Str(data['quality'], data['cnt2']))
-      row.append(
-        $('<td>')
-          .html('<a>投票</a>')
-          .click(function () {
-            pid.value = data['pid']
-            if (!loggedIn) {
-              router.push('/login')
-            }
-            voteModal.value = true
+      ; (function (data) {
+        row.append($('<td>').text(data['pid']))
+        row.append($('<td>').text(data['contest']))
+        row.append(
+          name2Str(data['pid'], data['name'], function () {
+            detailsModal.value = true
+            details.value = data
+          }).click(function (e) {
+            if ($(e.target).prop('tagName') == 'TD' && !window.autoStatus) changeStatus(data['pid'])
           }),
-      )
-      row.append(
-        $('<td>')
-          .html('<a>显示投票</a>')
-          .click(function () {
-            pid.value = data['pid']
-            window.pid = data['pid']
-            showVotesModal.value = true
-          }),
-      )
-    })(problemsData[i])
+        )
+        row.append(difficulty2Str(data['difficulty'], data['cnt1']))
+        row.append(quality2Str(data['quality'], data['cnt2']))
+        row.append(
+          $('<td>')
+            .html('<a>投票</a>')
+            .click(function () {
+              pid.value = data['pid']
+              if (!loggedIn) {
+                router.push('/login')
+              }
+              voteModal.value = true
+            }),
+        )
+        row.append(
+          $('<td>')
+            .html('<a>显示投票</a>')
+            .click(function () {
+              pid.value = data['pid']
+              window.pid = data['pid']
+              showVotesModal.value = true
+            }),
+        )
+      })(problemsData[i])
     table.append(row)
   }
 }
@@ -258,6 +259,7 @@ function sortData(sortBy) {
 }
 
 $(document).ready(function () {
+  loader.value = true
   if (localStorage.getItem('status') == null) {
     localStorage.setItem('status', JSON.stringify('{}'))
   }
@@ -268,6 +270,7 @@ $(document).ready(function () {
       problemsData = data
       sortData('contest')
       showTable()
+      loader.value = false
     },
   })
   $.ajax({
@@ -315,10 +318,10 @@ $(document).ready(function () {
         problemsData[i]['difficulty2'],
         problemsData[i]['difficulty'],
       ]
-      ;[problemsData[i]['quality'], problemsData[i]['quality2']] = [
-        problemsData[i]['quality2'],
-        problemsData[i]['quality'],
-      ]
+        ;[problemsData[i]['quality'], problemsData[i]['quality2']] = [
+          problemsData[i]['quality2'],
+          problemsData[i]['quality'],
+        ]
     }
     showTable()
   })
@@ -361,29 +364,32 @@ table {
 </style>
 
 <template>
-  <div class="ui bottom attached warning message" style="display: none" id="announcement"></div>
-  <div class="ui toggle checkbox" style="margin-top: 20px; margin-right: 20px">
-    <input type="checkbox" id="use-median" />
-    <label>显示中位数数据</label>
-  </div>
-  <Dropdown v-model="selected" :options="options" clearable selection placeholder="选择分类" />
+  <SuiSegment basic>
+    <SuiLoader :active="loader" />
+    <div class="ui bottom attached warning message" style="display: none" id="announcement"></div>
+    <div class="ui toggle checkbox" style="margin-top: 20px; margin-right: 20px">
+      <input type="checkbox" id="use-median" />
+      <label>显示中位数数据</label>
+    </div>
+    <Dropdown v-model="selected" :options="options" clearable selection placeholder="选择分类" />
 
-  <div class="column" style="margin-top: 20px">
-    <table class="ui left aligned table" id="problems-table">
-      <thead>
-        <tr>
-          <th>Pid</th>
-          <th id="contest-header">比赛 ▾</th>
-          <th>题目名</th>
-          <th id="difficulty-header">难度 ▴</th>
-          <th id="quality-header">质量 ▴</th>
-          <th>投票</th>
-          <th>显示投票</th>
-        </tr>
-      </thead>
-      <tbody></tbody>
-    </table>
-  </div>
+    <div class="column" style="margin-top: 20px">
+      <table class="ui left aligned table" id="problems-table">
+        <thead>
+          <tr>
+            <th>Pid</th>
+            <th id="contest-header">比赛 ▾</th>
+            <th>题目名</th>
+            <th id="difficulty-header">难度 ▴</th>
+            <th id="quality-header">质量 ▴</th>
+            <th>投票</th>
+            <th>显示投票</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
+  </SuiSegment>
   <VoteModal v-model:show="voteModal" v-model:pid="pid" @rating-change="updateProblemsData()" />
   <ShowVotesModal v-model:show="showVotesModal" v-model:pid="pid" />
   <DetailsModal v-model:show="detailsModal" v-model:details="details" />
