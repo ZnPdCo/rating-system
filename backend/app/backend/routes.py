@@ -155,6 +155,10 @@ def update_status_route():
         return ""
     username = get_username(request.cookies.get("id"))
     status = request.values.get("status")
+    try:
+        assert isinstance(json.loads(status), dict)
+    except (ValueError, AssertionError):
+        return ""  # is not a valid JSON object
     conn = connect_db()
     cursor = conn.cursor()
     cursor.execute("UPDATE users SET status=%s WHERE username=%s", (status, username))
