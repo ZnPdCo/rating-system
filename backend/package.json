@@ -1,6 +1,6 @@
 {
   "name": "rating-system-backend",
-  "version": "0.6.0",
+  "version": "1.0.0",
   "scripts": {
     "format": "npx prettier --write app/ && python -m black app/",
     "lint": "pylint app/",
