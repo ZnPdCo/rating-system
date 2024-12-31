@@ -1,5 +1,5 @@
 <script setup>
-import $ from 'jquery'
+import axios from 'axios'
 import { ref, watch } from 'vue'
 import { Dropdown, SuiLoader, SuiSegment } from 'vue-fomantic-ui'
 import { useRouter } from 'vue-router'
@@ -19,6 +19,7 @@ const statusData = ref(() => {
     return {}
   }
 })
+const announcement = ref('')
 const pid = ref(1)
 const details = ref({})
 const voteModal = ref(false)
@@ -31,7 +32,7 @@ const sortBy = ref(route.query.sortBy != undefined ? route.query.sortBy : 'conte
 const typeData = ref([])
 const loggedIn = window.loggedIn
 const autoStatus = window.autoStatus
-const loader = ref(false)
+const loader = ref(true)
 
 function updateURL() {
   if (selectedType.value == undefined) router.replace({ query: { sortBy: sortBy.value } })
@@ -68,21 +69,21 @@ watch(sortBy, (value) => {
   updateURL()
 })
 function updateProblemsData() {
-  $.ajax({
-    url: '/backend/get_problems/',
-    type: 'GET',
-    success: function (data) {
-      for (let i = 0; i < problemsData.value.length; i++) {
-        problemsData.value[i] = data.find((item) => item['pid'] == problemsData.value[i]['pid'])
-      }
-    },
+  axios('/backend/get_problems/', {
+    method: 'GET',
+  }).then(function (response) {
+    for (let i = 0; i < problemsData.value.length; i++) {
+      problemsData.value[i] = response.data.find(
+        (item) => item['pid'] == problemsData.value[i]['pid'],
+      )
+    }
   })
 }
 function saveStatus() {
   localStorage.setItem('status', JSON.stringify(statusData.value))
-  $.ajax({
-    url: '/backend/update_status/',
-    type: 'POST',
+  axios('/backend/update_status/', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8' },
     data: {
       status: JSON.stringify(statusData.value),
     },
@@ -114,32 +115,25 @@ function sortData(sortBy) {
   }
 }
 
-loader.value = true
-$.ajax({
-  url: '/backend/get_problems/',
-  type: 'GET',
-  success: function (data) {
-    problemsData.value = data
-    sortData(sortBy.value)
-    loader.value = false
-  },
+axios('/backend/get_problems/', {
+  method: 'GET',
+}).then(function (response) {
+  problemsData.value = response.data
+  sortData(sortBy.value)
+  loader.value = false
 })
-$.ajax({
-  url: '/backend/get_status/',
-  type: 'POST',
-  success: function (data) {
-    statusData.value = data
-    saveStatus()
-  },
+axios('/backend/get_status/', {
+  method: 'POST',
+  headers: { 'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8' },
+}).then(function (response) {
+  statusData.value = response.data
+  saveStatus()
 })
-$.ajax({
-  url: '/backend/get_announcement/',
-  type: 'POST',
-  success: function (data) {
-    if (data != '') {
-      $('#announcement').html(data).show()
-    }
-  },
+axios('/backend/get_announcement/', {
+  method: 'POST',
+  headers: { 'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8' },
+}).then(function (response) {
+  announcement.value = response.data
 })
 </script>
 
@@ -181,7 +175,11 @@ table th:nth-child(7) {
 <template>
   <SuiSegment basic>
     <SuiLoader :active="loader" />
-    <div class="ui bottom attached warning message" style="display: none" id="announcement"></div>
+    <div
+      class="ui bottom attached warning message"
+      v-if="announcement.length > 0"
+      v-html="announcement"
+    ></div>
     <div class="ui toggle checkbox" style="margin-top: 20px; margin-right: 20px">
       <input type="checkbox" @click="switchMedian()" />
       <label>显示中位数数据</label>
