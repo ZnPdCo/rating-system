@@ -10,6 +10,25 @@ import app.constants
 from app.database import connect_db
 
 
+def get_permission(uid):
+    """
+    Get the permission of the user with the given id.
+
+    Returns:
+        The permission of the user if it exists, None otherwise.
+    """
+    conn = connect_db()
+    cursor = conn.cursor()
+    cursor.execute("SELECT permission FROM users WHERE id=%s", (uid,))
+    permission = cursor.fetchone()
+    if permission is None:
+        return None
+    cursor.execute("SELECT permission FROM users WHERE username='custom'")
+    custom_permission = cursor.fetchone()
+    conn.close()
+    return permission[0] & custom_permission[0]
+
+
 def check_login(uid):
     """
     Check if the user with the given id exists in the database.
@@ -17,14 +36,10 @@ def check_login(uid):
     Returns:
         True if the user exists, False otherwise.
     """
-    conn = connect_db()
-    cursor = conn.cursor()
-    cursor.execute("SELECT permission FROM users WHERE id=%s", (uid,))
-    permission = cursor.fetchone()
-    conn.close()
+    permission = get_permission(uid)
     if permission is None:
         return False
-    if permission[0] & app.constants.permission["login"]:
+    if permission & app.constants.permission["login"]:
         return True
     return False
 
@@ -36,14 +51,10 @@ def check_vote(uid):
     Returns:
         True if the user can vote, False otherwise.
     """
-    conn = connect_db()
-    cursor = conn.cursor()
-    cursor.execute("SELECT permission FROM users WHERE id=%s", (uid,))
-    permission = cursor.fetchone()
-    conn.close()
+    permission = get_permission(uid)
     if permission is None:
         return False
-    if permission[0] & app.constants.permission["vote"]:
+    if permission & app.constants.permission["vote"]:
         return True
     return False
 
@@ -55,14 +66,10 @@ def check_admin(uid):
     Returns:
         True if the user is an admin, False otherwise.
     """
-    conn = connect_db()
-    cursor = conn.cursor()
-    cursor.execute("SELECT permission FROM users WHERE id=%s", (uid,))
-    permission = cursor.fetchone()
-    conn.close()
+    permission = get_permission(uid)
     if permission is None:
         return False
-    if permission[0] & app.constants.permission["admin"]:
+    if permission & app.constants.permission["admin"]:
         return True
     return False
 

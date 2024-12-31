@@ -86,12 +86,16 @@ function addUpdateLinks(row, id) {
     <Message attached header="权限设置" style="margin-top: 20px" />
     <form class="ui form attached fluid segment" method="post" action="/admin/edit_permissions/">
       <div class="field">
-        <label>用户名</label>
+        <label
+          >用户名(用户 custom
+          为特殊用户，所有用户的权限将与此用户取交集，你可以在这里设置所有用户的权限，例如将所有用户权限的投票权限关闭表示禁止所有用户投票，请注意保留
+          custom 的管理权限，否则管理员将无法管理)</label
+        >
         <input placeholder="用户名" type="text" name="username" />
       </div>
       <div class="field">
         <label>权限(1表示登录权限，2表示投票权限，4表示管理权限，或起来)</label>
-        <input placeholder="管理员" type="number" name="permission" value="3" />
+        <input placeholder="权限" type="number" name="permission" value="3" />
       </div>
       <button type="submit" class="ui blue submit button">提交</button>
     </form>
