@@ -2,12 +2,16 @@
 import axios from 'axios'
 import { SuiModal, SuiLoader, SuiSegment } from 'vue-fomantic-ui'
 import { ref, watch } from 'vue'
+import { useRouter } from 'vue-router'
 import DifficultyValue from './DifficultyValue.vue'
 import QualityValue from './QualityValue.vue'
+
+const router = useRouter()
 const show = defineModel('show')
 const pid = defineModel('pid')
 const votesData = ref([])
 const loader = ref(false)
+const loggedIn = window.loggedIn
 
 function report(id) {
   loader.value = true
@@ -18,6 +22,10 @@ function report(id) {
       id: id,
     },
   }).then(function () {
+    if (!loggedIn) {
+      router.push('/login?error=请先登录')
+      return
+    }
     loader.value = false
     alert('举报成功！管理员将会进行审核。')
   })
