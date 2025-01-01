@@ -179,8 +179,8 @@ def export_database_route():
     """
     if not check_admin(request.cookies.get("id")):
         return redirect("/")
-    sqlfromat = "mysqldump -h%s -u%s -p%s -P%s %s > database.sql"
-    sql = sqlfromat % (
+    sqlformat = "mysqldump -h%s -u%s -p%s -P%s %s > database.sql"
+    sql = sqlformat % (
         config["db_host"],
         config["db_user"],
         config["db_password"],
@@ -189,3 +189,27 @@ def export_database_route():
     )
     os.system(sql)
     return send_file("database.sql", as_attachment=True)
+
+
+@admin_bp.route("/import_database/", methods=["POST"])
+def import_database_route():
+    """
+    Import database
+    """
+    if not check_admin(request.cookies.get("id")):
+        return redirect("/")
+    file = request.files["file"]
+    if file.filename == "":
+        return redirect("/admin/")
+
+    file.save("database.sql")
+    sqlformat = "mysql -h%s -u%s -p%s -P%s %s < database.sql"
+    sql = sqlformat % (
+        config["db_host"],
+        config["db_user"],
+        config["db_password"],
+        config["db_port"],
+        config["db_name"],
+    )
+    os.system(sql)
+    return redirect("/admin/")

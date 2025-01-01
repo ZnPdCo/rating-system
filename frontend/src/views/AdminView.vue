@@ -251,5 +251,18 @@ function addUpdateLinks(row, id) {
     <form class="ui form attached fluid segment" method="get" action="/admin/export_database/">
       <button type="submit" class="ui blue submit button">导出</button>
     </form>
+
+    <Message attached header="导入数据库" style="margin-top: 20px" />
+    <form
+      class="ui form attached fluid segment"
+      method="post"
+      action="/admin/import_database/"
+      enctype="multipart/form-data"
+    >
+      <div class="ui file input">
+        <input type="file" name="file" />
+      </div>
+      <button type="submit" class="ui blue submit button">导入</button>
+    </form>
   </main>
 </template>
