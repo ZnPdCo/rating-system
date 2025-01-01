@@ -242,7 +242,7 @@ table th:nth-child(7) {
                         : '',
                 }"
               >
-                <a @click="(detailsModal = true), (details = item)" href="#">{{ item.name }}</a>
+                <a @click="(detailsModal = true), (details = item)">{{ item.name }}</a>
               </td>
               <td :data-tooltip="'投票人数：' + item.cnt1">
                 <DifficultyValue :difficulty="item.difficulty" />
@@ -257,12 +257,11 @@ table th:nth-child(7) {
                       (pid = item.pid),
                       (voteModal = true)
                   "
-                  href="#"
                   >投票</a
                 >
               </td>
               <td>
-                <a @click="(pid = item.pid), (showVotesModal = true)" href="#">显示投票</a>
+                <a @click="(pid = item.pid), (showVotesModal = true)">显示投票</a>
               </td>
             </slot>
           </tr>
