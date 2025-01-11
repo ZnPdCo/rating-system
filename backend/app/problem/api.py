@@ -16,7 +16,7 @@ def add_problem(contest, name, info):
     # have same pid
     if "pid" in info:
         cursor.execute(
-            "SELECT contest, info FROM problems WHERE OJpid =%s", (info["pid"],)
+            "SELECT contest, info FROM problems WHERE oj_pid =%s", (info["pid"],)
         )
         res = cursor.fetchone()
         if res is not None:
@@ -24,7 +24,7 @@ def add_problem(contest, name, info):
             if "type" in info and "type" in json.loads(res[1]):
                 info["type"] = list(set(json.loads(res[1])["type"] + info["type"]))
             cursor.execute(
-                "UPDATE problems SET contest = %s, info = %s WHERE OJpid = %s",
+                "UPDATE problems SET contest = %s, info = %s WHERE oj_pid = %s",
                 (
                     contest + "(" + name + ")" + "," + res[0],
                     json.dumps(info),
@@ -35,7 +35,7 @@ def add_problem(contest, name, info):
             conn.close()
             return
     cursor.execute(
-        "INSERT INTO problems (OJpid, contest, name, info) VALUES (%s,%s,%s,%s)",
+        "INSERT INTO problems (oj_pid, contest, name, info) VALUES (%s,%s,%s,%s)",
         (
             (info["pid"] if "pid" in info else ""),
             contest,
@@ -54,7 +54,7 @@ def update_problem(pid, contest, name, info):
     conn = connect_db()
     cursor = conn.cursor()
     cursor.execute(
-        "UPDATE problems SET OJpid=%s, contest=%s, name=%s, info=%s WHERE pid=%s",
+        "UPDATE problems SET oj_pid=%s, contest=%s, name=%s, info=%s WHERE pid=%s",
         (
             (info["pid"] if "pid" in info else ""),
             contest,
@@ -87,7 +87,7 @@ def get_problems():
     cursor.execute(
         "SELECT pid, contest, name, difficulty, \
                 quality, difficulty2, quality2, \
-                cnt1, cnt2, info FROM problems"
+                difficulty_cnt, quality_cnt, info FROM problems"
     )
     problems = cursor.fetchall()
     conn.close()
@@ -102,8 +102,8 @@ def get_problems():
                 "quality": problem[4],
                 "difficulty2": problem[5],
                 "quality2": problem[6],
-                "cnt1": problem[7],
-                "cnt2": problem[8],
+                "difficulty_cnt": problem[7],
+                "quality_cnt": problem[8],
                 "info": json.loads(problem[9]),
             }
         )

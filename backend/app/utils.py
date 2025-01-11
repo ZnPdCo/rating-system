@@ -145,7 +145,7 @@ def update_rating(pid):
         cursor.execute("UPDATE problems SET quality2=%s WHERE pid=%s", (quality2, pid))
 
     cursor.execute(
-        "UPDATE problems SET cnt1=%s, cnt2=%s WHERE pid=%s",
+        "UPDATE problems SET difficulty_cnt=%s, quality_cnt=%s WHERE pid=%s",
         (len(difficulty), len(quality), pid),
     )
     conn.commit()

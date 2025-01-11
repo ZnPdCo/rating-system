@@ -244,10 +244,10 @@ table th:nth-child(7) {
               >
                 <a @click="(detailsModal = true), (details = item)">{{ item.name }}</a>
               </td>
-              <td :data-tooltip="'投票人数：' + item.cnt1">
+              <td :data-tooltip="'投票人数：' + item.difficulty_cnt">
                 <DifficultyValue :difficulty="item.difficulty" />
               </td>
-              <td :data-tooltip="'投票人数：' + item.cnt2">
+              <td :data-tooltip="'投票人数：' + item.quality_cnt">
                 <QualityValue :quality="item.quality" />
               </td>
               <td>

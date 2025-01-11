@@ -101,7 +101,7 @@ def auto_update_status(username):
     cursor.execute("SELECT status FROM users WHERE username=%s", (username,))
     system_status = json.loads(cursor.fetchone()[0])
     for oj_pid, status in oj_status.items():
-        cursor.execute("SELECT pid FROM problems WHERE ojpid=%s", (oj_pid,))
+        cursor.execute("SELECT pid FROM problems WHERE oj_pid=%s", (oj_pid,))
         system_pid = cursor.fetchone()
         if system_pid is None:
             continue

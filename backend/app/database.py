@@ -36,10 +36,10 @@ difficulty DOUBLE DEFAULT null,
 quality DOUBLE DEFAULT null,
 difficulty2 DOUBLE DEFAULT null,
 quality2 DOUBLE DEFAULT null,
-cnt1 INTEGER DEFAULT 0,
-cnt2 INTEGER DEFAULT 0,
+difficulty_cnt INTEGER DEFAULT 0,
+quality_cnt INTEGER DEFAULT 0,
 info VARCHAR(255),
-OJpid VARCHAR(255) DEFAULT ""
+oj_pid VARCHAR(255) DEFAULT ""
 ); 
                 """
     )
