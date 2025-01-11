@@ -12,13 +12,15 @@ import DetailsModal from '../components/DetailsModal.vue'
 const router = useRouter()
 const route = router.currentRoute.value
 const problemsData = ref([])
-const statusData = ref(() => {
-  try {
-    return JSON.parse(localStorage.getItem('status')) || {}
-  } catch {
-    return {}
-  }
-})
+const statusData = ref(
+  (() => {
+    try {
+      return JSON.parse(localStorage.getItem('status')) || {}
+    } catch {
+      return {}
+    }
+  })(),
+)
 const announcement = ref('')
 const pid = ref(1)
 const details = ref({})
@@ -152,11 +154,11 @@ table th:nth-child(2) {
 }
 
 table th:nth-child(3) {
-  width: 40%;
+  width: 38%;
 }
 
 table th:nth-child(4) {
-  width: 7%;
+  width: 9%;
 }
 
 table th:nth-child(5) {
@@ -165,10 +167,6 @@ table th:nth-child(5) {
 
 table th:nth-child(6) {
   width: 7%;
-}
-
-table th:nth-child(7) {
-  width: 9%;
 }
 </style>
 
@@ -242,13 +240,55 @@ table th:nth-child(7) {
                         : '',
                 }"
               >
-                <a @click="(detailsModal = true), (details = item)">{{ item.name }}</a>
+                <a @click="(detailsModal = true), (details = item)" style="cursor: pointer">{{
+                  item.name
+                }}</a>
               </td>
-              <td :data-tooltip="'投票人数：' + item.difficulty_cnt">
+              <td
+                :data-tooltip="
+                  '投票人数：' +
+                  item.difficulty_cnt +
+                  '; 标准差：' +
+                  Math.round(item.difficulty_sigma * 10) / 10
+                "
+                data-position="left center"
+              >
                 <DifficultyValue :difficulty="item.difficulty" />
+                <sup
+                  v-if="item.difficulty_sigma > 300"
+                  style="color: red; font-size: 1em; cursor: pointer"
+                  data-tooltip="标准差过高"
+                  >*</sup
+                >
+                <sup
+                  v-if="item.difficulty_cnt < 5"
+                  style="color: red; font-size: 1em; cursor: pointer"
+                  data-tooltip="投票人数过少"
+                  >*</sup
+                >
               </td>
-              <td :data-tooltip="'投票人数：' + item.quality_cnt">
+              <td
+                :data-tooltip="
+                  '投票人数：' +
+                  item.quality_cnt +
+                  '; 标准差：' +
+                  Math.round(item.quality_sigma * 10) / 10
+                "
+                data-position="left center"
+              >
                 <QualityValue :quality="item.quality" />
+                <sup
+                  v-if="item.quality_sigma > 1"
+                  style="color: red; font-size: 1em; cursor: pointer"
+                  data-tooltip="标准差过高"
+                  >*</sup
+                >
+                <sup
+                  v-if="item.quality_cnt < 5"
+                  style="color: red; font-size: 1em; cursor: pointer"
+                  data-tooltip="投票人数过少"
+                  >*</sup
+                >
               </td>
               <td>
                 <a
@@ -257,11 +297,14 @@ table th:nth-child(7) {
                       (pid = item.pid),
                       (voteModal = true)
                   "
+                  style="cursor: pointer"
                   >投票</a
                 >
               </td>
               <td>
-                <a @click="(pid = item.pid), (showVotesModal = true)">显示投票</a>
+                <a @click="(pid = item.pid), (showVotesModal = true)" style="cursor: pointer"
+                  >显示投票</a
+                >
               </td>
             </slot>
           </tr>

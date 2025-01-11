@@ -39,7 +39,9 @@ quality2 DOUBLE DEFAULT null,
 difficulty_cnt INTEGER DEFAULT 0,
 quality_cnt INTEGER DEFAULT 0,
 info VARCHAR(255),
-oj_pid VARCHAR(255) DEFAULT ""
+oj_pid VARCHAR(255) DEFAULT "",
+difficulty_sigma DOUBLE DEFAULT null,
+quality_sigma DOUBLE DEFAULT null
 ); 
                 """
     )

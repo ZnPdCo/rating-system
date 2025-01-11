@@ -87,7 +87,8 @@ def get_problems():
     cursor.execute(
         "SELECT pid, contest, name, difficulty, \
                 quality, difficulty2, quality2, \
-                difficulty_cnt, quality_cnt, info FROM problems"
+                difficulty_cnt, quality_cnt, info, \
+                difficulty_sigma, quality_sigma FROM problems"
     )
     problems = cursor.fetchall()
     conn.close()
@@ -105,6 +106,8 @@ def get_problems():
                 "difficulty_cnt": problem[7],
                 "quality_cnt": problem[8],
                 "info": json.loads(problem[9]),
+                "difficulty_sigma": problem[10],
+                "quality_sigma": problem[11],
             }
         )
     return res

@@ -115,34 +115,55 @@ def update_rating(pid):
     res = cursor.fetchall()
     quality = [item[0] for item in res]
 
-    difficulty1 = sum(difficulty) / len(difficulty) if len(difficulty) > 0 else None
-    quality1 = sum(quality) / len(quality) if len(quality) > 0 else None
-    difficulty2 = np.median(np.array(difficulty)) if len(difficulty) > 0 else None
-    quality2 = np.median(np.array(quality)) if len(quality) > 0 else None
+    difficulty_avg = sum(difficulty) / len(difficulty) if len(difficulty) > 0 else None
+    quality_avg = sum(quality) / len(quality) if len(quality) > 0 else None
+    difficulty_median = np.median(np.array(difficulty)) if len(difficulty) > 0 else None
+    quality_median = np.median(np.array(quality)) if len(quality) > 0 else None
+    difficulty_sigma = np.std(np.array(difficulty)) if len(difficulty) > 0 else None
+    quality_sigma = np.std(np.array(quality)) if len(quality) > 0 else None
 
-    if difficulty1 is None:
+    if difficulty_avg is None:
         cursor.execute("UPDATE problems SET difficulty=null WHERE pid=%s", (pid,))
     else:
         cursor.execute(
-            "UPDATE problems SET difficulty=%s WHERE pid=%s", (difficulty1, pid)
+            "UPDATE problems SET difficulty=%s WHERE pid=%s", (difficulty_avg, pid)
         )
 
-    if difficulty2 is None:
+    if difficulty_median is None:
         cursor.execute("UPDATE problems SET difficulty2=null WHERE pid=%s", (pid,))
     else:
         cursor.execute(
-            "UPDATE problems SET difficulty2=%s WHERE pid=%s", (difficulty2, pid)
+            "UPDATE problems SET difficulty2=%s WHERE pid=%s", (difficulty_median, pid)
         )
 
-    if quality1 is None:
+    if difficulty_sigma is None:
+        cursor.execute("UPDATE problems SET difficulty_sigma=null WHERE pid=%s", (pid,))
+    else:
+        cursor.execute(
+            "UPDATE problems SET difficulty_sigma=%s WHERE pid=%s",
+            (difficulty_sigma, pid),
+        )
+
+    if quality_avg is None:
         cursor.execute("UPDATE problems SET quality=null WHERE pid=%s", (pid,))
     else:
-        cursor.execute("UPDATE problems SET quality=%s WHERE pid=%s", (quality1, pid))
+        cursor.execute(
+            "UPDATE problems SET quality=%s WHERE pid=%s", (quality_avg, pid)
+        )
 
-    if quality2 is None:
+    if quality_median is None:
         cursor.execute("UPDATE problems SET quality2=null WHERE pid=%s", (pid,))
     else:
-        cursor.execute("UPDATE problems SET quality2=%s WHERE pid=%s", (quality2, pid))
+        cursor.execute(
+            "UPDATE problems SET quality2=%s WHERE pid=%s", (quality_median, pid)
+        )
+
+    if quality_sigma is None:
+        cursor.execute("UPDATE problems SET quality_sigma=null WHERE pid=%s", (pid,))
+    else:
+        cursor.execute(
+            "UPDATE problems SET quality_sigma=%s WHERE pid=%s", (quality_sigma, pid)
+        )
 
     cursor.execute(
         "UPDATE problems SET difficulty_cnt=%s, quality_cnt=%s WHERE pid=%s",
