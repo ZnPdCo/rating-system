@@ -14,6 +14,7 @@ from app.config import config
 
 DIR_PATH_BASE = "../../frontend/"
 
+
 class WanmaitFlask(Flask):
     """
     Default is '{{', I'm changing this because Vue.js uses '{{' / '}}'
