@@ -71,10 +71,10 @@ def login_route():
 
     conn.close()
 
-    # if the first username, it is admin
+    # if the first username(without custom), it is admin
     conn = connect_db()
     cursor = conn.cursor()
-    cursor.execute("SELECT id FROM users")
+    cursor.execute("SELECT id FROM users WHERE username!='custom'")
     res = cursor.fetchall()
     if len(res) == 1:
         cursor.execute(
