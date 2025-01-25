@@ -188,7 +188,7 @@ def export_database_route():
         config["db_name"],
     )
     os.system(sql)
-    return send_file("database.sql", as_attachment=True)
+    return send_file("../database.sql", as_attachment=True)
 
 
 @admin_bp.route("/import_database/", methods=["POST"])
