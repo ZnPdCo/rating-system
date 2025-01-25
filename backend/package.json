@@ -4,7 +4,7 @@
   "scripts": {
     "format": "npx prettier --write app/ && python -m black app/",
     "lint": "pylint app/",
-    "dev": "cd app && flask run --debug"
+    "dev": "flask run --debug"
   },
   "author": "ZnPdCo",
   "license": "MIT",
